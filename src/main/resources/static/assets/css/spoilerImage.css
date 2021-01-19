@@ -1,0 +1,23 @@
+#expander {
+    display: none;
+}
+
+.spoiler .expander:before {
+    content: '[show]'
+}
+
+.spoiler #expand {
+    display: none;
+}
+
+.spoiler #expand:checked + .expander:before {
+    content: '[hide]';
+}
+
+.spoiler #expand:checked ~ .spoiler-content {
+    display: block;
+}
+
+.spoiler .spoiler-content {
+    display: none;
+}

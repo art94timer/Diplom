@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header">
+    <header id="header" class="alt">
+        <h1>
+            <a href="index.html">Spectral</a>
+        </h1>
+        <nav id="nav">
+            <ul>
+                <li class="special"><a href="#menu" class="menuToggle"><span th:text="#{label.menu}">Menu</span></a>
+                    <div id="menu">
+                        <ul>
+                            <li><a th:text="#{label.menu.home}" th:href="@{/}">Home</a></li>
+                            <li><a th:text="#{label.menu.register}" th:href="@{/register}">Sign Up</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a
+                                    th:text="#{label.menu.login}" th:href="@{/login}">Log In</a></li>
+                            <li><a th:text="#{label.menu.faculties}" th:href="@{/view}">Results</a>
+                            <li> <a href="javascript:;" onclick="document.getElementById('form1').submit();" th:utext="#{logout}">Log Out</a></li>
+                            <li><a th:href="@{/applicant}" th:utext="#{label.register.applicant}"></a></li>
+
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/applicants}" th:utext="#{label.admin.work}"></a></li>
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <form id="form1" th:action="@{/logout}" method="post">
+
+                <input type="hidden" name="mess" value=<%=n%>
+            </form>
+        </nav>
+    </header>
+</div>
+<div th:fragment="footer">
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+            <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; Untitled</li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+        <div>Icons made by <a href="https://flat-icons.com/" title="Flat Icons">Flat Icons</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    </footer>
+</div>
+<div th:fragment="scripts">
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/jquery.min.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/jquery.scrollex.min.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/jquery.scrolly.min.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/browser.min.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/breakpoints.min.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/util.js}"></script>
+    <script th:src="@{https://adm-board.s3.eu-west-2.amazonaws.com/assets/js/main.js}"></script>
+</div>
+</body>
+</html>

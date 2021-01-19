@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
+</head>
+<body class="is-mobile">
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <h5 th:align="center" th:text="#{applicants.name}">Applicants</h5>
+                <hr>
+                <form th:object="${validateForm}" th:action="@{/admin/applicants}" method="post">
+                    <div class="container" th:field="*{list}" th:each="applicant, itemStat : ${applicants}">
+                        <th:block>
+                            <input type="hidden" th:name="|list[${itemStat.index}].applicantId|"
+                                   th:value="${applicant.getId()}">
+                            <input type="hidden" th:name="|list[${itemStat.index}].firstName|"
+                                   th:value="${applicant.getFullName()}">
+                            <input type="hidden" th:name="|list[${itemStat.index}].email|"
+                                   th:value="${applicant.getEmail()}">
+                        </th:block>
+                        <div class="row gtr-uniform">
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <label for="name" th:align="center" th:text="#{name}"></label>
+                                <div align="center" id="name" th:text="${applicant.getFullName()}"></div>
+                            </div>
+                        </div>
+                        <hr>
+                        <table class="alt" >
+                            <thead>
+                            <tr>
+                                <th th:utext="#{photo.name}">Photo</th>
+                                <th th:utext="#{subject.name}">Subject</th>
+                                <th th:utext="#{grade.mark}">Mark</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="grade:${applicant.getValidateGradeDTO()}">
+                                <td>
+                                    <details>
+                                        <summary th:utext="#{photo.name}">Photo</summary>
+                                        <span style="color: white">Photo</span>
+                                        <a th:attr="id=${grade.getSubjectName()},href=${grade.getFileName()}"
+                                           target="_blank">
+                                        <span class="img fit"><img th:attr="src=${grade.getFileName()}"
+                                                                   style="width:100%;max-width:300px;"></a></span>
+                                    </details>
+                                </td>
+                                <td th:align="center" style="vertical-align: middle;"
+                                    th:text="${grade.getSubjectName()}"></td>
+                                <td th:align="center" style="vertical-align: middle;" th:text="${grade.getMark()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <table class="alt">
+                            <thead>
+                            <tr>
+                                <th th:utext="#{photo.name}"></th>
+                                <th th:utext="#{grade.mark}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <td>
+                                <details>
+                                    <summary th:utext="#{photo.name}"></summary>
+                                    <span style="color: white">Photo</span>
+                                    <a th:href="${applicant.getCertificate().getFileName()}"
+                                       target="_blank">
+                                        <span class="img fit"><img th:src="${applicant.getCertificate().getFileName()}"
+                                                                   style="width:100%;max-width:300px;"></a></span>
+                                </details>
+                            </td>
+                            <td th:text="${applicant.getCertificate().getMark()}">
+
+                            </td>
+                            </tbody>
+                        </table>
+                        <div class="row gtr-uniform ">
+
+                            <div class="col-4 col-12-small">
+
+                                <input th:value="${false}" type="radio" th:id="${applicant.id} + 'invalid'"
+                                       th:field="*{list[__${itemStat.index}__].valid}">
+                                <label th:for="${applicant.id} + 'invalid'">Invalid</label>
+                            </div>
+                            <div class="col-4 col-12-small">
+                                <input th:value="${true}" th:type="radio" th:id="${applicant.id} + 'valid'"
+                                       th:field="*{list[__${itemStat.index}__].valid}">
+                                <label th:for="${applicant.id} + 'valid'">Valid</label>
+                            </div>
+                        </div>
+                        <br><br>
+                        <details >
+                            <summary th:text="#{details.select.cause}"></summary>
+                            <br><br>
+                            <div class="row gtr-uniform">
+                                <div th:each="cause : ${T(com.art.dip.utility.dto.CauseInvalid).values()}">
+                                <div class="col-6">
+                                <input th:type="checkbox"  th:id="${{cause}}"  th:value="${{cause}}" th:name="|list[${itemStat.index}].causes|">
+                                    <label th:for="${{cause}}" ><th:block th:switch="${cause.toString()}">
+                                        <div th:case='INVALID_GRADE_PHOTO'>
+                                            <div th:utext="#{cause.grade.photo}"></div>
+                                        </div>
+                                        <div th:case="INVALID_GRADE_MARK">
+                                            <div th:utext="#{cause.grade.mark}"></div>
+                                        </div>
+                                        <div th:case="INVALID_CERTIFICATE_PHOTO">
+                                            <div th:utext="#{cause.certificate.photo}"></div>
+                                        </div>
+                                        <div th:case="INVALID_CERTIFICATE_MARK">
+                                            <div th:utext="#{cause.certificate.mark}"></div>
+                                        </div>
+                                        <div th:case="ANOTHER_CAUSE">
+                                            <div th:utext="#{cause.anotherCause}"></div>
+                                        </div>
+                                    </th:block></label>
+                            </div>
+                            </div>
+                            </div>
+                        </details>
+                        <br><br>
+                        <details>
+                            <summary th:text="#{another.reason}"></summary>
+                            <br><br>
+                            <label th:for="${applicant.id} + 'anotherReason'" th:utext="#{label.enter.message}"></label>
+                            <textarea th:id="${applicant.id} + 'anotherReason'" th:name="|list[${itemStat.index}].anotherReason|" rows="6">
+                            </textarea>
+                        </details>
+                        <br><br>
+                    </div>
+                    <button type="submit"  class="btn" th:utext="#{button.next}"></button>
+                </form>
+                <hr>
+            </div>
+        </section>
+    </article>
+</div>
+</div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

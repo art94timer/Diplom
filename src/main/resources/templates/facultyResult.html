@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/static/assets/css/main.css}" />
+
+<noscript>
+	<link rel="stylesheet" href="assets/css/noscript.css" />
+</noscript>
+<link rel="stylesheet" type="text/css"
+	href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css" />
+<link rel="stylesheet" th:href="@{assets/css/number-fonts.css}" />
+</head>
+<body class="landing is-preload">
+	<div id="page-wrapper">
+		<div th:insert="~{fragments::header}"></div>
+		<article id="main">
+			<header>
+				<h2 th:text="${faculty.name}"></h2>
+				<h2 th:text="${faculty.getEduForm.eduForm}"></h2>
+				<h2 th:text="${faculty.getEduForm.payForm}"></h2>
+			</header>
+			<section class="wrapper style5">
+				<div class="inner">
+					<h2 align="center" th:text="${faculty.name}"></h2>
+					<h3 align="center">Last Update:</h3>
+					<h4 align="center"
+						th:text="${#temporals.format(faculty.getEduForm.updateTime, 'd-MMMM HH:mm')}"></h4>
+					<br></br> <br></br> <br>
+
+
+					<div class="row">
+						<div class="col-4" align="center">
+							<h4>Total registered:</h4>
+							<br></br> <br></br> <br>
+							<p style="font-size: 300%;" class="customfont" align="center"
+								th:text="${faculty.getEduForm.countApplicants}"></p>
+						</div>
+						<div class="col-4" align="center">
+							<h4>Faculty Capacity:</h4>
+							<br></br> <br></br> <br>
+							<p style="font-size: 300%;" class="customfont" align="center"
+								th:text="${faculty.getEduForm.capacity}"></p>
+
+						</div>
+						<div class="col-4" align="center">
+							<h4>Average Score:</h4>
+							<br></br> <br></br> <br>
+							<p style="font-size: 300%;" class="customfont" align="center"
+								th:text="${faculty.getEduForm.averageScore}"></p>
+						</div>
+					</div>
+				</div>
+			</section>
+		</article>
+	</div>
+	<div th:insert="~{fragments::footer}"></div>
+	<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

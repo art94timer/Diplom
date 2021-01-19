@@ -1,0 +1,75 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+<noscript>
+	<link rel="stylesheet" th:href="@{/assets/css/noscript.css}" />
+</noscript>
+<link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
+</head>
+<body class="landing is-preload">
+	<div id="page-wrapper">
+		<div th:insert="~{fragments::header}"></div>
+		<section id="banner">
+			<div class="inner">
+				<h2 th:text="#{login.banner.title}"></h2>
+				<a href="#one" th:text="#{login.banner.down}" class="more scrolly"></a>
+			</div>
+		</section>
+			<section id="one" class="wrapper style5">
+				<div class="inner">
+					<h2 align="center" th:utext="#{label.form.loginTitle}">Header</h2>
+					<div class="row">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<div align="center" th:if="${error}" class="alert alert-danger"
+								th:text="#{login.failure.message}">error</div>
+						</div>
+					</div>
+					<hr>
+					<form id="log" th:action="@{/login}" method="POST">
+						<div class="row gtr-uniform">
+							<div class="col-4"></div>
+							<div class="col-4">
+								<label th:utext="#{label.form.loginEmail}">Email</label> <input
+									th:name="username" type="email">
+							</div>
+						</div>
+						</br>
+						<div class="row gtr-uniform">
+							<div class="col-4"></div>
+							<div class="col-4">
+								<label class="col-sm-4" th:utext="#{label.form.loginPass}">password</label>
+								<input th:name="password" class="form-control" type='password'
+									name='password' />
+							</div>
+						</div>
+						<div class="row gtr-uniform">
+							<div class="col-6 col-12-small">
+								<input type="checkbox" id="remember" name="remember" checked>
+								<label for="remember">Remember me</label>
+							</div>
+						</div>
+						</br> </br>
+						<div class="row gtr-uniform">
+							<div class="col-4"></div>
+							<div class="col-4 col-12-small">
+								<button class="button fit" th:text="#{login.form.submit}"
+									form="log">Login</button>
+							</div>
+						</div>
+
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form>
+				</div>
+				<img  src="s3://adm-board/faculty.png">
+			</section>
+
+		</div>
+	<div th:insert="~{fragments::footer}"></div>
+	</div>
+	<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

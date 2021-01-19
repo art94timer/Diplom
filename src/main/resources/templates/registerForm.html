@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+	<meta charset="UTF-8">
+	<link rel="stylesheet"
+		  th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{assets/css/main.css}" />
+
+<noscript>
+	<link rel="stylesheet" th:href="@{assets/css/noscript.css}" />
+</noscript>
+</head>
+<body class="landing is-preload">
+	<div id="page-wrapper">
+		<div th:insert="~{fragments::header}"></div>
+
+		<section id="banner">
+			<div class="inner">
+				<h2 th:text="#{label.banner.reg.title}"></h2>
+				<a href="#one" th:text="#{label.banner.down}" class="more scrolly"></a>
+			</div>
+		</section>
+
+		<section id="one" class="wrapper style5">
+			<div class="inner">
+				<div id="message2" th:if="${message != null}" th:text="${message}" class="alert alert-danger"></div>
+				<h2 align="left" th:text="#{label.form.title}">form</h2>
+				<hr>
+				<form  id="reg" th:action="@{/save}"
+					method="post" th:object="${personDTO}">
+					<div class="row gtr-uniform">
+
+						<div class="col-4">
+							<label th:text="#{label.person.firstName}">first</label> <input
+								required type="text"
+								th:value="${person?.getFirstName()}" th:field="*{firstName}" />
+							<th:block th:each="error : ${#fields.errors('firstName')}"
+								th:text="#{error.invalid.name}">Validation error</th:block>
+						</div>
+						<div class="col-4"></div>
+						<div class="col-4">
+							<label th:text="#{label.person.lastName}">last</label> <input
+								required type="text"
+								th:value="${person?.getLastName()}"	th:field="*{lastName}" />
+							<p th:each="error : ${#fields.errors('lastName')}"
+								th:text="#{error.invalid.name}">Validation error</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row gtr-uniform">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<label  th:text="#{label.person.birthdate}">birthdate</label>
+							<input th:value="${person?.getBirthdate()}" required class="form-control" type="date"
+								th:field="*{birthdate}" />
+							<p th:each="error : ${#fields.errors('birthdate')}"
+								th:text="#{error.invalid.birthdate}">Validation error</p>
+						</div>
+					</div>
+					<br>
+					<div class="row gtr-uniform">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<label th:text="#{label.person.email}">email</label> <input
+								th:value="${person?.getEmail()}" required type="email" th:field="*{email}" />
+							<p  th:each="error : ${#fields.errors('email')}"
+								th:text="${error}">Validation error</p>
+						</div>
+					</div>
+					<br>
+					<div class="row gtr-uniform">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<label th:text="#{label.person.password}">password</label> <input
+								required type="password" th:field="*{password}" id="pswd1" />
+							<p th:each="error : ${#fields.errors('password')}"
+								th:text="${error}">Validation error</p>
+						</div>
+					</div>
+					<br>
+					<div class="row gtr-uniform">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<label th:text="#{label.person.confirmPassword}">password</label>
+							<input required type="password" th:field="*{confirmPassword}"
+								id="pswd2" />
+						</div>
+					</div>
+				</form>
+				<br><br>
+				<div class="row gtr-uniform">
+					<div class="col-4"></div>
+					<div class="col-4">
+						<input type="submit" form="reg" class="button fit" th:value="#{label.form.submit}"/>
+					</div>
+				</div>
+			</div>
+			<a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>
+		</section>
+
+	</div>
+
+	<div th:insert="~{fragments::footer}"></div>
+	<div th:insert="~{fragments::scripts}"></div>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+    <link rel="stylesheet" type="text/css"
+          href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css"/>
+</head>
+<body>
+
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+
+    <article id="main">
+        <header>
+            <h2 th:text="${faculty.name}"></h2>
+
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <h2 align="center"></h2>
+                <div class="row">
+                    <div class="col-2">
+                        <h3 th:utext="#{see.results}">See results</h3>
+
+
+
+						<h5><a  th:utext="#{daily}" th:href="@{'/view/faculty/' + ${faculty.id} + '/daily/'}">Daily</a></h5>
+
+                        </br>
+
+						<h5><a th:utext="#{distance}" th:href="@{'/view/faculty/' + ${faculty.id} + '/distance'}">Distance</a></h5>
+                        </br> </br>
+                    </div>
+                    <div class="col-8">
+                        <p th:text="${faculty.description}"></p>
+                    </div>
+                    <div class="col-2">
+                        <h4 align="center">Required Subjects</h4>
+                        <div class="row">
+                            <div class="col-8 col-12-medium">
+                                <ul th:each="sub : ${faculty.subjects}">
+                                    <li th:text="${sub.name}"></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <div th:insert="~{fragments::footer}"></div>
+    </article>
+</div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

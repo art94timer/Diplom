@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+<title>Hello, University</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+
+<link rel="stylesheet" th:href="@{assets/css/main.css}" />
+<noscript>
+	<link rel="stylesheet" th:href="@{assets/css/noscript.css}" />
+</noscript>
+
+</head>
+<body class="landing is-preload">
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<div th:insert="~{fragments::header}"></div>
+
+		<!-- Banner -->
+		<section id="banner">
+			<div class="inner">
+
+				<h2 th:text="#{label.hello}">Hello</h2>
+				<div sec:authorize="isAuthenticated()">
+					<th:block th:with="auth=${#authentication.getPrincipal()}">
+						<h2 th:text="${auth.name}"></h2>
+
+					</th:block>
+				</div>
+			</div>
+			<a href="#one"  th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
+		</section>
+
+		<!-- One -->
+		<section id="one" class="wrapper style3 special">
+			<div class="inner">
+				<header class="major">
+					<h1 th:text="#{index.myProject}">Project by Artsyom Tsimerbayeu</h1>
+					<br/>
+					<h2 th:text="#{index.welocome}">Welcome to the best University in the World!</h2>			
+					<br />
+					<h3 th:text="#{project.name}">Admissions Board</h3>
+
+				</header>
+				<ul class="icons major">
+					<li><span class="icon fa-gem major style1"><span
+							class="label">Lorem</span></span></li>
+					<li><span class="icon fa-gem major style1"><span
+							class="label">Lorem</span></span></li>
+					<li><span class="icon fa-gem major style1"><span
+							class="label">Lorem</span></span></li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="spotlight">
+			<div class="image">
+				<img th:src="@{images/subjects.jpg}">
+			</div>
+			<div class="content">
+				<h2>
+					<a th:text="#{label.faculties}" th:href="@{/faculties}"> Our Faculties </a><br />
+				</h2>
+				<p>The University of Manchester is divided into three Faculties,
+					each of which comprises a number of Schools with powerful
+					reputations for teaching and research success.</p>
+			</div>
+		</section>
+
+
+		<section class="spotlight">
+			<div class="image">
+				<img th:src="@{images/teachers.jpg}" alt="" />
+			</div>
+			<div class="content">
+				<h2>
+					Our Teachers<br /> elementum magna
+				</h2>
+				<p>Aliquam ut ex ut augue consectetur interdum. Donec hendrerit
+					imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.</p>
+			</div>
+		</section>
+		<!-- Footer -->
+		<div th:insert="~{fragments::footer}"></div>
+
+	</div>
+
+	<!-- Scripts -->
+	<div th:insert="~{fragments::scripts}"></div>
+
+</body>
+</html>
