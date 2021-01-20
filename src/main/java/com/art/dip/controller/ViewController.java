@@ -33,13 +33,5 @@ public class ViewController {
 		model.addAttribute("faculty",service.getFacultyInfo(id));
 		return "facultyInfo";
 	}
-	
 
-	
-//	@GetMapping("/faculty/{id}")
-//	public String showDailyFacultyInfoTable(@PathVariable Integer id,Model model) {
-//	model.addAttribute("faculty",service.getFacultyDTOWithDetailsById(id));
-//	return "facultyResult";
-//	}
-	
 }

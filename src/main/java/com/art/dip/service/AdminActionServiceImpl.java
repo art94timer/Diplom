@@ -1,6 +1,5 @@
 package com.art.dip.service;
 
-import com.art.dip.model.Certificate;
 import com.art.dip.model.InvalidApplicant;
 import com.art.dip.repository.ApplicantRepository;
 import com.art.dip.repository.FacultyRepository;
@@ -8,19 +7,19 @@ import com.art.dip.repository.GradeRepository;
 import com.art.dip.repository.InvalidApplicantRepository;
 import com.art.dip.service.interfaces.EmailService;
 import com.art.dip.utility.dto.*;
+import com.art.dip.utility.exception.AdminMistakeApplicantFormException;
+import com.art.dip.utility.localization.MessageSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.art.dip.utility.Constants.*;
 
 @Service
 public class AdminActionServiceImpl {
@@ -37,28 +36,47 @@ public class AdminActionServiceImpl {
 
     private final ApplicantPhotoService photoService;
 
+    private final MessageSourceService mesService;
+
 
     @Autowired
     public AdminActionServiceImpl(ApplicantRepository repository,
                                   FacultyRepository facRepository,
                                   GradeRepository gradeRepository,
-                                  InvalidApplicantRepository invalidAppRepository, EmailService emailService, ApplicantPhotoService photoService) {
+                                  InvalidApplicantRepository invalidAppRepository, EmailService emailService, ApplicantPhotoService photoService, MessageSourceService mesService) {
         this.appRepository = repository;
         this.facRepository = facRepository;
         this.gradeRepository = gradeRepository;
         this.invalidAppRepository = invalidAppRepository;
         this.emailService = emailService;
         this.photoService = photoService;
+        this.mesService = mesService;
     }
 
 
 
     @Transactional
-    public void handleListForms(ListValidateFormApplicantDTO list) {
+    public void handleListForms(ListValidateFormApplicantDTO list) throws AdminMistakeApplicantFormException {
         List<ValidateFormApplicantDTO> forms = list.getList();
+        List<ValidateFormApplicantDTO> mistakes = checkForAdminMistakes(forms);
+        forms.removeAll(mistakes);
+        validOrInvalidApplicants(forms);
+        if (!mistakes.isEmpty()) {
+            throw new AdminMistakeApplicantFormException(mesService.getInvalidFormApplicantNoCausesMessage(),mistakes);
+        }
+    }
+    //return list of forms with admin mistakes(only check for: if !valid and no one causes are selected)
+    private List<ValidateFormApplicantDTO> checkForAdminMistakes(List<ValidateFormApplicantDTO> forms) {
+       return forms.stream().filter(form ->
+ !form.isValid() && (form.getCauses() == null && form.getAnotherCause() == null)
+
+        ).collect(Collectors.toList());
+    }
+
+    private void validOrInvalidApplicants(List<ValidateFormApplicantDTO> forms) {
         forms.forEach(x -> {
             if (x.isValid()) {
-               validApplicant(x);
+                validApplicant(x);
             } else {
                 invalidApplicant(x);
             }
@@ -85,26 +103,16 @@ public class AdminActionServiceImpl {
         return facRepository.getAllFacultiesOnlyNameAndId();
     }
 
-    public ModelAndView prepareValidateFormModelAndView(HttpSession session) {
-        AdminSettings adminSettings = (AdminSettings) session.getAttribute(ADMIN_SETTINGS);
-        if (adminSettings == null) {
-            return new ModelAndView("redirect:/admin/prepare");
-        }
-
-        List<ValidateApplicantDTO> dto = getApplicant(adminSettings);
-        return new ModelAndView("requests","applicants",dto).addObject("validateForm",new ListValidateFormApplicantDTO());
-    }
-
-    public List<ValidateApplicantDTO> getApplicant(AdminSettings adminSettings) {
-
+    public List<ValidateApplicantDTO> prepareValidateFormModelAndView(AdminSettings settings) {
         List<ValidateApplicantDTO> dto = appRepository.getApplicantForValidating(
-                adminSettings.getFaculty(), PageRequest.of(0, adminSettings.getCountApplicants(),
+                settings.getFaculty(), PageRequest.of(0, settings.getCountApplicants(),
                         Sort.by(Sort.Direction.ASC, "a.registrationTime")));
 
-        return prepareApplicant(dto);
+        return prepareApplicants(dto);
+
     }
 
-    private List<ValidateApplicantDTO> prepareApplicant(List<ValidateApplicantDTO> dto) {
+    private List<ValidateApplicantDTO> prepareApplicants(List<ValidateApplicantDTO> dto) {
         dto.forEach(app -> {
             List<ValidateGradeDTO> grades = getGradesForApplicant(app.getId());
                 grades.forEach(photoService::buildPath);
@@ -120,6 +128,10 @@ public class AdminActionServiceImpl {
         return gradeRepository.getGradesForApplicant(id);
     }
 
-
+    @Transactional(readOnly = true)
+    public List<ValidateApplicantDTO> resolveMistakes(List<ValidateFormApplicantDTO> mistakes) {
+        return prepareApplicants(mistakes.stream().map(x->appRepository.getApplicantForValidatingByEmail(x.getEmail()))
+                .collect(Collectors.toList()));
+    }
 }
 

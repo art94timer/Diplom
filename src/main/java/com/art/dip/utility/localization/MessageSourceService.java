@@ -87,4 +87,16 @@ public class MessageSourceService {
         return simpleExplicitLocaleMessage("invalid.emailMessage.template",locale);
     }
 
+    public String getInvalidFormApplicantNoCausesMessage() {
+        return simpleMessage("invalid.form.applicant.noCauses");
+    }
+
+    public String getExpiredTokenMessage() {
+        return simpleMessage("label.verifyToken.expired");
+    }
+
+    public String getEmailIsExistMessage(String ... args) {
+        return messageWithArgs("message.emailExist",args);
+    }
+
 }

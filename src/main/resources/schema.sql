@@ -44,7 +44,7 @@ create table verify_token (
 							foreign key (person_id) references person);
 CREATE TABLE faculty (
                          id  SERIAL NOT NULL,                    
-                         name VARCHAR(255) NOT NULL UNIQUE,
+                         name VARCHAR NOT NULL UNIQUE,
                          description text,
                          PRIMARY KEY (id));
 
@@ -86,6 +86,7 @@ CREATE TABLE  applicant (
 						score INTEGER not null,					
 						accepted boolean default false,
                         PRIMARY KEY (id),
+                        unique (person_id),
                         foreign key (certificate_id) references certificate,
                         FOREIGN KEY (person_id) REFERENCES person,
 						foreign key (faculty_id) references faculty);

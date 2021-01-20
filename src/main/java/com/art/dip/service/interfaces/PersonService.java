@@ -13,13 +13,13 @@ public interface PersonService {
 
 	Person getPerson(String verificationToken);
 
-	void saveRegisteredPerson(Person user);
-
 	void createVerificationToken(Person user, String token);
 
 	VerifyToken getVerifyToken(String VerifyToken);
 	
 	Optional<Person> findByEmail(String email);
 
+	String tokenIsExpiredMessage();
 
+	void verifyPerson(VerifyToken verificationToken);
 }

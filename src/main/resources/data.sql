@@ -1,11 +1,8 @@
 TRUNCATE TABLE applicant CASCADE;
-
-
 TRUNCATE TABLE subject CASCADE;
 TRUNCATE TABLE person CASCADE;
 TRUNCATE TABLE credential CASCADE;
 truncate table faculty cascade;
-
 truncate table certificate cascade;
 insert into credential(pass)
 VALUES ('pass'),
@@ -146,7 +143,6 @@ values (1, 1),
 
 
 
-
 insert into faculty_info(faculty_id, capacity, expired_date)
 values (1, 100, '2021-02-14'),
        (2, 200, '2020-02-14'),
@@ -246,7 +242,7 @@ VALUES ('2020-02-02',
         9);
 
 insert into person(birth_date, email, first_name, last_name, role, credential_id, enabled)
-VALUES ('2020-02-02', 'timerbaev94@bk.ru',
+VALUES ('2020-02-02', 'admin@admin.by',
         'Artem',
         'Timerbaev',
         1,

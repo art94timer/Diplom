@@ -4,83 +4,71 @@ import com.art.dip.model.Person;
 import com.art.dip.model.VerifyToken;
 import com.art.dip.service.interfaces.PersonService;
 import com.art.dip.utility.dto.PersonDTO;
-import com.art.dip.utility.event.OnRegistrationCompleteEvent;
 import com.art.dip.utility.exception.PersonAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@Controller
-@RequestMapping("/")
+@Controller("/")
 public class AuthController {
 
-    private final ApplicationEventPublisher eventPublisher;
+
 
     private final PersonService service;
 
 
     @Autowired
-    public AuthController(ApplicationEventPublisher eventPublisher, PersonService service) {
-        this.eventPublisher = eventPublisher;
+    public AuthController(PersonService service) {
         this.service = service;
     }
 
     @GetMapping("/login")
-    public ModelAndView login(@RequestParam(required = false) Boolean error) {
-        return new ModelAndView("login", "error", error);
+    public String login() {
+        return "login";
     }
 
     @GetMapping("/register")
-    public ModelAndView register() {
-        return new ModelAndView("registerForm").addObject("personDTO", new PersonDTO());
+    public String register(@ModelAttribute PersonDTO personDTO,Model model) {
+        model.addAttribute("personDTO",personDTO);
+        return "registerForm";
     }
 
     @GetMapping("/registrationConfirm")
-    public ModelAndView confirmRegistration(@RequestParam("token") String token) {
-
+    public String confirmRegistration(@RequestParam("token") String token, RedirectAttributes attributes) {
         VerifyToken verificationToken = service.getVerifyToken(token);
         if (verificationToken == null) {
-            return new ModelAndView("redirect:/register").addObject("message",
-                    "Verification Token is Expired");
+            attributes.addFlashAttribute("message",service.tokenIsExpiredMessage());
+            return "redirect:/register";
         }
-        Person user = verificationToken.getPerson();
-        user.setEnabled(true);
-        service.saveRegisteredPerson(user);
-        return new ModelAndView("redirect:/login");
+        service.verifyPerson(verificationToken);
+        return "redirect:/login";
     }
 
-    @ExceptionHandler(PersonAlreadyExistException.class)
-    public ModelAndView handlePersonAlreadyExist(PersonAlreadyExistException ex) {
-        return new ModelAndView("registerForm", "message", ex.getMessage()).
-                addObject("person", ex.getPerson());
-    }
+
 
     @PostMapping("/save")
-    public String save(@ModelAttribute @Valid PersonDTO personDTO, BindingResult bindingResult,
-                       HttpServletRequest request, Model model) {
+    public String save(@ModelAttribute @Valid PersonDTO personDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("personDTO",personDTO);
             return "registerForm";
         }
 
-        Person registered = service.registerNewPersonAccount(personDTO);
-        eventPublisher
-                .publishEvent(new OnRegistrationCompleteEvent(getAppUrl(request),
-						request.getLocale(), registered));
-
-
+        service.registerNewPersonAccount(personDTO);
         return "successRegister";
     }
 
-    private String getAppUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    @ExceptionHandler(PersonAlreadyExistException.class)
+    public String handlePersonAlreadyExist(PersonAlreadyExistException ex,Model model) {
+        model.addAttribute("message",ex.getMessage()).
+                addAttribute("personDTO",ex.getPerson());
+        return "registerForm";
+
     }
 
 

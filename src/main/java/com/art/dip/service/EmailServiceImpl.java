@@ -9,15 +9,12 @@ import com.art.dip.utility.exception.ValidationFormException;
 import com.art.dip.utility.localization.MessageSourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.Set;
-
-import static com.art.dip.utility.Constants.*;
 
 
 @Component
@@ -30,6 +27,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     public EmailServiceImpl(JavaMailSender sender, MessageSourceService mesService) {
+
         this.sender = sender;
         this.mesService = mesService;
     }

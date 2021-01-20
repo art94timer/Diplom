@@ -20,8 +20,13 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
     @Query("SELECT new " + PATH_TO_VALIDATE_APPLICANT_DTO + "(a.id, concat(p.firstName,' ',p.lastName), p.email" +
             ",a.certificate) FROM  Person p JOIN Applicant a  ON a.person.id=p.id " +
-            "where a.faculty.id=:facultyId")
+            "where a.faculty.id=:facultyId and a.isAccepted=false")
     List<ValidateApplicantDTO> getApplicantForValidating(Integer facultyId, Pageable pageable);
+
+    @Query("SELECT new " + PATH_TO_VALIDATE_APPLICANT_DTO + "(a.id, concat(p.firstName,' ',p.lastName), p.email" +
+            ",a.certificate) FROM  Person p JOIN Applicant a  ON a.person.id=p.id " +
+            "where p.email=:email")
+    ValidateApplicantDTO getApplicantForValidatingByEmail(String email);
 
     @Modifying
     @Query("update Applicant a set a.isAccepted=true where a.id=:id")

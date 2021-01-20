@@ -15,16 +15,12 @@
     <article id="main">
         <section id="banner">
             <div class="inner">
-                <h2>Please fill the form</h2>
-                <p>
-                    Another fine responsive<br/> site template freebie<br/>
-                    crafted by <a href="http://html5up.net">HTML5 UP</a>.
-                </p>
+                <h2 th:text="#{label.fillTheForm}">Please fill the form</h2>
                 <ul class="actions special">
                     <li><a th:href="@{/applicant}" class="button primary" th:utext="#{label.choose.anotherFaculty}"></a>
                     </li>
                 </ul>
-                <a href="#one" class="more scrolly">Fill...</a>
+                <a href="#one" class="more scrolly" th:text="#{label.fill}">Fill...</a>
             </div>
         </section>
         <section id="one" class="wrapper style5">
@@ -38,16 +34,17 @@
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
                         <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
                     </div>
+                    <p th:text="#{label.enter.grades}"></p>
                     <fieldset>
-                        <h3 align="center">Grades</h3>
+                        <h2 align="center" th:text="#{label.grades}">Grades</h2>
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <table class="table-wrapper">
                                     <thead>
                                     <tr>
-                                        <th>Subject</th>
-                                        <th>Mark</th>
-                                        <th>Photo</th>
+                                        <th th:text="#{subject.name}">Subject</th>
+                                        <th th:text="#{grade.mark}">Mark</th>
+                                        <th th:text="#{cause.grade.photo}">Photo</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -59,7 +56,7 @@
                                                    th:field="*{grades[__${itemStat.index}__].mark}"/></td>
                                         <td>
                                             <div class="custom-file">
-                                                <label class="custom-file-label" th:attr="for=${sub.name}">Choose
+                                                <label class="custom-file-label" th:attr="for=${sub.name}" th:text="#{cause.grade.photo}">Choose
                                                     file</label> <input type="file"
                                                                         th:field="*{grades[__${itemStat.index}__].file}"
                                                                         required th:attr="id=${sub.name}"
@@ -76,14 +73,13 @@
                             </div>
                         </div>
                         <br> <br> <br>
-                        <h2 align="center">Certificate</h2>
+                        <h2 align="center" th:text="#{certificate}">Certificate</h2>
                         <br> <br>
                         <div class="row gtr-uniform">
-
                             <div class="col-12">
                                 <table class="table-wrapper" th:field="*{certificate}">
                                     <tr>
-                                        <th>Mark</th>
+                                        <th th:text="#{grade.mark}">Mark</th>
                                         <th>Photo</th>
                                     </tr>
                                     <tr>
@@ -91,7 +87,7 @@
                                                    type="number" step="0.1"/></td>
                                         <td>
                                             <div class="custom-file">
-                                                <label class="custom-file-label" for="inputGroupFile01">Choose
+                                                <label class="custom-file-label" for="inputGroupFile01" th:text="#{certificate.photo}">Choose
                                                     file</label>
 												<input required type="file"
                                                                         th:field="*{certificate.file}"
@@ -110,8 +106,8 @@
 
                         <div class="row gtr-uniform">
                             <div class="col-4">
-                                <input type="reset" id="resetButton" name="reset"
-                                       class="button" th:value="Reset"/>
+                                <button type="reset" id="resetButton" name="reset"
+                                       class="button" th:text="#{reset}"/>
                             </div>
 
                             <div class="col-4"></div>

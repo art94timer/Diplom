@@ -13,38 +13,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SpringSecConfiguration  extends WebSecurityConfigurerAdapter {
+public class SpringSecConfiguration extends WebSecurityConfigurerAdapter {
 
 
-	private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-	@Autowired
-	public SpringSecConfiguration(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
+    @Autowired
+    public SpringSecConfiguration(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return NoOpPasswordEncoder.getInstance();
-	}
+    @Bean
+    public PasswordEncoder encoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().
-				antMatchers("/admin", "/admin/**").hasAnyAuthority("ROLE_ADMIN").and().
-				authorizeRequests().antMatchers(HttpMethod.POST,"/admin/applicant").hasAuthority("ROLE_ADMIN").and().
-		authorizeRequests().antMatchers("/applicant","/applicant/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
-		.and().authorizeRequests().antMatchers(HttpMethod.POST,"/applicant/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
-		.antMatchers("/","/register","/login").permitAll().and().
-		authorizeRequests().antMatchers(HttpMethod.POST,"/login","/save","/logout").permitAll().and().
-		logout().logoutSuccessUrl("/").and().
-		formLogin().loginPage("/login").defaultSuccessUrl("/")
-        .failureUrl("/login?error=true")
-        .and()  
-        .logout().permitAll();
-		
-	}
+        http.authorizeRequests().
+                antMatchers("/admin", "/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .and().
+                authorizeRequests().antMatchers(HttpMethod.POST, "/admin/applicant").hasAuthority("ROLE_ADMIN")
+                .and().
+                authorizeRequests().antMatchers("/applicant", "/applicant/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                .and().
+                authorizeRequests().antMatchers(HttpMethod.POST, "/applicant/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                .antMatchers("/", "/register", "/login", "/registrationConfirm**").permitAll()
+				.and().
+                authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/save", "/logout").permitAll()
+				.and().
+                logout().logoutSuccessUrl("/")
+				.and().
+                formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .failureUrl("/login?error=true")
+                .and().
+				logout().permitAll();
+
+    }
 
 }
