@@ -22,4 +22,5 @@ public class FacultyDTO {
 		this.id = id;
 		this.name = name;
 	}
+
 }

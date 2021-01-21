@@ -14,9 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,12 +36,14 @@ public class AdminActionServiceImpl {
 
     private final MessageSourceService mesService;
 
+    private final CurrentPersonInfoService currentPersonInfoService;
+
 
     @Autowired
     public AdminActionServiceImpl(ApplicantRepository repository,
                                   FacultyRepository facRepository,
                                   GradeRepository gradeRepository,
-                                  InvalidApplicantRepository invalidAppRepository, EmailService emailService, ApplicantPhotoService photoService, MessageSourceService mesService) {
+                                  InvalidApplicantRepository invalidAppRepository, EmailService emailService, ApplicantPhotoService photoService, MessageSourceService mesService, CurrentPersonInfoService currentPersonInfoService) {
         this.appRepository = repository;
         this.facRepository = facRepository;
         this.gradeRepository = gradeRepository;
@@ -51,6 +51,7 @@ public class AdminActionServiceImpl {
         this.emailService = emailService;
         this.photoService = photoService;
         this.mesService = mesService;
+        this.currentPersonInfoService = currentPersonInfoService;
     }
 
 
@@ -100,7 +101,11 @@ public class AdminActionServiceImpl {
 
 
     public List<FacultyDTO> getFaculties() {
-        return facRepository.getAllFacultiesOnlyNameAndId();
+        if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
+            return facRepository.getAllRuFaculties();
+        } else {
+            return facRepository.getAllEnFaculties();
+        }
     }
 
     public List<ValidateApplicantDTO> prepareValidateFormModelAndView(AdminSettings settings) {
@@ -125,10 +130,14 @@ public class AdminActionServiceImpl {
     }
 
     private List<ValidateGradeDTO> getGradesForApplicant(Integer id) {
-        return gradeRepository.getGradesForApplicant(id);
+        if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
+            return gradeRepository.getRuGradesForApplicant(id);
+        } else {
+            return gradeRepository.getEnGradesForApplicant(id);
+        }
+
     }
 
-    @Transactional(readOnly = true)
     public List<ValidateApplicantDTO> resolveMistakes(List<ValidateFormApplicantDTO> mistakes) {
         return prepareApplicants(mistakes.stream().map(x->appRepository.getApplicantForValidatingByEmail(x.getEmail()))
                 .collect(Collectors.toList()));

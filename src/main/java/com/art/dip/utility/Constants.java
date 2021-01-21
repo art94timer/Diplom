@@ -9,4 +9,10 @@ public interface Constants {
     String ADMIN_SETTINGS = "Admin settings";
 
     String PROJECT_ROOT= System.getProperty("user.dir");
+
+    String PATH_TO_FACULTYDTO= "com.art.dip.utility.dto.FacultyDTO";
+
+    String PATH_TO_SUBJECTDTO="com.art.dip.utility.dto.SubjectDTO";
+
+    String PATH_TO_FACULTY_INFO_DTO = "com.art.dip.utility.dto.FacultyInfoDTO";
 }

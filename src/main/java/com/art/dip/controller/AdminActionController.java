@@ -4,14 +4,12 @@ import com.art.dip.service.AdminActionServiceImpl;
 import com.art.dip.utility.dto.AdminSettings;
 import com.art.dip.utility.dto.ListValidateFormApplicantDTO;
 import com.art.dip.utility.dto.ValidateApplicantDTO;
-import com.art.dip.utility.dto.ValidateFormApplicantDTO;
 import com.art.dip.utility.exception.AdminMistakeApplicantFormException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -37,7 +35,7 @@ public class AdminActionController {
         model.addAttribute("faculties",service.getFaculties()).
                 addAttribute("settings",settings);
 
-        return "adminWork";
+        return "prepareAdminWork";
 
     }
 
@@ -60,7 +58,7 @@ public class AdminActionController {
         model.addAttribute("applicants",applicants);
         model.addAttribute("faculties",service.getFaculties());
         model.addAttribute("settings",settings);
-        return "requests";
+        return "adminWork";
     }
 
 
@@ -72,7 +70,7 @@ public class AdminActionController {
             model.addAttribute("applicants", service.resolveMistakes(ex.getMistakes()));
             model.addAttribute("message",ex.getMessage());
             model.addAttribute("faculties",service.getFaculties());
-            return "requests";
+            return "adminWork";
         }
         return "redirect:/admin/applicants";
     }

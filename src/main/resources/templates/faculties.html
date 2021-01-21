@@ -9,26 +9,22 @@
 <link rel="stylesheet" type="text/css"
 	href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css" />
 </head>
-<body>
+<body class="landing is-preload">
 	<div id="page-wrapper">
 		<div th:insert="~{fragments::header}"></div>
-
 		<article id="main">
 			<header>
 				<h2>Faculties</h2>
 			</header>
 			<section class="wrapper style5">
 				<div class="inner">
-					<h2>Our Faculties</h2>
+					<h2 th:text="#{label.faculties}" th:align="center">Our Faculties</h2>
 					<div class="row">
-						<div class="col-4 col-12-medium">
-							<h5>Faculties</h5>
+						<div class="col-4">
 							<ul th:each="fac: ${faculties}">
 								<li><a th:text="${fac.name}"
 									th:href="@{'/view/faculty/' + ${fac.id}}"></a></li>
-
 							</ul>
-
 						</div>
 					</div>
 				</div>

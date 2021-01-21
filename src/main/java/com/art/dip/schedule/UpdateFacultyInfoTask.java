@@ -28,9 +28,10 @@ public class UpdateFacultyInfoTask {
         this.facRepository = facultyRepository;
     }
 
+
     @Scheduled(fixedRate = 1000 * 60 * 60)
     @Transactional
-    public void facultyUpdateInfo() {
+    public void UpdateFacultyInfo() {
         List<Faculty> faculties = facRepository.findAll();
         faculties.forEach(fac -> {
            FacultyInfo info = fac.getInfo();

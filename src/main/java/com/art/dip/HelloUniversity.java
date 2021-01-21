@@ -5,10 +5,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class DiplomApplication {
+public class HelloUniversity {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DiplomApplication.class, args);
+		SpringApplication.run(HelloUniversity.class, args);
 	}
 
 }

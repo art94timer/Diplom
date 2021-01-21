@@ -45,7 +45,7 @@ create table verify_token (
 CREATE TABLE faculty (
                          id  SERIAL NOT NULL,                    
                          name VARCHAR NOT NULL UNIQUE,
-                         description text,
+                         ru_name varchar not null unique,
                          PRIMARY KEY (id));
 
 create table faculty_info(
@@ -64,6 +64,7 @@ create table faculty_info(
 CREATE TABLE subject (
                         id  SERIAL NOT NULL,
                         name VARCHAR(255) NOT NULL UNIQUE,
+                        ru_name varchar not null unique,
                         PRIMARY KEY (id));
 
 create table faculty_subject (

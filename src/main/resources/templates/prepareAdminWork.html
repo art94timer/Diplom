@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
+</head>
+<body class="landing is-preload">
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <article id="main">
+        <section id="banner">
+            <div class="inner">
+                <h2 th:utext="#{begin}"></h2>
+
+                <a href="#one" class="more scrolly" th:utext="#{label.setup.yourSet}">Setup your settings</a>
+            </div>
+        </section>
+        <section class="wrapper style5">
+            <div class="inner">
+                <h2 th:utext="#{settings}"></h2>
+                <br><br>
+                        <form method="post" th:object="${settings}" th:action="@{/admin/prepare}">
+                            <h3 th:align="center" th:utext="#{label.choose.Faculty}"></h3>
+                            <div class="row gtr-uniform">
+                                <div class="col-4"></div>
+                            <div class="col-4">
+
+                        <select th:name="faculty">
+                            <option th:each="fac : ${faculties}" th:text="${fac.name}" th:field="*{faculty}" th:value="${fac.id}">- Category -</option>
+                        </select>
+                            </div>
+                            </div>
+                            <br><br>
+                            <h3 th:align="center" th:utext="#{label.choose.countApplicants}"></h3>
+                            <div class="row gtr-uniform">
+
+                                <div class="col-4"></div>
+                                <div class="col-4">
+                                <input th:name="countApplicants" th:field="*{countApplicants}" type="number" th:default="10">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row gtr-uniform">
+                                <div class="col-4"></div>
+                                <div class="col-4">
+                                    <button type="submit" class="button fit" th:utext="#{begin}"></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </section>
+
+    </article>
+    <div th:insert="~{fragments::footer}"></div>
+</div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

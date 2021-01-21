@@ -40,4 +40,8 @@ public class AmazonS3Service {
         return f.getName();
     }
 
+    public S3Object downloadFile(String fileName) {
+        return client.getObject(bucketName,fileName);
+    }
+
 }

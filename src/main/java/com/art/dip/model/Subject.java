@@ -21,6 +21,8 @@ public class Subject extends BaseEntity {
 
     @Column(unique = true)
     private String name;
+
+    private String ruName;
     
     @ManyToMany(mappedBy = "subjects")
     private List<Faculty> faculties;

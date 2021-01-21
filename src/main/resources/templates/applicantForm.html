@@ -26,7 +26,8 @@
         <section id="one" class="wrapper style5">
             <div class="inner">
                 <h2 th:text="${faculty.name}"></h2>
-                <h3>Register Form</h3>
+                <h3 th:text="#{label.refFormApp}">Register Form</h3>
+                <br><br>
 
                 <form id="app" enctype="multipart/form-data"
                       th:action="@{/applicant/save}" method="post"
@@ -34,9 +35,11 @@
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
                         <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
                     </div>
-                    <p th:text="#{label.enter.grades}"></p>
+
                     <fieldset>
-                        <h2 align="center" th:text="#{label.grades}">Grades</h2>
+                        <h2 align="center" th:text="#{label.subjects.name}">Grades</h2>
+                        <p th:text="#{label.enter.grades}"></p>
+                        <br><br>
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <table class="table-wrapper">
@@ -56,7 +59,8 @@
                                                    th:field="*{grades[__${itemStat.index}__].mark}"/></td>
                                         <td>
                                             <div class="custom-file">
-                                                <label class="custom-file-label" th:attr="for=${sub.name}" th:text="#{cause.grade.photo}">Choose
+                                                <label class="custom-file-label" th:attr="for=${sub.name}"
+                                                       th:text="#{cause.grade.photo}">Choose
                                                     file</label> <input type="file"
                                                                         th:field="*{grades[__${itemStat.index}__].file}"
                                                                         required th:attr="id=${sub.name}"
@@ -74,25 +78,31 @@
                         </div>
                         <br> <br> <br>
                         <h2 align="center" th:text="#{certificate}">Certificate</h2>
+
+                        <br> <br>
+                        <p th:text="#{label.enter.certificate}"></p>
                         <br> <br>
                         <div class="row gtr-uniform">
                             <div class="col-12">
                                 <table class="table-wrapper" th:field="*{certificate}">
                                     <tr>
                                         <th th:text="#{grade.mark}">Mark</th>
-                                        <th>Photo</th>
+                                        <th th:text="#{photo.name}">Photo</th>
                                     </tr>
+
+
                                     <tr>
                                         <td><input th:field="*{certificate.mark}" id="cert"
                                                    type="number" step="0.1"/></td>
                                         <td>
                                             <div class="custom-file">
-                                                <label class="custom-file-label" for="inputGroupFile01" th:text="#{certificate.photo}">Choose
+                                                <label class="custom-file-label" for="inputGroupFile01"
+                                                       th:text="#{certificate.photo}">Choose
                                                     file</label>
-												<input required type="file"
-                                                                        th:field="*{certificate.file}"
-                                                                        id="inputGroupFile01" class="custom-file-input"
-                                                                        aria-describedby="inputGroupFileAddon01">
+                                                <input required type="file"
+                                                       th:field="*{certificate.file}"
+                                                       id="inputGroupFile01" class="custom-file-input"
+                                                       aria-describedby="inputGroupFileAddon01">
                                             </div>
                                         </td>
 
@@ -107,12 +117,14 @@
                         <div class="row gtr-uniform">
                             <div class="col-4">
                                 <button type="reset" id="resetButton" name="reset"
-                                       class="button" th:text="#{reset}"/>
+                                        class="button" th:text="#{reset}"/>
                             </div>
 
                             <div class="col-4"></div>
                             <div class="col-4">
-                                <button type="submit" form="app" class="button primary fit">Register</button>
+                                <button type="submit" form="app" class="button primary fit" th:text="#{label.apply}">
+                                    Register
+                                </button>
                             </div>
                         </div>
                     </fieldset>
@@ -131,6 +143,5 @@
         bsCustomFileInput.init()
     })
 </script>
-
 </body>
 </html>

@@ -1,10 +1,12 @@
 package com.art.dip.model;
 
+import com.art.dip.utility.dto.SubjectDTO;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="faculty_info")
@@ -25,5 +27,7 @@ public class FacultyInfo extends BaseEntity {
 	
 	private LocalDateTime updateTime;
 	
-	private LocalDate expiredDate; 
+	private LocalDateTime expiredDate;
+
+
 }

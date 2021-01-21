@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubjectDTO {
-	
+
+	private Integer id;
+
 	private String name;
 
 }

@@ -1,6 +1,7 @@
 package com.art.dip.controller;
 
 import com.art.dip.service.ViewServiceImpl;
+import com.art.dip.utility.dto.FacultyInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,8 @@ public class ViewController {
 
 	@GetMapping("/faculty/{id}")
 	public String showFacultyInfo(@PathVariable Integer id,Model model) {
-		model.addAttribute("faculty",service.getFacultyInfo(id));
+		FacultyInfoDTO facultyInfoDTO = service.getFacultyInfo(id);
+		model.addAttribute("faculty",facultyInfoDTO);
 		return "facultyInfo";
 	}
 

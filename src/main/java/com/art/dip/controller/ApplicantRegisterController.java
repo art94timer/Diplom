@@ -23,7 +23,7 @@ public class ApplicantRegisterController {
     @GetMapping
     public String chooseFaculty(Model model) {
         model.addAttribute("faculties", appService.getFaculties());
-        return "chooseFaculty";
+        return "prepareApplicantForm";
 
     }
 
@@ -33,7 +33,7 @@ public class ApplicantRegisterController {
             return "redirect:/applicant";
         }
         applicantDTO = appService.prepareApplicantDTO(applicantDTO);
-        model.addAttribute("faculty", appService.getFacultyWithSubjectsById(facId)).
+        model.addAttribute("faculty",appService.getFacultyWithSubjects(facId)). //appService.getFacultyWithSubjectsById(facId)).
                 addAttribute("applicantDTO", applicantDTO);
 
         return "applicantForm";
@@ -49,7 +49,7 @@ public class ApplicantRegisterController {
             //	return "forward:/applicant/faculty?facId=" + applicantDTO.getDetails().getFacultyId();
         }
         appService.save(applicantDTO);
-        return "successApplicant";
+        return "successApplicantForm";
     }
 
 }

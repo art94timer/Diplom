@@ -7,9 +7,9 @@
     <link th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"/>
     <script th:src="@{/webjars/jquery/jquery.slim.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <link rel="stylesheet" th:href="@{assets/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
     <noscript>
-        <link rel="stylesheet" th:href="@{assets/css/noscript.css}"/>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
     </noscript>
 </head>
 <body>
@@ -18,32 +18,22 @@
     <article id="main">
         <section id="banner">
             <div class="inner">
-                <h2>Choose Your Specialty</h2>
-                <p>
-                    Another fine responsive<br/> site template freebie<br/>
-                    crafted by <a href="http://html5up.net">HTML5 UP</a>.
-                </p>
-                <ul class="actions special">
-                    <li><a href="#" class="button primary">Activate</a></li>
+                <h2 th:text="#{label.choose.specialty}">Choose Your Specialty</h2>
                 </ul>
-                <a href="#one" class="more scrolly">Choose...</a>
+                <a href="#one" class="more scrolly" th:utext="#{lable.choose}">Choose...</a>
             </div>
         </section>
         <section id="one" class="wrapper style5">
             <div class="inner">
                 <h4 th:align="center" th:utext="#{lable.choose}">Choose</h4>
                 <br>
-
                 <form method="post" th:action="@{applicant/faculty}">
                     <div class="row gtr-uniform">
                         <div class="col-4"></div>
                         <div class="col-4">
                             <select th:name="facId">
-                                <option value="">-Faculty-</option>
-
                                 <option th:each="fac : ${faculties}" th:text="${fac.name}"
                                         th:value="${fac.id}"></option>
-
                             </select>
                         </div>
                     </div>
@@ -54,19 +44,17 @@
                     <div class="row ">
                         <div class="col-4"></div>
                         <div class="col-4">
-
-                               <button type="submit" th:utext="#{label.button.choose}"
-                                           class="primary fit">
-
+                            <button type="submit" th:utext="#{label.button.continue}"
+                                    class="primary fit"></button>
                         </div>
                     </div>
                 </form>
             </div>
         </section>
     </article>
+    <div th:insert="~{fragments::footer}"></div>
 </div>
 
-<div th:insert="~{fragments::footer}"></div>
 <div th:insert="~{fragments::scripts}"></div>
 </body>
 </html>

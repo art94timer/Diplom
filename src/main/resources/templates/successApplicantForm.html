@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
+<body class="landing is-preload">
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <article id="main">
+        <section id="banner">
+            <div class="inner">
+                <h2 th:utext="#{label.apply.accepted}"></h2>
+            </div>
+        </section>
+        <section class="wrapper style5">
+            <div class="inner">
+                <div class="alert-info"th:utext="#{label.sucRegApp}"></div>
+            </div>
+        </section>
+    </article>
+    <div th:insert="~{fragments::footer}"></div>
+</div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

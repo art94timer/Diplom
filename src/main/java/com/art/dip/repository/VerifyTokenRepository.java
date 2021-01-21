@@ -14,8 +14,7 @@ import java.util.List;
 public interface VerifyTokenRepository extends JpaRepository<VerifyToken, Integer>{
 	
 	VerifyToken findByToken(String token);
-	
-	VerifyToken findByPerson(Person person);
+
 
 	@Modifying
 	@Query("DELETE  From VerifyToken t where t.expireDate <= :now")

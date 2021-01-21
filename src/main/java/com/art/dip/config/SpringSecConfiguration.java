@@ -16,14 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecConfiguration extends WebSecurityConfigurerAdapter {
 
 
-    private final UserDetailsService userDetailsService;
-
-    @Autowired
-    public SpringSecConfiguration(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-
     @Bean
     public PasswordEncoder encoder() {
         return NoOpPasswordEncoder.getInstance();

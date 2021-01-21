@@ -96,10 +96,9 @@
 			</div>
 			<a th:href="@{/login}" th:text="#{label.form.loginLink}">login</a>
 		</section>
-
+		<div th:insert="~{fragments::footer}"></div>
 	</div>
 
-	<div th:insert="~{fragments::footer}"></div>
 	<div th:insert="~{fragments::scripts}"></div>
 
 </body>
