@@ -8,7 +8,7 @@
 <div th:fragment="header">
     <header id="header" class="alt">
         <h1>
-            <a href="index.html">Spectral</a>
+            <a th:href="@{/}" th:text="#{label.menu.home}">Spectral</a>
         </h1>
         <nav id="nav">
             <ul>

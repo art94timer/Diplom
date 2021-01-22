@@ -41,4 +41,14 @@ public class Person extends BaseEntity {
     	super(id);
     }
 
+    public Person(Integer id, String firstName, String lastName, LocalDate birthdate, String email, Credential credential, Role role, boolean enabled) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.credential = credential;
+        this.role = role;
+        this.enabled = enabled;
+    }
 }

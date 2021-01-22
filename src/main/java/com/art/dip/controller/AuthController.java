@@ -50,8 +50,6 @@ public class AuthController {
         return "redirect:/login";
     }
 
-
-
     @PostMapping("/save")
     public String save(@ModelAttribute @Valid PersonDTO personDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

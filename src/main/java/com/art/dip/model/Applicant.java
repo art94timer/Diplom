@@ -34,7 +34,7 @@ public class Applicant extends BaseEntity {
 
     private Integer score;
     
-    @Column(name="accepted",columnDefinition = "default false")
+    @Column(name="accepted")
     private Boolean isAccepted;
     
     private LocalDateTime registrationTime;

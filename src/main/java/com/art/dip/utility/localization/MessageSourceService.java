@@ -111,6 +111,7 @@ Ru Locale if name first symbol is russian
         return messageWithArgs("message.emailExist",args);
     }
 
+
     public String createInvalidApplicantMessage(ValidateFormApplicantDTO dto) {
 
         Locale locale = supposedLocale(dto);

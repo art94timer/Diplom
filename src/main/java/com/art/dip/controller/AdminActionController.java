@@ -1,6 +1,7 @@
 package com.art.dip.controller;
 
 import com.art.dip.service.AdminActionServiceImpl;
+import com.art.dip.service.interfaces.AdminActionService;
 import com.art.dip.utility.dto.AdminSettings;
 import com.art.dip.utility.dto.ListValidateFormApplicantDTO;
 import com.art.dip.utility.dto.ValidateApplicantDTO;
@@ -22,10 +23,10 @@ import static com.art.dip.utility.Constants.*;
 @RequestMapping("/admin")
 public class AdminActionController {
 
-    private final AdminActionServiceImpl service;
+    private final AdminActionService service;
 
     @Autowired
-    public AdminActionController(AdminActionServiceImpl service) {
+    public AdminActionController(AdminActionService service) {
         this.service = service;
     }
 

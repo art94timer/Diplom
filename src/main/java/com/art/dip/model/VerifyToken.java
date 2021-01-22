@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "verify_token")
 public class VerifyToken {
+
 	private static final int EXP_TIME = 60 * 24;
 	
 	@Id
@@ -35,5 +36,8 @@ public class VerifyToken {
     private LocalDate calculateExpiryDate() {
         return LocalDate.now().plusDays(1);
     }
-	
+
+    public VerifyToken(String token) {
+		this.token = token;
+	}
 }

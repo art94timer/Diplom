@@ -1,6 +1,7 @@
 package com.art.dip.controller;
 
 import com.art.dip.service.ApplicantRegisterServiceImpl;
+import com.art.dip.service.interfaces.ApplicantService;
 import com.art.dip.utility.dto.ApplicantDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,9 @@ import javax.validation.Valid;
 @RequestMapping("/applicant")
 public class ApplicantRegisterController {
 
-    private final ApplicantRegisterServiceImpl appService;
+    private final ApplicantService appService;
 
-    public ApplicantRegisterController(ApplicantRegisterServiceImpl appService) {
+    public ApplicantRegisterController(ApplicantService appService) {
         this.appService = appService;
     }
 
@@ -46,7 +47,6 @@ public class ApplicantRegisterController {
             attributes.addFlashAttribute("applicantDTO", applicantDTO);
             attributes.addFlashAttribute("facId", applicantDTO.getFaculty().getId());
             return "redirect:/applicant/faculty?facId=" + applicantDTO.getFaculty().getId();
-            //	return "forward:/applicant/faculty?facId=" + applicantDTO.getDetails().getFacultyId();
         }
         appService.save(applicantDTO);
         return "successApplicantForm";

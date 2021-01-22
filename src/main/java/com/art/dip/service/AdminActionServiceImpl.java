@@ -5,6 +5,7 @@ import com.art.dip.repository.ApplicantRepository;
 import com.art.dip.repository.FacultyRepository;
 import com.art.dip.repository.GradeRepository;
 import com.art.dip.repository.InvalidApplicantRepository;
+import com.art.dip.service.interfaces.AdminActionService;
 import com.art.dip.service.interfaces.EmailService;
 import com.art.dip.utility.dto.*;
 import com.art.dip.utility.exception.AdminMistakeApplicantFormException;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class AdminActionServiceImpl {
+public class AdminActionServiceImpl implements AdminActionService {
 
     private final ApplicantRepository appRepository;
 

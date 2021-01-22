@@ -9,6 +9,7 @@ public class HelloUniversity {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HelloUniversity.class, args);
+
 	}
 
 }

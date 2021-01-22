@@ -20,7 +20,6 @@ public class ModelMapperConfiguration {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
 		return mapper;
-		
 	}
 
 	@Bean
