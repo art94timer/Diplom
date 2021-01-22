@@ -11,6 +11,7 @@ import com.art.dip.utility.localization.MessageSourceService;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /*
     If applicant is already exist or faculty has expired
@@ -43,7 +44,7 @@ public class AppFormValidator implements ConstraintValidator<ValidateAppForm, Ap
 
             Applicant applicant = applicantRepository.findByPerson_Id(currentLoggedPersonId);
 
-            valid = applicant == null && !repository.isFacultyExpired(LocalDate.now(), value.getFaculty().getId());
+            valid = applicant == null && !repository.isFacultyExpired(LocalDateTime.now(), value.getFaculty().getId());
         }
 
 

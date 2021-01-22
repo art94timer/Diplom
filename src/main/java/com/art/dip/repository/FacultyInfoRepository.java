@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
 public interface FacultyInfoRepository extends JpaRepository<FacultyInfo, Integer> {
@@ -18,5 +18,5 @@ public interface FacultyInfoRepository extends JpaRepository<FacultyInfo, Intege
     UpdateFacultyDTO updateFacultyInfo(Integer id);
 
     @Query("select distinct (f.expiredDate <=:date) FROM FacultyInfo f  where f.id=:id")
-    boolean isFacultyExpired(LocalDate date, Integer id);
+    boolean isFacultyExpired(LocalDateTime date, Integer id);
 }
