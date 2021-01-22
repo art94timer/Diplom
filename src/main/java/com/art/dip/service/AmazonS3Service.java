@@ -28,7 +28,8 @@ public class AmazonS3Service {
     }
 
     public String uploadFile(MultipartFile file)  {
-        File f = new File(UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename()));
+        File f = new File(UUID.randomUUID().toString() + "." +
+                FilenameUtils.getExtension(file.getOriginalFilename()));
         try(InputStream in = file.getInputStream(); OutputStream out = new FileOutputStream(f)){
             IOUtils.copy(in, out);
         } catch (IOException e) {

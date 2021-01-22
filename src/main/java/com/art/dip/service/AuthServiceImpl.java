@@ -70,7 +70,6 @@ public class AuthServiceImpl implements PersonService {
 	@Transactional
 	public Person registerNewPersonAccount(PersonDTO person) throws PersonAlreadyExistException {
 
-
 		if (emailExist(person.getEmail())) {
 			String message = mesService.getEmailIsExistMessage(person.getEmail());
 			throw new PersonAlreadyExistException(message, person);

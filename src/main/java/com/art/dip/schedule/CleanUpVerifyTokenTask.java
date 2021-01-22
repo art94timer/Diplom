@@ -33,6 +33,5 @@ public class CleanUpVerifyTokenTask {
         List<Person> expiredPersons = repository.getExpiredPersons(today);
         repository.cleanUp(today);
         personRepository.deleteAll(expiredPersons);
-
     }
 }

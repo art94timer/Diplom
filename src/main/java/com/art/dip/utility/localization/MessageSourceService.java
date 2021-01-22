@@ -28,7 +28,7 @@ Ru Locale if name first symbol is russian
  */
     public Locale supposedLocale(ValidateFormApplicantDTO dto) {
         String name = dto.getFirstName();
-        return name.charAt(0) >=0x0400 && name.charAt(0) <= 0x04FF  ? new Locale("ru","RU") : Locale.ENGLISH;
+        return name.charAt(0) >= 0x0400 && name.charAt(0) <= 0x04FF  ? new Locale("ru","RU") : Locale.ENGLISH;
     }
 
 
