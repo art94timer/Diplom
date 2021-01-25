@@ -19,7 +19,6 @@
                     <div class="col-8"></div>
                     <div class="col-4">
                         <a href="#two" th:utext="#{label.change.settings}"></a>
-
                     </div>
                 </div>
                 <div th:if="${message != null}" th:text="${message}" class="alert-danger"></div>
@@ -60,14 +59,14 @@
                                     <details>
                                         <summary th:utext="#{photo.name}">Photo</summary>
                                         <span style="color: white">Photo</span>
-                                        <a th:attr="id=${grade.getSubjectName()},href=${grade.getFileName()}"
+                                        <a th:attr="id=${grade.getSubject().getName()},href=${grade.getFileName()}"
                                            target="_blank">
                                         <span class="img fit"><img th:attr="src=${grade.getFileName()}"
-                                                                   style="width:100%;max-width:300px;"></a></span>
+                                                                   style="width:100%;max-width:300px;"/></a></span>
                                     </details>
                                 </td>
                                 <td th:align="center" style="vertical-align: middle;"
-                                    th:text="${grade.getSubjectName()}"></td>
+                                    th:text="${grade.getSubject().getName()}"></td>
                                 <td th:align="center" style="vertical-align: middle;" th:text="${grade.getMark()}"></td>
                             </tr>
                             </tbody>

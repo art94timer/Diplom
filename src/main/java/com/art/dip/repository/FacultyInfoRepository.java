@@ -12,11 +12,15 @@ import java.time.LocalDateTime;
 public interface FacultyInfoRepository extends JpaRepository<FacultyInfo, Integer> {
 
 
+
+    FacultyInfo findByFaculty_Id(Integer id);
+
+
     @Query("SELECT  new com.art.dip.utility.dto.UpdateFacultyDTO(Count(a.id),Avg(a.score)) "
             + "FROM Applicant a JOIN a.faculty f"
             + " Where f.id=:id ")
     UpdateFacultyDTO updateFacultyInfo(Integer id);
 
-    @Query("select distinct (f.expiredDate <=:date) FROM FacultyInfo f  where f.id=:id")
+    @Query("select (f.expiredDate <=:date) FROM FacultyInfo f  where f.id=:id")
     boolean isFacultyExpired(LocalDateTime date, Integer id);
 }

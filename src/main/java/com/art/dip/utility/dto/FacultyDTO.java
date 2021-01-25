@@ -18,6 +18,8 @@ public class FacultyDTO {
 	
 	private List<SubjectDTO> subjects;
 
+	private FacultyInfoDTO facultyInfoDTO;
+
 	public FacultyDTO(Integer id, String name) {
 		this.id = id;
 		this.name = name;

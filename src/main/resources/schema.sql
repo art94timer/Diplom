@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS faculty_info CASCADE;
 DROP TABLE IF EXISTS certificate CASCADE;
 DROP TABLE IF EXISTS invalid_applicant CASCADE;
 DROP TABLE IF EXISTS invalid_applicant_grades CASCADE;
+DROP TABLE IF EXISTS notify_holder CASCADE;
+DROP TABLE IF EXISTS notify_email CASCADE;
 
 
 CREATE TABLE credential (
@@ -32,6 +34,7 @@ CREATE TABLE person (
                         role INTEGER NOT NULL,
                         credential_id INTEGER NOT NULL,
                         enabled boolean default false,
+                        locale varchar not null,
                         PRIMARY KEY (id),
                         FOREIGN KEY (credential_id) REFERENCES credential(id)
                        	);
@@ -50,12 +53,13 @@ CREATE TABLE faculty (
 
 create table faculty_info(
 						id Serial not null,
-						capacity Integer not null,
+						capacity Integer not null default 0,
 						average numeric,
-						countapp Integer,
+						countapp Integer not null default 0,
 						update_time timestamp,
 						expired_date timestamp,
 						faculty_id Integer not null,
+						expired boolean default true not null,
 						primary key(id),
 						foreign key(faculty_id) references faculty);
 						
@@ -100,6 +104,19 @@ CREATE TABLE grade (
                         file_name varchar(255) NOT NULL,
                         PRIMARY KEY (id),
                        FOREIGN KEY (applicant_id) REFERENCES applicant);
+
+create table notify_holder (
+                            id SERIAL not null,
+                            faculty_id integer not null,
+                            PRIMARY KEY (id),
+                            UNIQUE (faculty_id),
+                            FOREIGN KEY (faculty_id) references faculty);
+
+create table notify_email (
+                            notify_id integer not null,
+                             email varchar(255) not null,
+                             UNIQUE (notify_id,email),
+                             foreign key (notify_id) references notify_holder);
 
 
 

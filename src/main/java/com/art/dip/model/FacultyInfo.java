@@ -16,18 +16,22 @@ public class FacultyInfo extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name="faculty_id")
 	private Faculty faculty;
-	
+
+	@Column(columnDefinition = "default 0")
 	private Integer capacity;
 	
-	@Column(name="average")
+	@Column(name="average",columnDefinition = "default 0")
 	private Double averageScore;
 	
-	@Column(name = "countapp")
+	@Column(name = "countapp",columnDefinition = "default 0")
 	private Integer countApplicants;
 	
 	private LocalDateTime updateTime;
 	
 	private LocalDateTime expiredDate;
+
+	@Column(name = "expired")
+	private boolean isExpired;
 
 
 }

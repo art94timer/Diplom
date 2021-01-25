@@ -2,10 +2,10 @@ package com.art.dip.service.interfaces;
 
 import com.art.dip.model.Person;
 import com.art.dip.utility.dto.ValidateFormApplicantDTO;
-import com.art.dip.utility.event.OnRegistrationCompleteEvent;
 
 public interface EmailService {
-    void sendRegistrationMessage(Person user, OnRegistrationCompleteEvent event, String token);
+
+    void sendRegistrationMessage(Person user, String token,String appUrl);
 
     void sendValidApplicantEmail(ValidateFormApplicantDTO dto);
 

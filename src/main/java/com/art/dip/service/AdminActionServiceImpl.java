@@ -1,12 +1,15 @@
 package com.art.dip.service;
 
+import com.art.dip.model.Applicant;
+import com.art.dip.model.Faculty;
+import com.art.dip.model.Grade;
 import com.art.dip.model.InvalidApplicant;
-import com.art.dip.repository.ApplicantRepository;
-import com.art.dip.repository.FacultyRepository;
-import com.art.dip.repository.GradeRepository;
-import com.art.dip.repository.InvalidApplicantRepository;
+import com.art.dip.repository.*;
 import com.art.dip.service.interfaces.AdminActionService;
 import com.art.dip.service.interfaces.EmailService;
+import com.art.dip.utility.converter.ApplicantConverter;
+import com.art.dip.utility.converter.FacultyConverter;
+import com.art.dip.utility.converter.GradeConverter;
 import com.art.dip.utility.dto.*;
 import com.art.dip.utility.exception.AdminMistakeApplicantFormException;
 import com.art.dip.utility.localization.MessageSourceService;
@@ -23,36 +26,49 @@ import java.util.stream.Collectors;
 @Service
 public class AdminActionServiceImpl implements AdminActionService {
 
-    private final ApplicantRepository appRepository;
+    private final ApplicantRepository applicantRepository;
 
-    private final FacultyRepository facRepository;
+    private final CertificateRepository certificateRepository;
+
+    private final FacultyRepository facultyRepository;
 
     private final GradeRepository gradeRepository;
 
-    private final InvalidApplicantRepository invalidAppRepository;
+    private final InvalidApplicantRepository invalidApplicantRepository;
 
     private final EmailService emailService;
 
-    private final ApplicantPhotoService photoService;
+    private final FacultyConverter facultyConverter;
 
     private final MessageSourceService mesService;
 
     private final CurrentPersonInfoService currentPersonInfoService;
 
+    private final ApplicantConverter applicantConverter;
+
+    private final GradeConverter gradeConverter;
+
 
     @Autowired
     public AdminActionServiceImpl(ApplicantRepository repository,
-                                  FacultyRepository facRepository,
+                                  CertificateRepository certificateRepository, FacultyRepository facultyRepository,
                                   GradeRepository gradeRepository,
-                                  InvalidApplicantRepository invalidAppRepository, EmailService emailService, ApplicantPhotoService photoService, MessageSourceService mesService, CurrentPersonInfoService currentPersonInfoService) {
-        this.appRepository = repository;
-        this.facRepository = facRepository;
+                                  InvalidApplicantRepository invalidApplicantRepository,
+                                  EmailService emailService, FacultyConverter facultyConverter,
+                                  MessageSourceService mesService,
+                                  CurrentPersonInfoService currentPersonInfoService,
+                                  ApplicantConverter applicantConverter, GradeConverter gradeConverter) {
+        this.applicantRepository = repository;
+        this.certificateRepository = certificateRepository;
+        this.facultyRepository = facultyRepository;
         this.gradeRepository = gradeRepository;
-        this.invalidAppRepository = invalidAppRepository;
+        this.invalidApplicantRepository = invalidApplicantRepository;
         this.emailService = emailService;
-        this.photoService = photoService;
+        this.facultyConverter = facultyConverter;
         this.mesService = mesService;
         this.currentPersonInfoService = currentPersonInfoService;
+        this.applicantConverter = applicantConverter;
+        this.gradeConverter = gradeConverter;
     }
 
 
@@ -86,62 +102,64 @@ public class AdminActionServiceImpl implements AdminActionService {
     }
 
     private void validApplicant(ValidateFormApplicantDTO dto) {
-        appRepository.validateApplicant(dto.getApplicantId());
+        applicantRepository.validateApplicant(dto.getApplicantId());
         emailService.sendValidApplicantEmail(dto);
     }
 
     private void invalidApplicant(ValidateFormApplicantDTO dto) {
-        String certificateFileName = appRepository.getCertificateByApplicantId(dto.getApplicantId()).getFileName();
+        String certificateFileName = certificateRepository.getCertificateByApplicantId(dto.getApplicantId()).getFileName();
         Map<String,String> grades = getGradesForApplicant(dto.getApplicantId()).stream().collect(Collectors.toMap
-                (ValidateGradeDTO::getSubjectName,ValidateGradeDTO::getFileName));
+                (key->key.getSubject().getName(),ValidateGradeDTO::getFileName));
         InvalidApplicant invalidApplicant = new InvalidApplicant(dto.getEmail(), grades, certificateFileName);
-        invalidAppRepository.save(invalidApplicant);
-        appRepository.delete(appRepository.findById(dto.getApplicantId()).get());
+        invalidApplicantRepository.save(invalidApplicant);
+        applicantRepository.delete(applicantRepository.findById(dto.getApplicantId()).get());
         emailService.sendInvalidApplicantEmail(dto);
     }
 
 
     public List<FacultyDTO> getFaculties() {
+        List<Faculty> faculties = facultyRepository.findAll();
         if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-            return facRepository.getAllRuFaculties();
+            return facultyConverter.toRuFacultyDTO(faculties);
         } else {
-            return facRepository.getAllEnFaculties();
+            return facultyConverter.toEnFacultyDTO(faculties);
         }
     }
 
     public List<ValidateApplicantDTO> prepareValidateFormModelAndView(AdminSettings settings) {
-        List<ValidateApplicantDTO> dto = appRepository.getApplicantForValidating(
-                settings.getFaculty(), PageRequest.of(0, settings.getCountApplicants(),
-                        Sort.by(Sort.Direction.ASC, "a.registrationTime")));
+        List<Applicant> applicants = applicantRepository.getApplicantsForValidating(settings.getFaculty(),PageRequest.of(0,
+                settings.getCountApplicants(),Sort.by(Sort.Direction.ASC,"registrationTime")));
 
-        return prepareApplicants(dto);
-
-    }
-
-    private List<ValidateApplicantDTO> prepareApplicants(List<ValidateApplicantDTO> dto) {
-        dto.forEach(app -> {
-            List<ValidateGradeDTO> grades = getGradesForApplicant(app.getId());
-                grades.forEach(photoService::buildPath);
-            app.setValidateGradeDTO(grades);
-
-
-            photoService.buildPath(app.getCertificate());
-        });
-        return dto;
-    }
-
-    private List<ValidateGradeDTO> getGradesForApplicant(Integer id) {
         if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-            return gradeRepository.getRuGradesForApplicant(id);
-        } else {
-            return gradeRepository.getEnGradesForApplicant(id);
+           return applicantConverter.toRuValidateApplicantDTO(applicants);
+        }
+        else {
+            return applicantConverter.toEnValidateApplicantDTO(applicants);
         }
 
     }
 
+    private List<ValidateGradeDTO> getGradesForApplicant(Integer id) {
+        List<Grade> grades = gradeRepository.findAllByApplicant_Id(id);
+        if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
+            return gradeConverter.toRuValidateGradeDTO(grades);
+        } else {
+            return gradeConverter.toEnValidateGradeDTO(grades);
+        }
+    }
+
+
+
     public List<ValidateApplicantDTO> resolveMistakes(List<ValidateFormApplicantDTO> mistakes) {
-        return prepareApplicants(mistakes.stream().map(x->appRepository.getApplicantForValidatingByEmail(x.getEmail()))
-                .collect(Collectors.toList()));
+        List<Applicant> applicants = mistakes.stream().map(x ->
+                applicantRepository.getApplicantForValidatingByEmail(x.getEmail()))
+                .collect(Collectors.toList());
+        if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
+            return applicantConverter.toRuValidateApplicantDTO(applicants);
+        }
+        else {
+            return applicantConverter.toEnValidateApplicantDTO(applicants);
+        }
     }
 }
 

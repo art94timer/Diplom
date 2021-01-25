@@ -79,24 +79,24 @@ values (1, 1),
        (9, 3);
 
 
-insert into faculty_info(faculty_id, capacity, expired_date)
-values (1, 100, '2021-02-14'),
-       (2, 200, '2020-02-14'),
-       (3, 200, '2020-02-14'),
-       (4, 200, '2020-02-14'),
-       (5, 200, '2020-02-14'),
-       (6, 200, '2020-02-14'),
-       (7, 200, '2020-02-14'),
-       (8, 200, '2020-02-14'),
-       (9, 200, '2020-02-14');
+insert into faculty_info(faculty_id, capacity, expired_date,expired)
+values (1, 100, '2021-02-14',false),
+       (2, 200, '2020-02-14',true),
+       (3, 200, '2020-02-14',true),
+       (4, 200, '2020-02-14',true),
+       (5, 200, '2020-02-14',true),
+       (6, 200, '2020-02-14',true),
+       (7, 200, '2020-02-14',true),
+       (8, 200, '2020-02-14',true),
+       (9, 200, '2020-02-14',true);
 
 
-insert into person(birth_date, email, first_name, last_name, role, credential_id, enabled)
+insert into person(birth_date, email, first_name, last_name, role, credential_id, enabled,locale)
 VALUES ('2020-02-02', 'admin@admin.by',
         'Artem',
         'Timerbaev',
         1,
-        1, true);
+        1, true,'en');
 
 							
 

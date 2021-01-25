@@ -17,16 +17,14 @@ import static com.art.dip.utility.Constants.PATH_TO_VALIDATE_APPLICANT_DTO;
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
-//public ValidateApplicantDTO(Integer id,String fullName,  String email,Certificate certificate)
-    @Query("SELECT new " + PATH_TO_VALIDATE_APPLICANT_DTO + "(a.id, concat(p.firstName,' ',p.lastName), p.email" +
-            ",a.certificate) FROM  Person p JOIN Applicant a  ON a.person.id=p.id " +
-            "where a.faculty.id=:facultyId and a.isAccepted=false")
-    List<ValidateApplicantDTO> getApplicantForValidating(Integer facultyId, Pageable pageable);
 
-    @Query("SELECT new " + PATH_TO_VALIDATE_APPLICANT_DTO + "(a.id, concat(p.firstName,' ',p.lastName), p.email" +
-            ",a.certificate) FROM  Person p JOIN Applicant a  ON a.person.id=p.id " +
-            "where p.email=:email")
-    ValidateApplicantDTO getApplicantForValidatingByEmail(String email);
+    @Query("SELECT a FROM  Applicant a  join fetch a.person " +
+            "where a.faculty.id=:facultyId and a.isAccepted=false")
+    List<Applicant> getApplicantsForValidating(Integer facultyId, Pageable pageable);
+
+    @Query("SELECT a FROM  Applicant a JOIN FETCH a.person where a.person.email=:email")
+     Applicant getApplicantForValidatingByEmail(String email);
+
 
     @Modifying
     @Query("update Applicant a set a.isAccepted=true where a.id=:id")
@@ -34,8 +32,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
     Applicant findByPerson_Id(Integer id);
 
-    @Query("Select a.certificate FROM Applicant a where a.id=:id")
-    Certificate getCertificateByApplicantId(Integer id);
 
 
 }

@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
-import static repository.testData.PersonData.ADMIN;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -43,7 +42,7 @@ public class PersonRepositoryTest {
 
     @Test
     public void findByEmailTest() {
-        personRepository.save(ADMIN);
+      //  personRepository.save(ADMIN);
         Person person = personRepository.findByEmail("admin@admin.by").orElse(null);
         Assertions.assertNotNull(person);
         Assertions.assertEquals(person.getFirstName(), "admin");

@@ -2,7 +2,6 @@ package com.art.dip.utility.dto;
 
 import com.art.dip.annotation.Name;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -11,18 +10,17 @@ import java.util.Set;
 @Data
 public class ValidateFormApplicantDTO {
 
-
-    @Range(min = 1)
-    private int applicantId;
+    @NotNull
+    private Integer applicantId;
 
     private boolean valid;
 
     @NotNull
     @Email
     private String email;
-    @Name
-    private String firstName;
 
+    @Name
+    private String fullName;
 
     private Set<CauseInvalid> causes;
 

@@ -3,9 +3,9 @@ package com.art.dip.service;
 import com.art.dip.model.Person;
 import com.art.dip.service.interfaces.EmailService;
 import com.art.dip.utility.dto.ValidateFormApplicantDTO;
-import com.art.dip.utility.event.OnRegistrationCompleteEvent;
 import com.art.dip.utility.localization.MessageSourceService;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,18 +15,19 @@ public class MailGunServiceImpl implements EmailService {
 
     private final MessageSourceService mesService;
 
+    @Autowired
     public MailGunServiceImpl(MailGunClient client, MessageSourceService mesService) {
         this.client = client;
         this.mesService = mesService;
     }
 
     @Override
-    public void sendRegistrationMessage(Person user, OnRegistrationCompleteEvent event, String token) {
+    public void sendRegistrationMessage(Person user, String token,String appUrl) {
         try {
             String confirmationUrl
-                    = event.getAppUrl() + "/registrationConfirm?token=" + token;
-            String subject = mesService.getRegistrationConfirmSubjectMessage();
-            String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(), confirmationUrl});
+                    = appUrl + "/registrationConfirm?token=" + token;
+            String subject = mesService.getRegistrationConfirmSubjectMessage(user.getLocale());
+            String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(), confirmationUrl},user.getLocale());
             client.sendText(user.getEmail(), subject, message);
         } catch (UnirestException e) {
             throw new RuntimeException(e);

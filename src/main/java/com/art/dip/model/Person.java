@@ -1,5 +1,6 @@
 package com.art.dip.model;
 
+import com.art.dip.utility.converter.LocaleConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Locale;
 
 @Entity
 @Table(name = "person",uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -36,6 +38,10 @@ public class Person extends BaseEntity {
     private Role role;
     
     private boolean enabled;
+
+
+    @Convert(converter = LocaleConverter.class)
+    private Locale locale;
     
     public Person(Integer id) {
     	super(id);

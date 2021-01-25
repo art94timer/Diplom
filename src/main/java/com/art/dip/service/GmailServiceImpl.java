@@ -2,19 +2,13 @@ package com.art.dip.service;
 
 import com.art.dip.model.Person;
 import com.art.dip.service.interfaces.EmailService;
-import com.art.dip.utility.dto.CauseInvalid;
 import com.art.dip.utility.dto.ValidateFormApplicantDTO;
-import com.art.dip.utility.event.OnRegistrationCompleteEvent;
-import com.art.dip.utility.exception.ValidationFormException;
 import com.art.dip.utility.localization.MessageSourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
-import java.util.Locale;
-import java.util.Set;
 
 
 
@@ -33,11 +27,11 @@ public class GmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendRegistrationMessage(Person user, OnRegistrationCompleteEvent event, String token) {
-        String subject = mesService.getRegistrationConfirmSubjectMessage();
+    public void sendRegistrationMessage(Person user,  String token,String appUrl) {
+        String subject = mesService.getRegistrationConfirmSubjectMessage(user.getLocale());
         String confirmationUrl
-                = event.getAppUrl() + "/registrationConfirm?token=" + token;
-        String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(),confirmationUrl});
+                = appUrl + "/registrationConfirm?token=" + token;
+        String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(),confirmationUrl},user.getLocale());
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmail());
         email.setSubject(subject);

@@ -34,7 +34,7 @@ public class ApplicantRegisterController {
             return "redirect:/applicant";
         }
         applicantDTO = appService.prepareApplicantDTO(applicantDTO);
-        model.addAttribute("faculty",appService.getFacultyWithSubjects(facId)). //appService.getFacultyWithSubjectsById(facId)).
+        model.addAttribute("faculty",appService.getFacultyWithSubjects(facId)).
                 addAttribute("applicantDTO", applicantDTO);
 
         return "applicantForm";
@@ -49,7 +49,8 @@ public class ApplicantRegisterController {
             return "redirect:/applicant/faculty?facId=" + applicantDTO.getFaculty().getId();
         }
         appService.save(applicantDTO);
-        return "successApplicantForm";
+        appService.getWaitForAdminEmailMessage();
+        return "infoMessage";
     }
 
 }

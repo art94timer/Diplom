@@ -12,6 +12,16 @@
         </h1>
         <nav id="nav">
             <ul>
+
+                    <li class="special">
+                        <a th:href="@{''(lang=en)}" ><img style="height:20px;padding: 1" th:src="@{/images/english-language.png}" ></a>
+                    </li>
+
+
+                    <li class="special">
+                        <a th:href="@{''(lang=ru)}" ><img style="height:20px" th:src="@{/images/russia.png}" ></a>
+                    </li>
+
                 <li class="special"><a href="#menu" class="menuToggle"><span th:text="#{label.menu}">Menu</span></a>
                     <div id="menu">
                         <ul>

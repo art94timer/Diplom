@@ -13,15 +13,5 @@ import static com.art.dip.utility.Constants.PATH_TO_VALIDATE_GRADE_DTO;
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, Integer> {
 
-    @Query("SELECT new "+ PATH_TO_VALIDATE_GRADE_DTO+"(s.name,g.fileName,g.mark) " +
-            "FROM Grade g JOIN Subject s" +
-            " ON g.subject.id=s.id JOIN Applicant a ON g.applicant.id=a.id WHERE a.id=:id")
-    List<ValidateGradeDTO> getEnGradesForApplicant(Integer id);
-
-
-
-    @Query("SELECT new "+ PATH_TO_VALIDATE_GRADE_DTO+"(s.ruName,g.fileName,g.mark) " +
-            "FROM Grade g JOIN Subject s" +
-            " ON g.subject.id=s.id JOIN Applicant a ON g.applicant.id=a.id WHERE a.id=:id")
-    List<ValidateGradeDTO> getRuGradesForApplicant(Integer id);
+    List<Grade> findAllByApplicant_Id(Integer id);
 }

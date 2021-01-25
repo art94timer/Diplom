@@ -13,7 +13,7 @@ public interface PersonService {
 
 	Person getPerson(String verificationToken);
 
-	void createVerificationToken(Person user, String token);
+	VerifyToken createVerificationToken(Person user);
 
 	VerifyToken getVerifyToken(String VerifyToken);
 	
@@ -22,4 +22,6 @@ public interface PersonService {
 	String tokenIsExpiredMessage();
 
 	void verifyPerson(VerifyToken verificationToken);
+
+	String getVerifyYourEmailMessage();
 }

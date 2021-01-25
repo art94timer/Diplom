@@ -23,14 +23,7 @@
 		<!-- Banner -->
 		<section id="banner">
 			<div class="inner">
-
 				<h2 th:text="#{label.hello}">Hello</h2>
-				<div sec:authorize="isAuthenticated()">
-					<th:block th:with="auth=${#authentication.getPrincipal()}">
-						<h2 th:text="${auth.name}"></h2>
-
-					</th:block>
-				</div>
 			</div>
 			<a href="#one"  th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
 		</section>

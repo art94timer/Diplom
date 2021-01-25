@@ -23,32 +23,33 @@
                 <a href="#one" class="more scrolly" th:utext="#{lable.choose}">Choose...</a>
             </div>
         </section>
-        <section id="one" class="wrapper style5">
+        <section id="one" class="wrapper style5" th:with="now=${#temporals.createNow()}" >
             <div class="inner">
-                <h4 th:align="center" th:utext="#{lable.choose}">Choose</h4>
-                <br>
-                <form method="post" th:action="@{applicant/faculty}">
-                    <div class="row gtr-uniform">
-                        <div class="col-4"></div>
-                        <div class="col-4">
+                <div class="row gtr-uniform">
+                    <br>
+                    <form method="post" th:action="@{/applicant/faculty}">
+                        <div class="col">
+                            <h4 th:align="center" th:utext="#{lable.choose}">Choose</h4>
                             <select th:name="facId">
-                                <option th:each="fac : ${faculties}" th:text="${fac.name}"
+                                <option th:attr="disabled=${fac.expiredDate.isBefore(now)}"
+                                        th:styleappend="${fac.expiredDate.isBefore(now)} ? 'color:gray'"
+                                        th:each="fac : ${faculties}" th:text="${fac.name}"
                                         th:value="${fac.id}"></option>
                             </select>
                         </div>
-                    </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="row ">
-                        <div class="col-4"></div>
-                        <div class="col-4">
-                            <button type="submit" th:utext="#{label.button.continue}"
-                                    class="primary fit"></button>
+
+                        <br>
+                        <br>
+                        <div class="row ">
+                            <div class="col-4"></div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <button type="submit" th:utext="#{label.button.continue}"
+                                        class="primary fit"></button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </section>
     </article>

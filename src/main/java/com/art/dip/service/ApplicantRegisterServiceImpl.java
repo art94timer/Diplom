@@ -1,14 +1,16 @@
 package com.art.dip.service;
 
-import com.art.dip.model.Applicant;
-import com.art.dip.model.Grade;
-import com.art.dip.model.Person;
+import com.art.dip.model.*;
 import com.art.dip.repository.*;
 import com.art.dip.service.interfaces.ApplicantService;
 import com.art.dip.utility.converter.ApplicantConverter;
+import com.art.dip.utility.converter.FacultyConverter;
+import com.art.dip.utility.converter.FacultyInfoConverter;
 import com.art.dip.utility.dto.ApplicantDTO;
 import com.art.dip.utility.dto.CertificateDTO;
 import com.art.dip.utility.dto.FacultyDTO;
+import com.art.dip.utility.dto.FacultyInfoDTO;
+import com.art.dip.utility.localization.MessageSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,67 +25,73 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
 
     private final CurrentPersonInfoService currentPersonInfoService;
 
-    private final FacultyRepository facRepository;
+    private final FacultyRepository facultyRepository;
 
-    private final ApplicantRepository appRepository;
+    private final ApplicantRepository applicantRepository;
 
-    private final ApplicantConverter appConverter;
+    private final ApplicantConverter applicantConverter;
 
-    private final PersonRepository perRepository;
+    private final PersonRepository personRepository;
 
     private final GradeRepository gradeRepository;
 
-    private final SubjectRepository subjectRepository;
+    private final FacultyInfoRepository facultyInfoRepository;
+
+    private final MessageSourceService mesService;
+
+    private final FacultyConverter facultyConverter;
+
+    private final FacultyInfoConverter facultyInfoConverter;
 
     @Autowired
     public ApplicantRegisterServiceImpl(CurrentPersonInfoService currentPersonInfoService,
-                                        FacultyRepository facRepository, ApplicantRepository appRepository,
-                                        ApplicantConverter appConverter,
-                                        PersonRepository perRepository, GradeRepository gradeRepository, SubjectRepository subjectRepository) {
+                                        FacultyRepository facultyRepository, ApplicantRepository applicantRepository,
+                                        ApplicantConverter applicantConverter,
+                                        PersonRepository personRepository, GradeRepository gradeRepository,
+                                        FacultyInfoRepository facultyInfoRepository,
+                                        MessageSourceService mesService, FacultyConverter facultyConverter, FacultyInfoConverter facultyInfoConverter) {
         this.currentPersonInfoService = currentPersonInfoService;
-        this.facRepository = facRepository;
-        this.appRepository = appRepository;
-        this.appConverter = appConverter;
-        this.perRepository = perRepository;
+        this.facultyRepository = facultyRepository;
+        this.applicantRepository = applicantRepository;
+        this.applicantConverter = applicantConverter;
+        this.personRepository = personRepository;
         this.gradeRepository = gradeRepository;
-        this.subjectRepository = subjectRepository;
+        this.facultyInfoRepository = facultyInfoRepository;
+        this.mesService = mesService;
+        this.facultyConverter = facultyConverter;
+        this.facultyInfoConverter = facultyInfoConverter;
     }
 
-    public List<FacultyDTO> getFaculties() {
-
+    public List<FacultyInfoDTO> getFaculties() {
         Locale locale = currentPersonInfoService.getCurrentLoggedPersonLocale();
+        List<FacultyInfo> faculties = facultyInfoRepository.findAll();
         if(locale.getLanguage().equals("ru")) {
-            return facRepository.getAllRuFaculties();
+            return facultyInfoConverter.toRuFacultyInfoDTO(faculties);
         }
-
-        return facRepository.getAllEnFaculties();
-
-
+        return facultyInfoConverter.toEnFacultyInfoDTO(faculties);
     }
 
     public FacultyDTO getFacultyWithSubjects(Integer id) {
+        Faculty faculty = facultyRepository.findFacultyByIdWithSubject(id);
         if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-            FacultyDTO ruFaculty = facRepository.getRuFacultyById(id);
-            ruFaculty.setSubjects(subjectRepository.findRuSubjectsByFacultyId(id));
-            return ruFaculty;
+            return facultyConverter.toRuFacultyDTO(faculty);
         } else {
-            FacultyDTO enFaculty = facRepository.getEnFacultyById(id);
-            enFaculty.setSubjects(subjectRepository.findEnSubjectsByFacultyId(id));
-            return enFaculty;
+            return facultyConverter.toEnFacultyDTO(faculty);
+
         }
    }
 
     @Transactional
     public void save(ApplicantDTO app) {
-        Applicant applicant = appConverter.toEntity(app);
-        applicant.setFaculty(facRepository.findById(applicant.getFaculty().getId()).get());
+        Applicant applicant = applicantConverter.toEntity(app);
+        applicant.setFaculty(facultyRepository.findById(applicant.getFaculty().getId()).get());
         Integer currentLoggedPersonId = currentPersonInfoService.getCurrentLoggedPersonId();
-        Person person = perRepository.findById(currentLoggedPersonId).get();
+        Person person = personRepository.findById(currentLoggedPersonId).get();
         applicant.setPerson(person);
         applicant.setScore(calculateTotalScore(applicant));
         applicant.setRegistrationTime(LocalDateTime.now());
         applicant.setIsAccepted(false);
-        appRepository.save(applicant);
+        applicantRepository.save(applicant);
         applicant.getGrades().forEach(x -> {
             x.setApplicant(applicant);
             gradeRepository.save(x);
@@ -107,5 +115,11 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
             applicant.setGrades(new ArrayList<>());
         }
         return applicant;
+    }
+
+    @Override
+    public String getWaitForAdminEmailMessage() {
+
+        return mesService.getWaitForAdminEmailMessage();
     }
 }

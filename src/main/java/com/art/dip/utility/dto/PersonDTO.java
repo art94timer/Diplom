@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Locale;
 
 
 @Data
@@ -50,4 +51,6 @@ public class PersonDTO {
 	@NotBlank
 	@Size(min = 5,max = 50)
 	private String confirmPassword;
+
+	private Locale locale;
 }

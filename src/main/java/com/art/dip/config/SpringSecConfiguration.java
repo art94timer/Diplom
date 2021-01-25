@@ -31,10 +31,10 @@ public class SpringSecConfiguration extends WebSecurityConfigurerAdapter {
                 .and().
                 authorizeRequests().antMatchers("/applicant", "/applicant/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                 .and().
-                authorizeRequests().antMatchers(HttpMethod.POST, "/applicant/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                authorizeRequests().antMatchers(HttpMethod.POST, "/applicant/**","/view/faculty").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                 .antMatchers("/", "/register", "/login", "/registrationConfirm**").permitAll()
 				.and().
-                authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/save", "/logout").permitAll()
+                authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/save", "/logout","/changeLang").permitAll()
 				.and().
                 logout().logoutSuccessUrl("/")
 				.and().

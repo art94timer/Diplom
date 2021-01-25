@@ -26,12 +26,12 @@ public class UserDetailsImpl implements UserDetailsService {
 
 		Person person = service.findByEmail(username).get();
 
-		return new SecurityUser(person.getId(),
+		return new SecurityUser(person.getId(),person.getLocale(),
 				person.getEmail(), 
 				person.getCredential().getPassword(),
 				person.isEnabled(),
 				true,true,true,
-				grant(person),person.getFirstName());
+				grant(person));
 	}
 
 	private Collection<? extends SimpleGrantedAuthority> grant(Person person) {

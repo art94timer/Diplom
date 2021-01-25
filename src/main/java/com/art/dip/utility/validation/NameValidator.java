@@ -12,7 +12,7 @@ public class NameValidator implements ConstraintValidator<Name,String> {
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		return value != null && Pattern.matches("[a-zA-Z]+", value);
+		return value != null && Pattern.matches("[a-zA-Zа-яА-Я]+", value);
 	}
 
 }

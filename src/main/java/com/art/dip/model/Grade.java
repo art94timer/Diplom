@@ -19,7 +19,7 @@ public class Grade extends BaseEntity {
 	@JoinColumn(name="applicant_id")
 	private Applicant applicant;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	private Subject subject;
 
 	private Integer mark;

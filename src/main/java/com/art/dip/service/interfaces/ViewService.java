@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ViewService {
 
-    List<FacultyDTO> getAllFaculties();
+    List<FacultyInfoDTO> getAllFaculties();
 
     FacultyInfoDTO getFacultyInfo(Integer id);
 }

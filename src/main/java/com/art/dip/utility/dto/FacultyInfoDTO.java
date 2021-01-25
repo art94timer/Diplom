@@ -24,20 +24,22 @@ public class FacultyInfoDTO {
 
 	private LocalDateTime updateTime;
 	
-	private LocalDateTime expiredTime;
+	private LocalDateTime expiredDate;
 
 	private List<SubjectDTO> subjects;
+
+	private boolean isExpired;
 
 	public FacultyInfoDTO(Integer id, String name,
 						  Integer capacity, Double averageScore,
 						  Integer countApplicants, LocalDateTime updateTime,
-						  LocalDateTime expiredTime) {
+						  LocalDateTime expiredDate) {
 		this.id = id;
 		this.name = name;
 		this.capacity = capacity;
 		this.averageScore = averageScore;
 		this.countApplicants = countApplicants;
 		this.updateTime = updateTime;
-		this.expiredTime = expiredTime;
+		this.expiredDate = expiredDate;
 	}
 }

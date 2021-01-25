@@ -16,11 +16,8 @@ public class CertificateConverter {
 	public CertificateConverter(ApplicantPhotoService photoService) {
 		this.photoService = photoService;
 	}
-	
-	
-	
-	
-	Certificate toEntity(CertificateDTO dto) {
+
+	public Certificate toEntity(CertificateDTO dto) {
 
 			Certificate certificate = new Certificate();
 			String fileName = photoService.uploadPhoto(dto.getFile());

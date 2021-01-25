@@ -27,7 +27,7 @@ public class MessageSourceService {
 Ru Locale if name first symbol is russian
  */
     public Locale supposedLocale(ValidateFormApplicantDTO dto) {
-        String name = dto.getFirstName();
+        String name = dto.getFullName();
         return name.charAt(0) >= 0x0400 && name.charAt(0) <= 0x04FF  ? new Locale("ru","RU") : Locale.ENGLISH;
     }
 
@@ -44,6 +44,10 @@ Ru Locale if name first symbol is russian
         return messages.getMessage(message,args,currentPersonInfoService.getCurrentLoggedPersonLocale());
     }
 
+    private String explicitLocaleMessageWithArgs(String s, String[] args, Locale locale) {
+        return messages.getMessage(s,args,locale);
+    }
+
     public String getValidationMessageValidateFormApplicant() {
         return simpleMessage("invalid.faculty.appForm");
     }
@@ -52,12 +56,14 @@ Ru Locale if name first symbol is russian
         return simpleMessage("error.password.match");
     }
 
-    public String getRegistrationConfirmSubjectMessage() {
-        return simpleMessage("message.emailConfirmTitle");
+    public String getRegistrationConfirmSubjectMessage(Locale locale) {
+        return simpleExplicitLocaleMessage("message.emailConfirmTitle", locale);
     }
-    public String getRegistrationConfirmBodyMessage(String[] args) {
-        return messageWithArgs("message.emailConfirm",args);
+    public String getRegistrationConfirmBodyMessage(String[] args,Locale locale) {
+        return explicitLocaleMessageWithArgs("message.emailConfirm",args,locale);
     }
+
+
 
     public String getValidApplicantEmailSubjectMessage() {
         return simpleMessage("valid.applicant.email.subject");
@@ -107,10 +113,12 @@ Ru Locale if name first symbol is russian
         return simpleMessage("label.verifyToken.expired");
     }
 
-    public String getEmailIsExistMessage(String ... args) {
-        return messageWithArgs("message.emailExist",args);
+    public String getEmailIsExistMessage(Locale locale,String ... args) {
+        return explicitLocaleMessageWithArgs("message.emailExist",args,locale);
     }
-
+    public String getWeSendYouEmailMessage() {
+        return simpleMessage("message.we.notify.you");
+    }
 
     public String createInvalidApplicantMessage(ValidateFormApplicantDTO dto) {
 
@@ -138,9 +146,15 @@ Ru Locale if name first symbol is russian
                         str.append(String.format(templ, ++count[0], getInvalidCertificatePhotoCauseMessage(locale)));
             }
         });
-        return String.format(getInvalidApplicantTemplateBodyMessage(locale),dto.getFirstName(),str.toString());
+        return String.format(getInvalidApplicantTemplateBodyMessage(locale),dto.getFullName(),str.toString());
     }
 
 
+    public String getVerifyYourEmailMessage() {
+        return simpleMessage("message.verifyEmail");
+    }
 
+    public String getWaitForAdminEmailMessage() {
+        return simpleMessage("label.sucRegApp");
+    }
 }

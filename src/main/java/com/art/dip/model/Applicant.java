@@ -25,7 +25,7 @@ public class Applicant extends BaseEntity {
     private Faculty faculty;
 
 
-    @OneToMany(mappedBy = "applicant",fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "applicant",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Grade> grades;
     
     @OneToOne(cascade = CascadeType.ALL)

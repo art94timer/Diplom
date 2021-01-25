@@ -5,35 +5,37 @@ import com.art.dip.utility.dto.FacultyInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/view")
-public class ViewController {
+public class FacultyInfoController {
 	
 	private final ViewServiceImpl service;
 
 	@Autowired
-	public ViewController(ViewServiceImpl service) {
+	public FacultyInfoController(ViewServiceImpl service) {
 		this.service = service;
 	}
 
 
 	@GetMapping
 	public String selectFaculty(Model model) {
+
 		model.addAttribute("faculties",service.getAllFaculties());
-		return "faculties";
+		return "facultyInfo";
 	}
 
 
-	@GetMapping("/faculty/{id}")
-	public String showFacultyInfo(@PathVariable Integer id,Model model) {
-		FacultyInfoDTO facultyInfoDTO = service.getFacultyInfo(id);
-		model.addAttribute("faculty",facultyInfoDTO);
-		return "facultyInfo";
+	@PostMapping("/faculty")
+	public String notifyMe(@RequestParam Integer facultyId,Model model) {
+		service.notifyMe(facultyId);
+		model.addAttribute("message",service.getWeSendYouEmailMessage());
+		return "redirect:/view";
 	}
 
 }

@@ -39,14 +39,7 @@ public class ApplicantPhotoService {
         return upload(photo);
     }
 
-    public void buildPath(ValidateGradeDTO dto) {
-        dto.setFileName(bucketUrl + File.separator + dto.getFileName());
-    }
 
-
-	public void buildPath(Certificate certificate) {
-    	certificate.setFileName(bucketUrl + File.separator + certificate.getFileName());
-	}
 
 
 
