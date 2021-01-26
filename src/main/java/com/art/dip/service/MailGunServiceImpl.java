@@ -15,10 +15,13 @@ public class MailGunServiceImpl implements EmailService {
 
     private final MessageSourceService mesService;
 
+    private final CurrentPersonInfoService currentPersonInfoService;
+
     @Autowired
-    public MailGunServiceImpl(MailGunClient client, MessageSourceService mesService) {
+    public MailGunServiceImpl(MailGunClient client, MessageSourceService mesService, CurrentPersonInfoService currentPersonInfoService) {
         this.client = client;
         this.mesService = mesService;
+        this.currentPersonInfoService = currentPersonInfoService;
     }
 
     @Override
@@ -53,5 +56,11 @@ public class MailGunServiceImpl implements EmailService {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void sendCheckChangeEmail(String email) {
+        String subject = mesService.getFacultyIsChangedSubjectMessage();
+        String body = mesService.getFacultyIsChangedBodyMessage();
     }
 }

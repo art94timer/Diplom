@@ -32,6 +32,8 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
     Applicant findByPerson_Id(Integer id);
 
+    List<Applicant> getApplicantsByFaculty_Id(Integer id);
+
 
 
 }

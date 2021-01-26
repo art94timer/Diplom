@@ -1,9 +1,6 @@
 package com.art.dip.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,7 +27,8 @@ public class Faculty extends BaseEntity {
 	private List<Subject> subjects;
     
 	@OneToOne(mappedBy="faculty",fetch = FetchType.LAZY)
+	@ToString.Exclude
 	private FacultyInfo info;
 
-    
+
 }

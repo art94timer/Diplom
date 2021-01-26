@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+
+<link rel="stylesheet" th:href="@{/assets/css/noscript.css}" />
+<link rel="stylesheet" type="text/css"
+	href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css" />
+</head>
+<body class="landing is-preload">
+	<div id="page-wrapper">
+		<div th:insert="~{fragments::header}"></div>
+		<article id="main">
+			<header>
+				<h2>Faculties</h2>
+			</header>
+			<section class="wrapper style5"  >
+				<div class="inner">
+					<h2 th:text="#{label.faculties}" th:align="center">Our Faculties</h2>
+					<div class="row">
+						<div class="col-4">
+							<ul th:each="fac: ${faculties}">
+								<li><a th:text="${fac.name}"
+									th:href="@{'/view/faculty/' + ${fac.id}}"></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+			<div th:insert="~{fragments::footer}"></div>
+		</article>
+	</div>
+	<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

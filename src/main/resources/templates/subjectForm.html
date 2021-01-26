@@ -1,0 +1,122 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+</head>
+<body class="landing is-preload">
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <section id="banner">
+        <div class="inner">
+            <h2 th:text="#{label.fillTheForm}">Hello</h2>
+        </div>
+        <a href="#one" th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
+    </section>
+    <article id="main">
+        <section class="wrapper style3">
+            <div class="inner">
+                <div th:if="${message !=null}">
+                    <header th:text="${message}"></header>
+                </div>
+                <br><br>
+                <form method="post" th:action="@{/admin/subject}" th:object="${subject}">
+                    <header th:align="center" th:text="#{label.enter.subjectName}"></header>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="subjectRu" th:text="#{label.subjectRuName}">first</label>
+                            <input
+                                    required type="text" id="subjectRu"
+                                    th:value="${subject?.ruName}" th:field="*{ruName}"/>
+                            <th:block th:each="error : ${#fields.errors('ruName')}"
+                                      th:text="#{error.invalid.name}">Validation error
+                            </th:block>
+                        </div>
+                        <div class="col-6">
+                            <label for="subjectEn" th:text="#{label.subjectEnName}">first</label>
+                            <input id="subjectEn" th:value="${subject.name}" required type="text"
+                                   th:field="*{name}"/>
+                            <th:block th:each="error : ${#fields.errors('name')}"
+                                      th:text="#{error.invalid.name}">Validation error
+                            </th:block>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div th:if="${subject.id == null}">
+                        <button class="button" type="submit" th:text="#{label.create}"></button>
+                    </div>
+                    <div th:if="${subject.id != null}">
+                        <button class="button" type="submit" th:text="#{label.edit}"></button>
+                    </div>
+                </form>
+                <div th:if="${subject.id != null}">
+                    <header th:align="center" th:text="#{label.admin.faculties}"></header>
+                    <br><br>
+                    <div class="row gtr-uniform">
+                        <div class="col-6">
+                            <div th:if="${subject.faculties != null}">
+                                <form th:id="del"  th:action="@{/admin/subject/delete/faculty}" method="post">
+                                    <label for="deleteFaculty" th:text="#{label.delete.faculty}"></label>
+                                    <input type="hidden" name="subjectId" th:value="${subject.id}">
+                                    <select id="deleteFaculty" th:name="facultyId">
+                                        <option value=""></option>
+                                        <div th:if="__${#locale}__=='ru'">
+                                            <option th:each="faculty : ${subject.faculties}"
+                                                    th:value="${faculty.id}"  th:text="${faculty.ruName}"></option>
+                                        </div>
+                                        <div th:unless="__${#locale}__">
+                                            <option th:each="faculty : ${subject.faculties}"
+                                                    th:text="${faculty.name}" th:value="${faculty.id}"></option>
+                                        </div>
+                                    </select>
+                                    <br><br>
+                                    <button th:form="del"  type="submit" th:text="#{label.delete}"></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div th:if="${subject.faculties != null}">
+                                <form th:action="@{/admin/subject/add/faculty}" method="post">
+                                    <label for="addFaculty" th:text="#{label.add.faculty}"></label>
+                                    <input type="hidden" name="subjectId" th:value="${subject.id}">
+                                    <select id="addFaculty" th:name="facultyId">
+                                        <option value=""></option>
+                                        <div th:if="__${#locale}__=='ru'">
+                                            <option th:each="faculty : ${allFaculties}"
+                                                    th:value="${faculty.id}" th:text="${faculty.ruName}"></option>
+                                        </div>
+                                        <div th:unless="__${#locale}__">
+                                            <option th:each="faculty : ${subject.faculties}"
+                                                    th:text="${faculty.name}" th:value="${faculty.id}"></option>
+                                        </div>
+                                    </select>
+                                    <br><br>
+                                    <button type="submit" th:text="#{label.add}"></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                </div>
+                </form>
+                <br><br>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <a th:href="@{/admin/subjects}" th:text="#{label.back.subject}"></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </article>
+</div>
+
+<div th:insert="~{fragments::footer}"></div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

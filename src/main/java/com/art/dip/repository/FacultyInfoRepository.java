@@ -23,4 +23,6 @@ public interface FacultyInfoRepository extends JpaRepository<FacultyInfo, Intege
 
     @Query("select (f.expiredDate <=:date) FROM FacultyInfo f  where f.id=:id")
     boolean isFacultyExpired(LocalDateTime date, Integer id);
+
+
 }

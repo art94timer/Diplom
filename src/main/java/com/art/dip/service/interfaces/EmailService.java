@@ -10,4 +10,6 @@ public interface EmailService {
     void sendValidApplicantEmail(ValidateFormApplicantDTO dto);
 
     void sendInvalidApplicantEmail(ValidateFormApplicantDTO dto);
+
+    void sendCheckChangeEmail(String email);
 }

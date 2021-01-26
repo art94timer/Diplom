@@ -53,13 +53,13 @@ CREATE TABLE faculty (
 
 create table faculty_info(
 						id Serial not null,
-						capacity Integer not null default 0,
+						capacity Integer default 0,
 						average numeric,
-						countapp Integer not null default 0,
+						countapp Integer  default 0,
 						update_time timestamp,
 						expired_date timestamp,
 						faculty_id Integer not null,
-						expired boolean default true not null,
+						available boolean default true not null,
 						primary key(id),
 						foreign key(faculty_id) references faculty);
 						
@@ -74,7 +74,6 @@ CREATE TABLE subject (
 create table faculty_subject (
                         faculty_id INTEGER references faculty (id),
                         subject_id INTEGER references subject (id),
-                    
                        CONSTRAINT fac_sub PRIMARY KEY (faculty_id, subject_id));
 create table certificate(
 						id Serial not null,

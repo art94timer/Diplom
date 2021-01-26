@@ -32,7 +32,7 @@ public class UpdateFacultyInfoTask {
     @Scheduled(fixedRate = 1000 * 60 * 60)
     @Transactional
     public void UpdateFacultyInfo() {
-        List<Faculty> faculties = facRepository.findAll();
+        List<Faculty> faculties = facRepository.findAllByInfo_IsAvailable(true);
         faculties.forEach(fac -> {
            FacultyInfo info = fac.getInfo();
                 Optional<FacultyInfo> optFacInfo = facInfoRepository.findById(info.getId());
@@ -46,9 +46,6 @@ public class UpdateFacultyInfoTask {
                     facultyInfo.setUpdateTime(LocalDateTime.now());
                 }
             });
-
-
-
     }
 
 }

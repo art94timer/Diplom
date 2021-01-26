@@ -7,20 +7,18 @@
 <body>
 <div th:fragment="header">
     <header id="header" class="alt">
-        <h1>
-            <a th:href="@{/}" th:text="#{label.menu.home}">Spectral</a>
-        </h1>
         <nav id="nav">
             <ul>
 
-                    <li class="special">
-                        <a th:href="@{''(lang=en)}" ><img style="height:20px;padding: 1" th:src="@{/images/english-language.png}" ></a>
-                    </li>
+                <li class="special">
+                    <a th:href="@{''(lang=en)}"><img style="height:20px;padding: 1"
+                                                     th:src="@{/images/english-language.png}"></a>
+                </li>
 
 
-                    <li class="special">
-                        <a th:href="@{''(lang=ru)}" ><img style="height:20px" th:src="@{/images/russia.png}" ></a>
-                    </li>
+                <li class="special">
+                    <a th:href="@{''(lang=ru)}"><img style="height:20px" th:src="@{/images/russia.png}"></a>
+                </li>
 
                 <li class="special"><a href="#menu" class="menuToggle"><span th:text="#{label.menu}">Menu</span></a>
                     <div id="menu">
@@ -30,10 +28,11 @@
                             <li sec:authorize="!isAuthenticated()"><a
                                     th:text="#{label.menu.login}" th:href="@{/login}">Log In</a></li>
                             <li><a th:text="#{label.menu.faculties}" th:href="@{/view}">Results</a>
-                            <li> <a href="javascript:;" onclick="document.getElementById('form1').submit();" th:utext="#{logout}">Log Out</a></li>
+                            <li><a href="javascript:;" onclick="document.getElementById('form1').submit();"
+                                   th:utext="#{logout}">Log Out</a></li>
                             <li><a th:href="@{/applicant}" th:utext="#{label.register.applicant}"></a></li>
-
-                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/applicants}" th:utext="#{label.admin.work}"></a></li>
+                            <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/menu}"
+                                                                         th:utext="#{label.admin.menu}"></a></li>
 
                         </ul>
                     </div>

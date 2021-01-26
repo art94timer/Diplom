@@ -70,7 +70,7 @@ public class ViewServiceImpl implements ViewService {
     @Transactional
     public void notifyMe(Integer facultyId) {
 
-       NotifyHolder notifyHolder = notifyHolderRepository.getNotifyHolderByFaculty_Id(facultyId).get();
+       NotifyHolder notifyHolder = notifyHolderRepository.getNotifyHolderByFaculty_Id(facultyId).orElse(null);
         if (notifyHolder == null) {
             notifyHolder = new NotifyHolder();
             Faculty faculty = facultyRepository.findById(facultyId).get();

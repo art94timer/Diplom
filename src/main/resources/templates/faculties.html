@@ -1,37 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 
-<link rel="stylesheet" th:href="@{/assets/css/noscript.css}" />
-<link rel="stylesheet" type="text/css"
-	href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css" />
+    <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    <link rel="stylesheet" type="text/css"
+          href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css"/>
+</head>
 </head>
 <body class="landing is-preload">
-	<div id="page-wrapper">
-		<div th:insert="~{fragments::header}"></div>
-		<article id="main">
-			<header>
-				<h2>Faculties</h2>
-			</header>
-			<section class="wrapper style5"  >
-				<div class="inner">
-					<h2 th:text="#{label.faculties}" th:align="center">Our Faculties</h2>
-					<div class="row">
-						<div class="col-4">
-							<ul th:each="fac: ${faculties}">
-								<li><a th:text="${fac.name}"
-									th:href="@{'/view/faculty/' + ${fac.id}}"></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-			<div th:insert="~{fragments::footer}"></div>
-		</article>
-	</div>
-	<div th:insert="~{fragments::scripts}"></div>
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <section id="banner">
+        <div class="inner">
+            <h2 th:text="#{label.admin.faculties}">Hello</h2>
+        </div>
+        <a href="#one" th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
+    </section>
+    <article id="main">
+        <section class="wrapper style5 ">
+            <h2 th:align="center" th:text="#{label.available.faculty}"></h2>
+            <br><br>
+            <div class="row">
+                <table class="alt">
+                    <thead>
+                    <tr>
+                        <th th:text="#{label.subjectRuName}"></th>
+                        <th th:text="#{label.subjectEnName}"></th>
+                        <th th:text="#{label.faculty.expired}"></th>
+                        <th th:text="#{faculty.info.capacity}"></th>
+                        <th th:text="#{label.registered.app}"></th>
+                        <th th:text="#{faculty.info.averageScore}"></th>
+                        <th th:text="#{faculty.info.remainingPlace}"></th>
+                        <th th:text="#{faculty.info.lastUpdate}"></th>
+                        <th th:text="#{label.action}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="faculty : ${available}">
+                        <td th:text="${faculty.ruName}">
+                        </td>
+                        <td th:text="${faculty.name}"></td>
+                        <td th:text="${#temporals.format(faculty.info.expiredDate, 'd MMMM yyyy HH:mm')}"></td>
+                        <td th:text="${faculty.info.capacity}"></td>
+                        <td th:text="${faculty.info.countApplicants}"></td>
+                        <td th:text="${faculty.info.averageScore}"></td>
+                        <td th:text="${(faculty.info.capacity - faculty.info.countApplicants) < 1} ?
+                                    #{label.competition} : ${faculty.info.capacity - faculty.info.countApplicants}"></td>
+                        <td th:text="${#temporals.format(faculty.info.updateTime, 'd MMMM HH:mm')}"></td>
+                        <td><a th:text="#{label.edit}" th:href="@{'/admin/facultyInfo/' + ${faculty.id}}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h2 th:align="center" th:text="#{label.closed.recruiting}"></h2>
+            <div class="row gtr-uniform">
+                    <table class="alt">
+                        <tr>
+                            <th th:text="#{label.subjectRuName}"></th>
+                            <th th:text="#{label.subjectEnName}"></th>
+                            <th class="col" th:text="#{label.edit}"></th>
+                            <th class="col" th:text="#{label.delete}"></th>
+                            <th class="col" th:text="#{label.action}"></th>
+                        </tr>
+                        <tr th:each="faculty : ${notAvailable}">
+                            <td th:text="${faculty.ruName}"></td>
+                            <td th:text="${faculty.name}"></td>
+                            <td><a class="button" th:text="#{label.edit}"
+                                   th:href="@{'/admin/faculty/' +${faculty.id}}"></a></td>
+                            <td>
+                                <form th:action="@{/admin/faculty/delete}" method="post">
+                                    <input type="hidden" th:name="facultyId" th:value="${faculty.id}">
+                                    <button type="submit" th:text="#{label.delete}"></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:action="@{/admin/faculty/start}" method="post">
+                                    <input type="hidden" th:name="facultyId" th:value="${faculty.id}">
+                                    <button type="submit" th:text="#{label.announce}"></button>
+                                </form>
+                            </td>
+                            <td class="col-3">
+                                <button type="submit" th:text="#{label.notifyme}"></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </article>
+</div>
+</div>
+</div>
+</div>
+<div th:insert="~{fragments::footer}"></div>
+<div th:insert="~{fragments::scripts}"></div>
 </body>
 </html>

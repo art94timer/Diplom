@@ -2,6 +2,8 @@ package com.art.dip.model;
 
 import com.art.dip.utility.dto.SubjectDTO;
 import lombok.Data;
+import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ public class FacultyInfo extends BaseEntity {
 	
 	@OneToOne
 	@JoinColumn(name="faculty_id")
+	@ToString.Exclude
 	private Faculty faculty;
 
 	@Column(columnDefinition = "default 0")
@@ -27,11 +30,11 @@ public class FacultyInfo extends BaseEntity {
 	private Integer countApplicants;
 	
 	private LocalDateTime updateTime;
-	
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime expiredDate;
 
-	@Column(name = "expired")
-	private boolean isExpired;
+	@Column(name = "available")
+	private boolean isAvailable;
 
 
 }

@@ -24,4 +24,12 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 	@Query("SELECT f FROM Faculty f where f.info.expiredDate>=:now")
 	List<Faculty> findAllFacultiesNotExpired(LocalDateTime now);
 
+
+	@Query("select f From Faculty f JOIN fetch f.info where f.id=:id")
+	Faculty findFacultyByIdWithInfo(Integer id);
+
+	List<Faculty> findAllByInfo_IsAvailable(boolean expired);
+
+	@Query("SELECT f FROM Faculty f JOIN FETCH f.info")
+	List<Faculty> findAllWithInfo();
 }

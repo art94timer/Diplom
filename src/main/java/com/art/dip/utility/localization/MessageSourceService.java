@@ -157,4 +157,36 @@ Ru Locale if name first symbol is russian
     public String getWaitForAdminEmailMessage() {
         return simpleMessage("label.sucRegApp");
     }
+
+    public String getSuccessfullyDeleteSubjectMessage() {
+        return simpleMessage("message.subject.successfully.delete");
+    }
+
+    public String getSubjectBelongToFacultyMessage() {
+        return simpleMessage("message.subject.belong");
+    }
+
+    public String getFacultyImmutableMessage() {
+        return simpleMessage("message.faculty.immutable");
+    }
+
+    public String getSuccessfullyEditMessage() {
+        return simpleMessage("message.sucEdit.subject");
+    }
+
+    public String getFacultyInSubjectAlreadyExist() {
+        return simpleMessage("message.sub.already.exist");
+    }
+
+    public String getFacultyExistMessage() {
+        return simpleMessage("message.faculty.exist");
+    }
+
+    public String getFacultyIsChangedSubjectMessage() {
+        return simpleMessage("message.changed.faculty.email.subject");
+    }
+
+    public String getFacultyIsChangedBodyMessage() {
+        return simpleMessage("message.changed.faculty.email.body");
+    }
 }

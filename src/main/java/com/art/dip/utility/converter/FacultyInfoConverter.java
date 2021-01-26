@@ -7,7 +7,6 @@ import com.art.dip.repository.SubjectRepository;
 import com.art.dip.utility.dto.FacultyInfoDTO;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class FacultyInfoConverter {
             facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate());
             facultyInfoDTO.setAverageScore(facultyInfo.getAverageScore());
             facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime());
-            facultyInfoDTO.setExpired(facultyInfo.isExpired());
+            facultyInfoDTO.setExpired(facultyInfo.isAvailable());
 
         return facultyInfoDTO;
     }

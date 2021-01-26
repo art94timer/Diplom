@@ -57,7 +57,10 @@ public class GmailServiceImpl implements EmailService {
         sender.send(email);
     }
 
+    @Override
+    public void sendCheckChangeEmail(String email) {
 
+    }
 
 
 }

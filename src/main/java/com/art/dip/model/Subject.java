@@ -4,11 +4,10 @@ package com.art.dip.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 
@@ -17,17 +16,26 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+
 public class Subject extends BaseEntity {
 
     @Column(unique = true)
+    @Pattern(regexp = "[A-Za-z]+")
     private String name;
+
+    @Pattern(regexp = "[А-Яа-я]+")
     @Column(unique = true)
     private String ruName;
-    
-    @ManyToMany(mappedBy = "subjects")
+
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(name = "faculty_subject",
+            joinColumns = @JoinColumn(name = "faculty_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private List<Faculty> faculties;
     
     public Subject(Integer id) {
     	super(id);
     }
+
 }

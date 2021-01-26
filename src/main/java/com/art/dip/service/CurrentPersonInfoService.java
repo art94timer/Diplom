@@ -35,13 +35,8 @@ public class CurrentPersonInfoService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (!(auth instanceof AnonymousAuthenticationToken)) {
                 SecurityUser securityUser = (SecurityUser) auth.getPrincipal();
-                if (securityUser.getLocale() == null) {
-                    return Locale.ENGLISH;
-                } else {
                     return securityUser.getLocale();
                 }
-            }
-
         return LocaleContextHolder.getLocale();
 
     }
