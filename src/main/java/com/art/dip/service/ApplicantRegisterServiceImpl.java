@@ -23,7 +23,7 @@ import java.util.Locale;
 @Service
 public class ApplicantRegisterServiceImpl implements ApplicantService {
 
-    private final CurrentPersonInfoService currentPersonInfoService;
+    private final PersonInfoService personInfoService;
 
     private final FacultyRepository facultyRepository;
 
@@ -44,13 +44,13 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
     private final FacultyInfoConverter facultyInfoConverter;
 
     @Autowired
-    public ApplicantRegisterServiceImpl(CurrentPersonInfoService currentPersonInfoService,
+    public ApplicantRegisterServiceImpl(PersonInfoService personInfoService,
                                         FacultyRepository facultyRepository, ApplicantRepository applicantRepository,
                                         ApplicantConverter applicantConverter,
                                         PersonRepository personRepository, GradeRepository gradeRepository,
                                         FacultyInfoRepository facultyInfoRepository,
                                         MessageSourceService mesService, FacultyConverter facultyConverter, FacultyInfoConverter facultyInfoConverter) {
-        this.currentPersonInfoService = currentPersonInfoService;
+        this.personInfoService = personInfoService;
         this.facultyRepository = facultyRepository;
         this.applicantRepository = applicantRepository;
         this.applicantConverter = applicantConverter;
@@ -63,7 +63,7 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
     }
 
     public List<FacultyInfoDTO> getFaculties() {
-        Locale locale = currentPersonInfoService.getCurrentLoggedPersonLocale();
+        Locale locale = personInfoService.getCurrentLoggedPersonLocale();
         List<FacultyInfo> faculties = facultyInfoRepository.findAll();
         if(locale.getLanguage().equals("ru")) {
             return facultyInfoConverter.toRuFacultyInfoDTO(faculties);
@@ -73,7 +73,7 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
 
     public FacultyDTO getFacultyWithSubjects(Integer id) {
         Faculty faculty = facultyRepository.findFacultyByIdWithSubject(id);
-        if (currentPersonInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
+        if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
             return facultyConverter.toRuFacultyDTO(faculty);
         } else {
             return facultyConverter.toEnFacultyDTO(faculty);
@@ -85,7 +85,7 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
     public void save(ApplicantDTO app) {
         Applicant applicant = applicantConverter.toEntity(app);
         applicant.setFaculty(facultyRepository.findById(applicant.getFaculty().getId()).get());
-        Integer currentLoggedPersonId = currentPersonInfoService.getCurrentLoggedPersonId();
+        Integer currentLoggedPersonId = personInfoService.getCurrentLoggedPersonId();
         Person person = personRepository.findById(currentLoggedPersonId).get();
         applicant.setPerson(person);
         applicant.setScore(calculateTotalScore(applicant));
@@ -122,4 +122,15 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
 
         return mesService.getWaitForAdminEmailMessage();
     }
+
+    @Override
+    @Transactional
+    public void dismissApplication() {
+        Integer id = personInfoService.getCurrentLoggedPersonId();
+        Applicant applicant = applicantRepository.findByPerson_Id(id);
+        applicantRepository.delete(applicant);
+
+    }
+
+
 }

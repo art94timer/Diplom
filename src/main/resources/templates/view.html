@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+    <title th:text="#{label.faculties}"></title>
+    <meta charset="ISO-8859-1">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
 
-<link rel="stylesheet" th:href="@{/assets/css/noscript.css}" />
-<link rel="stylesheet" type="text/css"
-	href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css" />
+    <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    <link rel="stylesheet" type="text/css"
+          href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css"/>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
-	<div id="page-wrapper">
-		<div th:insert="~{fragments::header}"></div>
-		<article id="main">
-			<header>
-				<h2>Faculties</h2>
-			</header>
-			<section class="wrapper style5"  >
-				<div class="inner">
-					<h2 th:text="#{label.faculties}" th:align="center">Our Faculties</h2>
-					<div class="row">
-						<div class="col-4">
-							<ul th:each="fac: ${faculties}">
-								<li><a th:text="${fac.name}"
-									th:href="@{'/view/faculty/' + ${fac.id}}"></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-			<div th:insert="~{fragments::footer}"></div>
-		</article>
-	</div>
-	<div th:insert="~{fragments::scripts}"></div>
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <article id="main">
+        <section id="banner">
+            <div class="inner">
+                <h2 th:text="#{label.faculties}"></h2>
+                <a href="#one" class="more scrolly" th:text="#{label.fill}">Go</a>
+            </div>
+        </section>
+        <section class="wrapper style5">
+            <div class="inner">
+                <h2 th:text="#{label.faculties}" th:align="center">Our Faculties</h2>
+                <h3 th:text="#{label.available.faculty}"></h3>
+                <div class="row">
+                    <div class="col-4">
+                        <ul th:each="fac: ${faculties}">
+                            <li th:if="${fac.isAvailable}"><a th:text="${fac.name}"
+                                                              th:href="@{'/view/faculty/' + ${fac.id}}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 th:text="#{label.closed.recruiting}"></h3>
+
+                <ul th:each="faculty: ${faculties}">
+                    <li th:if="${!faculty.isAvailable}"><a th:text="${faculty.name}"
+                                                           th:href="@{'/view/faculty/' + ${faculty.id}}"></a></li>
+                </ul>
+
+
+            </div>
+        </section>
+        <div th:insert="~{fragments::footer}"></div>
+    </article>
+</div>
+<div th:insert="~{fragments::scripts}"></div>
 </body>
 </html>

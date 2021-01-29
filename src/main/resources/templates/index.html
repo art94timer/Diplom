@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
-<title>Hello, University</title>
+<title th:text="#{label.menu.home}"></title>
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -11,7 +11,7 @@
 <noscript>
 	<link rel="stylesheet" th:href="@{/assets/css/noscript.css}" />
 </noscript>
-
+	<link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
 	<!-- Page Wrapper -->

@@ -21,14 +21,16 @@ public class Faculty extends BaseEntity {
 
     private String ruName;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name="faculty_subject",joinColumns = @JoinColumn(name = "faculty_id"),
 	inverseJoinColumns = @JoinColumn(name = "subject_id"))
 	private List<Subject> subjects;
     
-	@OneToOne(mappedBy="faculty",fetch = FetchType.LAZY)
+	@OneToOne(mappedBy="faculty",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
 	private FacultyInfo info;
 
+	@OneToOne(mappedBy = "faculty",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private NotifyHolder notifyHolder;
 
 }

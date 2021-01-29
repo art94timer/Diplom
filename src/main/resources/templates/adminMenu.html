@@ -1,26 +1,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title th:text="#{label.admin.menu}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <noscript>
         <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
     </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
 <div id="page-wrapper">
     <div th:insert="~{fragments::header}"></div>
     <section id="banner">
         <div class="inner">
-            <h2 th:text="#{label.have.good.day}">Hello</h2>
+            <h2 th:text="#{label.admin.menu}"></h2>
+            <a href="#one" class="more scrolly" th:text="#{label.fill}">Go</a>
         </div>
-        <a href="#one" th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
     </section>
     <article id="main">
         <section class="wrapper style3">
             <div class="inner">
                 <div class="row">
                     <div class="col-2">
+                        <a th:href="@{/admin/applicants}" th:text="#{applicants.name}"></a>
                         <a th:href="@{/admin/subjects}" th:text="#{label.subjects.name}"></a>
                         <a th:href="@{/admin/faculties}" th:text="#{label.admin.faculties}"></a>
                     </div>

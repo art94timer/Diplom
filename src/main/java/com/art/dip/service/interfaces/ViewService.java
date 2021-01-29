@@ -1,5 +1,6 @@
 package com.art.dip.service.interfaces;
 
+import com.art.dip.utility.dto.AccountInfoDTO;
 import com.art.dip.utility.dto.FacultyDTO;
 import com.art.dip.utility.dto.FacultyInfoDTO;
 
@@ -10,4 +11,10 @@ public interface ViewService {
     List<FacultyInfoDTO> getAllFaculties();
 
     FacultyInfoDTO getFacultyInfo(Integer id);
+
+    void notifyMe(Integer facultyId);
+
+    String getWeSendYouEmailMessage();
+
+    AccountInfoDTO getAccountInfo();
 }

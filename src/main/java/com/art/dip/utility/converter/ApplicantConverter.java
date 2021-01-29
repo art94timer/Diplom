@@ -48,6 +48,7 @@ public class ApplicantConverter {
         return applicant;
     }
 
+
     public ValidateApplicantDTO toRuValidateApplicantDTO(Applicant applicant) {
         ValidateApplicantDTO validateApplicantDTO = toValidateApplicantDTO(applicant);
         validateApplicantDTO.setValidateGradeDTO(gradeConverter.toRuValidateGradeDTO(applicant.getGrades()));

@@ -1,27 +1,27 @@
 package com.art.dip.service;
 
+import com.art.dip.model.Faculty;
 import com.art.dip.model.Person;
 import com.art.dip.service.interfaces.EmailService;
 import com.art.dip.utility.dto.ValidateFormApplicantDTO;
 import com.art.dip.utility.localization.MessageSourceService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class MailGunServiceImpl implements EmailService {
 
     private final MailGunClient client;
 
     private final MessageSourceService mesService;
 
-    private final CurrentPersonInfoService currentPersonInfoService;
 
     @Autowired
-    public MailGunServiceImpl(MailGunClient client, MessageSourceService mesService, CurrentPersonInfoService currentPersonInfoService) {
+    public MailGunServiceImpl(MailGunClient client, MessageSourceService mesService) {
         this.client = client;
         this.mesService = mesService;
-        this.currentPersonInfoService = currentPersonInfoService;
     }
 
     @Override
@@ -29,8 +29,8 @@ public class MailGunServiceImpl implements EmailService {
         try {
             String confirmationUrl
                     = appUrl + "/registrationConfirm?token=" + token;
-            String subject = mesService.getRegistrationConfirmSubjectMessage(user.getLocale());
-            String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(), confirmationUrl},user.getLocale());
+            String subject = mesService.getRegistrationConfirmSubjectMessage(LocaleContextHolder.getLocale());
+            String message = mesService.getRegistrationConfirmBodyMessage(new String[]{user.getFirstName(), confirmationUrl},LocaleContextHolder.getLocale());
             client.sendText(user.getEmail(), subject, message);
         } catch (UnirestException e) {
             throw new RuntimeException(e);
@@ -54,13 +54,29 @@ public class MailGunServiceImpl implements EmailService {
             String body = mesService.createInvalidApplicantMessage(dto);
             client.sendText(dto.getEmail(), subject, body);
         } catch (UnirestException e) {
-            e.printStackTrace();
+           throw new RuntimeException(e);
         }
     }
 
     @Override
     public void sendCheckChangeEmail(String email) {
-        String subject = mesService.getFacultyIsChangedSubjectMessage();
-        String body = mesService.getFacultyIsChangedBodyMessage();
+        try {
+            String subject = mesService.getFacultyIsChangedSubjectMessage();
+            String body = mesService.getFacultyIsChangedBodyMessage();
+            client.sendText(email,subject,body);
+        } catch (UnirestException e) {
+           throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void sendNotifyFacultyAvailableEmail(String email, Faculty faculty) {
+        try {
+            String subject = mesService.getNotifyFacultyAvailableSubjectMessage();
+            String body = mesService.getNotifyFacultyAvailableBodyMessage(email,faculty);
+            client.sendText(email,subject,body);
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
     }
 }

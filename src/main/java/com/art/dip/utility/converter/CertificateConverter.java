@@ -25,5 +25,9 @@ public class CertificateConverter {
 			certificate.setMark(dto.getMark());
 			return certificate;
 	}
+
+
+
+
 	
 }

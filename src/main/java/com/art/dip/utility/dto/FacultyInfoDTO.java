@@ -28,7 +28,7 @@ public class FacultyInfoDTO {
 
 	private List<SubjectDTO> subjects;
 
-	private boolean isExpired;
+	private boolean isAvailable;
 
 	public FacultyInfoDTO(Integer id, String name,
 						  Integer capacity, Double averageScore,

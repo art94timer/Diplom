@@ -24,14 +24,13 @@ public class FacultyInfoConverter {
 
     private FacultyInfoDTO toFacultyInfoDTO(FacultyInfo facultyInfo) {
         FacultyInfoDTO facultyInfoDTO = new FacultyInfoDTO();
-
             facultyInfoDTO.setCapacity(facultyInfo.getCapacity());
             facultyInfoDTO.setCountApplicants(facultyInfo.getCountApplicants());
-            facultyInfoDTO.setId(facultyInfo.getId());
+            facultyInfoDTO.setId(facultyInfo.getFaculty().getId());
             facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate());
             facultyInfoDTO.setAverageScore(facultyInfo.getAverageScore());
             facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime());
-            facultyInfoDTO.setExpired(facultyInfo.isAvailable());
+            facultyInfoDTO.setAvailable(facultyInfo.isAvailable());
 
         return facultyInfoDTO;
     }

@@ -1,11 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Hello, University!</title>
     <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <noscript>
         <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
     </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
 <div id="page-wrapper">
@@ -21,13 +23,11 @@
         <section class="wrapper style3">
             <div class="inner">
                 <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-10">
-                        <header class="major">
-                            <h2 th:utext="${message}"></h2>
-                        </header>
-                    </div>
+                    <header class="major">
+                        <h2 th:align="center" th:utext="${message}"></h2>
+                    </header>
                 </div>
+
                 <br><br>
                 <div class="row">
                     <div class="col-4"></div>

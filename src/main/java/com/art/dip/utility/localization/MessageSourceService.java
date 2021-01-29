@@ -1,9 +1,9 @@
 package com.art.dip.utility.localization;
 
-import com.art.dip.service.CurrentPersonInfoService;
+import com.art.dip.model.Faculty;
+import com.art.dip.service.PersonInfoService;
 import com.art.dip.utility.dto.CauseInvalid;
 import com.art.dip.utility.dto.ValidateFormApplicantDTO;
-import com.art.dip.utility.exception.ValidationFormException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ public class MessageSourceService {
 
     private final MessageSource messages;
 
-    private final CurrentPersonInfoService currentPersonInfoService;
+    private final PersonInfoService personInfoService;
 
     @Autowired
-    public MessageSourceService(MessageSource messages, CurrentPersonInfoService currentPersonInfoService) {
+    public MessageSourceService(MessageSource messages, PersonInfoService personInfoService) {
         this.messages = messages;
-        this.currentPersonInfoService = currentPersonInfoService;
+        this.personInfoService = personInfoService;
     }
     /*
 Ru Locale if name first symbol is russian
@@ -33,7 +33,7 @@ Ru Locale if name first symbol is russian
 
 
     private String simpleMessage(String message) {
-        return messages.getMessage(message,null,currentPersonInfoService.getCurrentLoggedPersonLocale());
+        return messages.getMessage(message,null, personInfoService.getCurrentLoggedPersonLocale());
     }
 
     private String simpleExplicitLocaleMessage(String message,Locale locale) {
@@ -41,7 +41,7 @@ Ru Locale if name first symbol is russian
     }
 
     private String messageWithArgs(String message,String[] args) {
-        return messages.getMessage(message,args,currentPersonInfoService.getCurrentLoggedPersonLocale());
+        return messages.getMessage(message,args, personInfoService.getCurrentLoggedPersonLocale());
     }
 
     private String explicitLocaleMessageWithArgs(String s, String[] args, Locale locale) {
@@ -188,5 +188,18 @@ Ru Locale if name first symbol is russian
 
     public String getFacultyIsChangedBodyMessage() {
         return simpleMessage("message.changed.faculty.email.body");
+    }
+
+    public String getNotifyFacultyAvailableSubjectMessage() {
+        return simpleMessage("message.notify.faculty.subject");
+    }
+
+    public String getNotifyFacultyAvailableBodyMessage(String email,Faculty faculty) {
+        Locale personLocale = personInfoService.getPersonLocale(email);
+        return explicitLocaleMessageWithArgs("message.notify.faculty.body",new String[]{faculty.getName()},personLocale);
+    }
+
+    public String getWeSendYouNotifyEmailMessage() {
+        return simpleMessage("message.we.send.notify");
     }
 }

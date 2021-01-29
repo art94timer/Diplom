@@ -1,87 +1,117 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="ISO-8859-1">
-    <title>Insert title here</title>
+    <title th:text="${faculty.name}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-
-    <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
     <link rel="stylesheet" type="text/css"
           href="chrome-extension://inlgdellfblpplcogjfedlhjnpgafnia/styles.css"/>
-</head>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
 <div id="page-wrapper">
     <div th:insert="~{fragments::header}"></div>
 
     <article id="main">
-        <section class="wrapper style5 " th:with="now=${#temporals.createNow()}">
-            <h2 th:text="#{label.available.faculty}"></h2>
-            <div class="row">
-                <div class="col-2">
-                </div>
-                <div class="col-8">
-                    <table class="alt">
-                        <thead>
-                        <tr>
-                            <th th:text="#{label.faculty}"></th>
-                            <th th:text="#{label.apply.period}"></th>
-                            <th th:text="#{faculty.info.capacity}"></th>
-                            <th th:text="#{label.registered.app}"></th>
-                            <th th:text="#{faculty.info.averageScore}"></th>
-                            <th th:text="#{faculty.info.remainingPlace}"></th>
-                            <th th:text="#{faculty.info.lastUpdate}"></th>
-                            <th th:text="#{label.action}"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="faculty : ${faculties}" th:with="expired=${faculty.expiredDate.isBefore(now)}">
-                            <div th:if="${!faculty.expired}">
-                                <td><a th:text="${faculty.name}" th:href="@{'/applicant/faculty' + ${faculty.id}}"></a>
-                                </td>
-                                <td th:text="${#temporals.format(faculty.expiredDate, 'd MMMM')}"></td>
+        <section id="banner">
+            <div class="inner">
+                <h2 th:text="${faculty.name}">Choose Your Specialty</h2>
+                </ul>
+                <a href="#one" class="more scrolly" th:utext="#{lable.choose}">Choose...</a>
+            </div>
+        </section>
+        <section id="one" class="wrapper style5 ">
+            <h2 th:align="center" th:text="${faculty.name}"></h2>
+            <br><br>
+            <div th:if="${faculty.isAvailable()}">
+                <h3 th:align="center" th:text="#{label.available.faculty}"></h3>
+            </div>
+            <div th:if="${!faculty.isAvailable()}">
+                <h3 th:align="center" th:text="#{label.closed.recruiting}"></h3>
+            </div>
+            <div th:if="${faculty.isAvailable()}">
+                <br><br>
+                <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-8">
+                        <table class="alt">
+                            <tbody>
+                            <tr>
+                                <td th:text="#{label.apply.period}"></td>
+                                <td th:text="${#temporals.format(faculty.expiredDate, 'd MMMM HH:mm')}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{faculty.info.capacity}">
                                 <td th:text="${faculty.capacity}"></td>
-                                <td th:text="${faculty.countApplicants}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{faculty.info.averageScore}"></td>
                                 <td th:text="${faculty.averageScore}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{faculty.info.remainingPlace}"></td>
                                 <td th:text="${(faculty.capacity - faculty.countApplicants) < 1} ?
                                     #{label.competition} : ${faculty.capacity - faculty.countApplicants}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{faculty.info.lastUpdate}"></td>
                                 <td th:text="${#temporals.format(faculty.updateTime, 'd MMMM HH:mm')}"></td>
-                                <div th:if="${!expired}">
-                                    <form th:action="@{/applicant/faculty}" method="post">
-                                        <input type="hidden" name="facId" th:value="${faculty.id}">
-                                        <td>
-                                            <button type="submit" th:text="#{label.apply}"></button>
-                                        </td>
-                                    </form>
-                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col-4">
+                        <div th:if="${!faculty.subjects.isEmpty()}">
+                            <div class="col-2">
+                                <h3 th:text="#{label.reqired.subjects}"></h3>
+                                <ul th:each="subject: ${faculty.subjects}">
+                                    <li th:text="${subject.name}"></li>
+                                </ul>
                             </div>
-                        </tr>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <a class="button" th:href="@{/view}" th:text="#{label.back.faculties}"></a>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <form th:action="@{/applicant/faculty}" method="post">
+                            <input type="hidden" name="facId" th:value="${faculty.id}">
+                            <td>
+                                <button class="button primary" type="submit" th:text="#{label.apply}"></button>
+                            </td>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="row gtr-uniform">
-                <div class="col-3"></div>
-                <div class="col-6">
-                    <table class="alt">
-                        <tr>
-                            <th class="col" th:text="#{label.faculty}"></th>
-                            <th class="col" th:text="#{label.notifyme}"></th>
-                        </tr>
-                        <tr th:each="faculty : ${faculties}">
-                            <div th:if="${faculty.expired}">
-                                <td class="col-3" th:text="${faculty.name}"></td>
-                                <form th:action="@{/view/faculty}" method="post">
-                                    <input th:name="facultyId" type="hidden" th:value="${faculty.id}">
-                                    <td class="col-3">
-                                        <button type="submit" th:text="#{label.notifyme}"></button>
-                                    </td>
-                                </form>
-                            </div>
-                        </tr>
-                    </table>
+            <div th:if="${!faculty.isAvailable()}">
+                <br><br>
+                <h3 th:align="center" th:text="#{label.we.can.notify.you}"></h3>
+                <br><br>  <br><br>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <form th:action="@{/view/faculty}" method="post">
+                            <input type="hidden" th:name="facultyId" th:value="${faculty.id}">
+                            <button type="submit" th:text="#{label.notifyme}"></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

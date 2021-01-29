@@ -34,6 +34,15 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Integer> {
 
     List<Applicant> getApplicantsByFaculty_Id(Integer id);
 
+    @Query("SELECT a from Applicant a JOIN FETCH a.faculty where a.id=:id")
+    Applicant getApplicantWithFacultyById(Integer id);
 
+
+
+
+
+    @Modifying
+    @Query("DELETE From Applicant a where a.person.id=:id")
+    void deleteByPersonId(Integer id);
 
 }

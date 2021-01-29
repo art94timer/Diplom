@@ -53,4 +53,10 @@ public class ApplicantRegisterController {
         return "infoMessage";
     }
 
+    @GetMapping("/dismiss")
+    public String dismiss() {
+        appService.dismissApplication();
+        return "redirect:/view/account";
+    }
+
 }

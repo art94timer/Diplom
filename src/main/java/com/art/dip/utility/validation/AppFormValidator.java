@@ -2,15 +2,15 @@ package com.art.dip.utility.validation;
 
 import com.art.dip.annotation.ValidateAppForm;
 import com.art.dip.model.Applicant;
+import com.art.dip.model.FacultyInfo;
 import com.art.dip.repository.ApplicantRepository;
 import com.art.dip.repository.FacultyInfoRepository;
-import com.art.dip.service.CurrentPersonInfoService;
+import com.art.dip.service.PersonInfoService;
 import com.art.dip.utility.dto.ApplicantDTO;
 import com.art.dip.utility.localization.MessageSourceService;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
@@ -25,13 +25,13 @@ public class AppFormValidator implements ConstraintValidator<ValidateAppForm, Ap
 
     private final ApplicantRepository applicantRepository;
 
-    private final CurrentPersonInfoService currentPersonInfoService;
+    private final PersonInfoService personInfoService;
 
-    public AppFormValidator(MessageSourceService mesService, FacultyInfoRepository repository, ApplicantRepository applicantRepository, CurrentPersonInfoService currentPersonInfoService) {
+    public AppFormValidator(MessageSourceService mesService, FacultyInfoRepository repository, ApplicantRepository applicantRepository, PersonInfoService personInfoService) {
         this.mesService = mesService;
         this.repository = repository;
         this.applicantRepository = applicantRepository;
-        this.currentPersonInfoService = currentPersonInfoService;
+        this.personInfoService = personInfoService;
     }
 
     @Override
@@ -40,11 +40,12 @@ public class AppFormValidator implements ConstraintValidator<ValidateAppForm, Ap
         boolean valid = false;
 
         if (value != null && value.getFaculty() != null) {
-            Integer currentLoggedPersonId = currentPersonInfoService.getCurrentLoggedPersonId();
+            Integer currentLoggedPersonId = personInfoService.getCurrentLoggedPersonId();
 
             Applicant applicant = applicantRepository.findByPerson_Id(currentLoggedPersonId);
 
-            valid = applicant == null && !repository.isFacultyExpired(LocalDateTime.now(), value.getFaculty().getId());
+            FacultyInfo facultyInfo = repository.findByFaculty_Id(value.getFaculty().getId());
+            valid = applicant == null && facultyInfo.isAvailable();
         }
 
 

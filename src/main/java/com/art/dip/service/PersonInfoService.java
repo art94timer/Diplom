@@ -14,12 +14,12 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-public class CurrentPersonInfoService {
+public class PersonInfoService {
 
     private final PersonRepository personRepository;
 
     @Autowired
-    public CurrentPersonInfoService(PersonRepository personRepository) {
+    public PersonInfoService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
@@ -32,11 +32,6 @@ public class CurrentPersonInfoService {
     }
 
     public Locale getCurrentLoggedPersonLocale() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (!(auth instanceof AnonymousAuthenticationToken)) {
-                SecurityUser securityUser = (SecurityUser) auth.getPrincipal();
-                    return securityUser.getLocale();
-                }
         return LocaleContextHolder.getLocale();
 
     }
@@ -44,6 +39,14 @@ public class CurrentPersonInfoService {
     public String getCurrentLoggedPersonEmail() {
         Person person = personRepository.findById(getCurrentLoggedPersonId()).get();
         return person.getEmail();
+    }
+
+    public Locale getPersonLocale(String email) {
+        Person person = personRepository.findByEmail(email).orElse(null);
+        if (person != null) {
+            return person.getLocale();
+        }
+        return Locale.ENGLISH;
     }
 }
 

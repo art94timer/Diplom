@@ -20,41 +20,5 @@ public interface AdminActionService {
     List<ValidateApplicantDTO> resolveMistakes(List<ValidateFormApplicantDTO> mistakes);
 
 
-    void addSubject(Subject subject);
-
-    List<Subject> getSubjects();
-
-    void deleteSubject(Integer subId) throws SubjectCRUDException;
-
-    String getSuccessfullyDeleteSubjectMessage();
-
-    Subject getSubjectWithFaculties(Integer subId);
-
-    void deleteFacultyFromSubject(Integer facultyId, Integer subjectId);
-
-    String getSuccessfullyEditMessage();
-
-    List<Faculty> getAllFacultiesIsNotAvailable();
-
-    void addFacultyToSubject(Integer facultyId, Integer subjectId);
-
-    List<Faculty> getFacultiesWithInfo();
-
-    Faculty getFacultyWithInfo(Integer facultyId);
-
-    void createFaculty(Faculty faculty);
-
-
-    void sendNotificationEmailToApplicants(FacultyInfo faculty);
-
-    void updateAvailableFaculty(FacultyInfo faculty);
-
-    FacultyInfo getFacultyInfo(Integer id);
-
-    Faculty getFacultyWithSubjects(Integer facultyId);
-
-    void deleteSubjectFromFaculty(Integer subjectId,Integer facultyId);
-
-    void addSubjectToFaculty(Integer subjectId, Integer facultyId);
 
 }

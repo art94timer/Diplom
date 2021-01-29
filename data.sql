@@ -91,6 +91,15 @@ values (3, 200, '2021-02-15',true),
        (8, 200, '2021-02-20',true),
        (9, 200, '2021-02-21',true);
 
+insert into notify_holder(faculty_id) values (1),
+                                             (2),
+                                             (3),
+                                             (4),
+                                             (5),
+                                             (6),
+                                             (7),
+                                             (8),
+                                             (9);
 
 insert into person(birth_date, email, first_name, last_name, role, credential_id, enabled,locale)
 VALUES ('2020-02-02', 'admin@admin.by',

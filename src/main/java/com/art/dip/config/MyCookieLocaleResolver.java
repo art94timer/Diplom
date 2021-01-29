@@ -23,14 +23,15 @@ public class MyCookieLocaleResolver extends CookieLocaleResolver {
         this.repository = repository;
     }
 
-   @Override
-   @Transactional
-    public void setLocale(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable Locale locale)  {
-        super.setLocale(request,response,locale);
+    @Override
+    @Transactional
+    public void setLocale(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable Locale locale) {
+        super.setLocale(request, response, locale);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             SecurityUser person = (SecurityUser) auth.getPrincipal();
-            repository.changeLocale(locale,person.getId());
+            repository.changeLocale(locale, person.getId());
         }
+
     }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Insert title here</title>
+    <title th:text="#{label.choose.Faculty}"></title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"/>
     <script th:src="@{/webjars/jquery/jquery.slim.min.js}"></script>
@@ -11,6 +11,7 @@
     <noscript>
         <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
     </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body>
 <div id="page-wrapper">
@@ -23,33 +24,32 @@
                 <a href="#one" class="more scrolly" th:utext="#{lable.choose}">Choose...</a>
             </div>
         </section>
-        <section id="one" class="wrapper style5" th:with="now=${#temporals.createNow()}" >
+        <section id="one" class="wrapper style5">
             <div class="inner">
                 <div class="row gtr-uniform">
+                    <div class="col-4"></div>
                     <br>
                     <form method="post" th:action="@{/applicant/faculty}">
-                        <div class="col">
+                        <div class="col-6">
                             <h4 th:align="center" th:utext="#{lable.choose}">Choose</h4>
                             <select th:name="facId">
-                                <option th:attr="disabled=${fac.expiredDate.isBefore(now)}"
-                                        th:styleappend="${fac.expiredDate.isBefore(now)} ? 'color:gray'"
+                                <option th:attr="disabled=${!fac.isAvailable}"
+                                        th:styleappend="${!fac.isAvailable} ? 'color:gray'"
                                         th:each="fac : ${faculties}" th:text="${fac.name}"
                                         th:value="${fac.id}"></option>
                             </select>
                         </div>
-
-                        <br>
-                        <br>
-                        <div class="row ">
-                            <div class="col-4"></div>
-                            <div class="col-4"></div>
-                            <div class="col-4">
-                                <button type="submit" th:utext="#{label.button.continue}"
-                                        class="primary fit"></button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <button type="submit" th:utext="#{label.button.continue}"
+                                class="primary fit"></button>
+                    </div>
+                </div>
+                </form>
             </div>
         </section>
     </article>

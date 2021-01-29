@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<title th:text="#{label.form.loginLink}"></title>
 <link rel="stylesheet"
 	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
@@ -49,9 +50,8 @@
 						<div class="row gtr-uniform">
 							<div class="col-4"></div>
 							<div class="col-4">
-
 								<input type="checkbox" id="remember-me" name="remember-me" checked>
-								<label for="remember-me">Remember me</label>
+								<label for="remember-me" th:text="#{label.remember.me}">Remember me</label>
 							</div>
 						</div>
 

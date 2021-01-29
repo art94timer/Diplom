@@ -17,7 +17,7 @@ public class NotifyHolder extends BaseEntity {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "notify_email", joinColumns = @JoinColumn(name = "notify_id"))
     @Column(name = "email")
     private List<String> emails;

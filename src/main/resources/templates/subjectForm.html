@@ -1,11 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title th:text="#{subject.name}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
     <noscript>
         <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
     </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
 </head>
 <body class="landing is-preload">
 <div id="page-wrapper">
@@ -52,56 +54,6 @@
                     <div th:if="${subject.id != null}">
                         <button class="button" type="submit" th:text="#{label.edit}"></button>
                     </div>
-                </form>
-                <div th:if="${subject.id != null}">
-                    <header th:align="center" th:text="#{label.admin.faculties}"></header>
-                    <br><br>
-                    <div class="row gtr-uniform">
-                        <div class="col-6">
-                            <div th:if="${subject.faculties != null}">
-                                <form th:id="del"  th:action="@{/admin/subject/delete/faculty}" method="post">
-                                    <label for="deleteFaculty" th:text="#{label.delete.faculty}"></label>
-                                    <input type="hidden" name="subjectId" th:value="${subject.id}">
-                                    <select id="deleteFaculty" th:name="facultyId">
-                                        <option value=""></option>
-                                        <div th:if="__${#locale}__=='ru'">
-                                            <option th:each="faculty : ${subject.faculties}"
-                                                    th:value="${faculty.id}"  th:text="${faculty.ruName}"></option>
-                                        </div>
-                                        <div th:unless="__${#locale}__">
-                                            <option th:each="faculty : ${subject.faculties}"
-                                                    th:text="${faculty.name}" th:value="${faculty.id}"></option>
-                                        </div>
-                                    </select>
-                                    <br><br>
-                                    <button th:form="del"  type="submit" th:text="#{label.delete}"></button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div th:if="${subject.faculties != null}">
-                                <form th:action="@{/admin/subject/add/faculty}" method="post">
-                                    <label for="addFaculty" th:text="#{label.add.faculty}"></label>
-                                    <input type="hidden" name="subjectId" th:value="${subject.id}">
-                                    <select id="addFaculty" th:name="facultyId">
-                                        <option value=""></option>
-                                        <div th:if="__${#locale}__=='ru'">
-                                            <option th:each="faculty : ${allFaculties}"
-                                                    th:value="${faculty.id}" th:text="${faculty.ruName}"></option>
-                                        </div>
-                                        <div th:unless="__${#locale}__">
-                                            <option th:each="faculty : ${subject.faculties}"
-                                                    th:text="${faculty.name}" th:value="${faculty.id}"></option>
-                                        </div>
-                                    </select>
-                                    <br><br>
-                                    <button type="submit" th:text="#{label.add}"></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
-                </div>
                 </form>
                 <br><br>
                 <div class="row">

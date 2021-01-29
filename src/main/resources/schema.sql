@@ -54,7 +54,7 @@ CREATE TABLE faculty (
 create table faculty_info(
 						id Serial not null,
 						capacity Integer default 0,
-						average numeric,
+						average numeric default 0,
 						countapp Integer  default 0,
 						update_time timestamp,
 						expired_date timestamp,

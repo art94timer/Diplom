@@ -13,7 +13,6 @@ public class SubjectConverter {
 
     public SubjectDTO toRuSubjectDTO(Subject subject) {
         SubjectDTO subjectDTO = toSubjectDTO(subject);
-
         subjectDTO.setName(subject.getRuName());
         return subjectDTO;
     }
@@ -28,7 +27,7 @@ public class SubjectConverter {
         return subjectDTO;
     }
     public List<SubjectDTO> toEnSubjectDTO(List<Subject> subjects) {
-        return subjects.stream().map(this::toRuSubjectDTO).collect(Collectors.toList());
+        return subjects.stream().map(this::toEnSubjectDTO).collect(Collectors.toList());
     }
 
 

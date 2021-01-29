@@ -35,18 +35,18 @@ public class AuthServiceImpl implements PersonService {
 
 	private final EmailService emailService;
 
-	private final CurrentPersonInfoService currentPersonInfoService;
+	private final PersonInfoService personInfoService;
 
 	@Autowired
 	public AuthServiceImpl(
-			PersonRepository repository, VerifyTokenRepository tokRepository,
-			MessageSourceService mesService, PersonConverter converter, EmailService emailService, CurrentPersonInfoService currentPersonInfoService) {
+            PersonRepository repository, VerifyTokenRepository tokRepository,
+            MessageSourceService mesService, PersonConverter converter, EmailService emailService, PersonInfoService personInfoService) {
 		this.repository = repository;
 		this.tokRepository = tokRepository;
 		this.mesService = mesService;
 		this.converter = converter;
 		this.emailService = emailService;
-		this.currentPersonInfoService = currentPersonInfoService;
+		this.personInfoService = personInfoService;
 	}
 
 	public Optional<Person> findByEmail(String email) {
@@ -75,7 +75,7 @@ public class AuthServiceImpl implements PersonService {
 	@Override
 	@Transactional
 	public Person registerNewPersonAccount(PersonDTO person) throws PersonAlreadyExistException {
-		Locale locale = currentPersonInfoService.getCurrentLoggedPersonLocale();
+		Locale locale = personInfoService.getCurrentLoggedPersonLocale();
 		if (emailExist(person.getEmail())) {
 			String message = mesService.getEmailIsExistMessage(locale,person.getEmail());
 			throw new PersonAlreadyExistException(message, person);
