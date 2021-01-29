@@ -91,11 +91,9 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
         applicant.setScore(calculateTotalScore(applicant));
         applicant.setRegistrationTime(LocalDateTime.now());
         applicant.setIsAccepted(false);
+        applicant.getGrades().forEach(x->x.setApplicant(applicant));
         applicantRepository.save(applicant);
-        applicant.getGrades().forEach(x -> {
-            x.setApplicant(applicant);
-            gradeRepository.save(x);
-        });
+
 
     }
 

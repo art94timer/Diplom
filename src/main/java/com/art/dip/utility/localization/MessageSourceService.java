@@ -23,13 +23,7 @@ public class MessageSourceService {
         this.messages = messages;
         this.personInfoService = personInfoService;
     }
-    /*
-Ru Locale if name first symbol is russian
- */
-    public Locale supposedLocale(ValidateFormApplicantDTO dto) {
-        String name = dto.getFullName();
-        return name.charAt(0) >= 0x0400 && name.charAt(0) <= 0x04FF  ? new Locale("ru","RU") : Locale.ENGLISH;
-    }
+
 
 
     private String simpleMessage(String message) {
@@ -65,12 +59,13 @@ Ru Locale if name first symbol is russian
 
 
 
-    public String getValidApplicantEmailSubjectMessage() {
+    public String getValidApplicantEmailSubjectMessage(String to) {
         return simpleMessage("valid.applicant.email.subject");
     }
 
-    public String getValidApplicantEmailBodyMessage() {
-        return simpleMessage("valid.applicant.email.body");
+    public String getValidApplicantEmailBodyMessage(String to) {
+
+        return simpleExplicitLocaleMessage("valid.applicant.email.body",personInfoService.getPersonLocale(to));
     }
 
     public String getErrorFormAdminMistakeNoCausesMessage(Locale locale) {
@@ -97,8 +92,8 @@ Ru Locale if name first symbol is russian
         return simpleExplicitLocaleMessage("invalid.certificate.mark",locale);
     }
 
-    public String getInvalidApplicantEmailSubjectMessage(Locale locale) {
-        return simpleExplicitLocaleMessage("invalid.email.subject",locale);
+    public String getInvalidApplicantEmailSubjectMessage(String to) {
+        return simpleExplicitLocaleMessage("invalid.email.subject",personInfoService.getPersonLocale(to));
     }
 
     public String getInvalidApplicantTemplateBodyMessage(Locale locale) {
@@ -122,7 +117,7 @@ Ru Locale if name first symbol is russian
 
     public String createInvalidApplicantMessage(ValidateFormApplicantDTO dto) {
 
-        Locale locale = supposedLocale(dto);
+        Locale locale = personInfoService.getPersonLocale(dto.getEmail());
 
         Set<CauseInvalid> causes = dto.getCauses();
         //If true reason else reasons
@@ -196,7 +191,8 @@ Ru Locale if name first symbol is russian
 
     public String getNotifyFacultyAvailableBodyMessage(String email,Faculty faculty) {
         Locale personLocale = personInfoService.getPersonLocale(email);
-        return explicitLocaleMessageWithArgs("message.notify.faculty.body",new String[]{faculty.getName()},personLocale);
+        String fName = personLocale.getLanguage().equals("ru") ? faculty.getRuName() : faculty.getName();
+        return explicitLocaleMessageWithArgs("message.notify.faculty.body",new String[]{fName},personLocale);
     }
 
     public String getWeSendYouNotifyEmailMessage() {

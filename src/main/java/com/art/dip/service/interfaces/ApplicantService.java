@@ -20,4 +20,5 @@ public interface ApplicantService {
     String getWaitForAdminEmailMessage();
 
     void dismissApplication();
+
 }

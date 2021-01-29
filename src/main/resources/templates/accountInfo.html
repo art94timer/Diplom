@@ -67,25 +67,27 @@
                         </div>
                         </tbody>
                     </table>
-                    <br><br>
-                    <br><br>
+                </div>
+                <br><br>
+                <br><br>
 
-                    <div class="row gtr-uniform">
-                        <div class="col-3">
-                            <a  th:class="button" th:href="@{/}" class="button" th:text="#{label.menu.home}"></a>
-                        </div>
-                        <div class="col-4"></div>
-                        <div th:if="${account.faculty != null}">
-                            <div class="col-4">
-                                <a th:href="@{/applicant/dismiss}" th:text="#{label.withdrawApplication}"></a>
-                            </div>
+                <div class="row gtr-uniform">
+                    <div class="col-3">
+                        <a th:class="button" th:href="@{/}" class="button" th:text="#{label.menu.home}"></a>
+                    </div>
+                    <div class="col-4"></div>
+                    <div th:if="${account.faculty != null}">
+                        <div class="col-4">
+                            <a class="button" th:href="@{/applicant/dismiss}"
+                               th:text="#{label.withdrawApplication}"></a>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <div th:insert="~{fragments::footer}"></div>
-    </article>
+
+</section>
+<div th:insert="~{fragments::footer}"></div>
+</article>
 </div>
 
 

@@ -40,8 +40,8 @@ public class MailGunServiceImpl implements EmailService {
     @Override
     public void sendValidApplicantEmail(ValidateFormApplicantDTO dto) {
         try {
-            client.sendText(dto.getEmail(), mesService.getValidApplicantEmailSubjectMessage()
-                    , mesService.getValidApplicantEmailBodyMessage());
+            client.sendText(dto.getEmail(), mesService.getValidApplicantEmailSubjectMessage(dto.getEmail())
+                    , mesService.getValidApplicantEmailBodyMessage(dto.getEmail()));
         } catch (UnirestException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +50,7 @@ public class MailGunServiceImpl implements EmailService {
     @Override
     public void sendInvalidApplicantEmail(ValidateFormApplicantDTO dto) {
         try {
-            String subject = mesService.getInvalidApplicantEmailSubjectMessage(mesService.supposedLocale(dto));
+            String subject = mesService.getInvalidApplicantEmailSubjectMessage(dto.getEmail());
             String body = mesService.createInvalidApplicantMessage(dto);
             client.sendText(dto.getEmail(), subject, body);
         } catch (UnirestException e) {

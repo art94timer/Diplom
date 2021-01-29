@@ -22,16 +22,15 @@
         <section class="wrapper style3">
             <div class="inner">
                 <div class="row">
-                    <div class="col-2">
-                        <a th:href="@{/admin/applicants}" th:text="#{applicants.name}"></a>
-                        <a th:href="@{/admin/subjects}" th:text="#{label.subjects.name}"></a>
-                        <a th:href="@{/admin/faculties}" th:text="#{label.admin.faculties}"></a>
-                    </div>
-                    <div class="col-10">
-                        <header class="major">
-                            <h2 th:utext="${message}"></h2>
-                        </header>
-                    </div>
+                        <ul>
+                            <li><h2><a th:href="@{/admin/applicants}" th:text="#{applicants.name}"></a></h2> </li>
+                            <br><br>
+                            <li><h2> <a th:href="@{/admin/subjects}" th:text="#{label.subjects.name}"></a></h2> </li>
+                            <br><br>
+                            <li><h2><a th:href="@{/admin/faculties}" th:text="#{label.admin.faculties}"></a></h2> </li>
+
+                        </ul>
+
                 </div>
                 <br><br>
                 <div class="row">
@@ -43,10 +42,11 @@
 
             </div>
         </section>
+        <div th:insert="~{fragments::footer}"></div>
     </article>
 </div>
 
-<div th:insert="~{fragments::footer}"></div>
+
 <div th:insert="~{fragments::scripts}"></div>
 </body>
 </html>

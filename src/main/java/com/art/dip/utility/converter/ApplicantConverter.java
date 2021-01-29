@@ -76,7 +76,7 @@ public class ApplicantConverter {
         validateApplicantDTO.setCertificate(certificate);
         validateApplicantDTO.setEmail(applicant.getPerson().getEmail());
         validateApplicantDTO.setId(applicant.getId());
-        validateApplicantDTO.setFullName(applicant.getPerson().getFirstName().concat(applicant.getPerson().getLastName()));
+        validateApplicantDTO.setFullName(applicant.getPerson().getFirstName().concat(" ").concat(applicant.getPerson().getLastName()));
         return validateApplicantDTO;
     }
 

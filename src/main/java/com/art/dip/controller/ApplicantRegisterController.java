@@ -42,14 +42,14 @@ public class ApplicantRegisterController {
     }
 
     @PostMapping("/save")
-    public String applicant(@ModelAttribute @Valid ApplicantDTO applicantDTO, BindingResult bindingResult, RedirectAttributes attributes) {
+    public String applicant(@ModelAttribute @Valid ApplicantDTO applicantDTO, BindingResult bindingResult, RedirectAttributes attributes,Model model) {
         if (bindingResult.hasErrors()) {
             attributes.addFlashAttribute("applicantDTO", applicantDTO);
             attributes.addFlashAttribute("facId", applicantDTO.getFaculty().getId());
             return "redirect:/applicant/faculty?facId=" + applicantDTO.getFaculty().getId();
         }
         appService.save(applicantDTO);
-        appService.getWaitForAdminEmailMessage();
+        model.addAttribute("message", appService.getWaitForAdminEmailMessage());
         return "infoMessage";
     }
 

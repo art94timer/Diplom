@@ -42,18 +42,20 @@ public class GmailServiceImpl implements EmailService {
 
     @Override
     public void sendValidApplicantEmail(ValidateFormApplicantDTO dto) {
+        String to = dto.getEmail();
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(dto.getEmail());
-        email.setSubject(mesService.getValidApplicantEmailSubjectMessage());
-        email.setText(mesService.getValidApplicantEmailBodyMessage());
+        email.setTo(to);
+        email.setSubject(mesService.getValidApplicantEmailSubjectMessage(to));
+        email.setText(mesService.getValidApplicantEmailBodyMessage(to));
         sender.send(email);
     }
 
     @Override
     public void sendInvalidApplicantEmail(ValidateFormApplicantDTO dto) {
+        String to = dto.getEmail();
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(dto.getEmail());
-        email.setSubject(mesService.getInvalidApplicantEmailSubjectMessage(mesService.supposedLocale(dto)));
+        email.setTo(to);
+        email.setSubject(mesService.getInvalidApplicantEmailSubjectMessage(to));
         email.setText(mesService.createInvalidApplicantMessage(dto));
         sender.send(email);
     }

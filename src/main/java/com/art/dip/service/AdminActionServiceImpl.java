@@ -103,6 +103,7 @@ public class AdminActionServiceImpl implements AdminActionService {
         emailService.sendValidApplicantEmail(dto);
     }
 
+
     private void invalidApplicant(ValidateFormApplicantDTO dto) {
         String certificateFileName = certificateRepository.getCertificateByApplicantId(dto.getApplicantId()).getFileName();
         Map<String, String> grades = getGradesForApplicant(dto.getApplicantId()).stream().collect(Collectors.toMap
