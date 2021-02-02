@@ -16,10 +16,9 @@
 	<description>HelloUniversity Project</description>
 
 	<properties>
-		<java.version>15</java.version>
-		<maven.compiler.source>15</maven.compiler.source>
-		<maven.compiler.target>15</maven.compiler.target>
-		<maven.compiler.release>15</maven.compiler.release>
+		<java.version>15.0.1</java.version>
+		<maven.compiler.source>15.0.1</maven.compiler.source>
+		<maven.compiler.target>15.0.1</maven.compiler.target>
 		<mailGun.version>1.4.9</mailGun.version>
 		<jquery.version>3.5.1</jquery.version>
 		<aws-java-sdk.version>1.11.939</aws-java-sdk.version>
