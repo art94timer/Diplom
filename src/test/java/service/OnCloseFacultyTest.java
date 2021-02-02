@@ -92,13 +92,13 @@ public class OnCloseFacultyTest {
     }
 
 
-    @Test
-    public void testOnCloseFaculty() throws InterruptedException {
-       Faculty f =  facultyRepository.findById(1002).orElse(null);
-       Assertions.assertNotNull(f);
-        FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(1);
-        f.setInfo(facultyInfo);
-        ses.schedule(new ApplicantEmailSendRunnableTask(f, emailService, applicantRepository, facultyInfoRepository), 5, TimeUnit.SECONDS);
-        Thread.sleep(1000 * 6);
-    }
+//    @Test
+//    public void testOnCloseFaculty() throws InterruptedException {
+//       Faculty f =  facultyRepository.findById(1002).orElse(null);
+//       Assertions.assertNotNull(f);
+//        FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(1);
+//        f.setInfo(facultyInfo);
+//        ses.schedule(new ApplicantEmailSendRunnableTask(f, emailService, applicantRepository, facultyInfoRepository), 5, TimeUnit.SECONDS);
+//        Thread.sleep(1000 * 6);
+//    }
 }
