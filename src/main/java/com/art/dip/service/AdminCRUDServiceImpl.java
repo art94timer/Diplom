@@ -280,6 +280,7 @@ public class AdminCRUDServiceImpl implements AdminCRUDService {
         facultyInfoInBase.setCountApplicants(0);
         facultyInfoInBase.setAverageScore(0d);
         facultyInfoInBase.setExpiredDate(facultyInfo.getExpiredDate());
+        facultyInfoInBase.setUpdateTime(LocalDateTime.now());
         faculty.setInfo(facultyInfoInBase);
     }
 

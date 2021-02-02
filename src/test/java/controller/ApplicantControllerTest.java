@@ -63,7 +63,7 @@ public class ApplicantControllerTest {
     @Test
     @WithMockUser(username = "user")
     public void testForRedirectIfFacultyIdIsNotNull() throws Exception {
-        mock.perform(get("/applicant/faculty").param("facId",String.valueOf(1))).andExpect(status().isOk());
+        mock.perform(get("/applicant/faculty").param("facId",String.valueOf(1000))).andExpect(status().isOk());
     }
 
 

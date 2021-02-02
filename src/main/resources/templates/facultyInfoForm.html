@@ -28,7 +28,7 @@
                 <h2 th:align="center" th:text="#{label.announce}"></h2>
                 <form method="post" th:action="@{/admin/facultyInfo}" th:object="${faculty}">
                     <br><br>
-                    <input type="hidden" th:name="|faculty.id|" th:value="${facultyId}">
+                    <input type="hidden" th:name="faculty.id" th:value="${facultyId}">
                     <div class="row">
                         <div class="col-6">
                             <label for="capacity" th:text="#{faculty.info.capacity}">first</label>

@@ -94,7 +94,7 @@ public class OnCloseFacultyTest {
 
     @Test
     public void testOnCloseFaculty() throws InterruptedException {
-       Faculty f =  facultyRepository.findById(1).orElse(null);
+       Faculty f =  facultyRepository.findById(1002).orElse(null);
        Assertions.assertNotNull(f);
         FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(1);
         f.setInfo(facultyInfo);

@@ -3,6 +3,7 @@ package service;
 import com.art.dip.model.Faculty;
 import com.art.dip.model.FacultyInfo;
 import com.art.dip.model.Subject;
+import com.art.dip.repository.FacultyInfoRepository;
 import com.art.dip.repository.FacultyRepository;
 import com.art.dip.repository.SubjectRepository;
 import com.art.dip.service.interfaces.AdminCRUDService;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,21 +39,24 @@ public class AdminCRUDServiceTest {
 
     private final SubjectRepository subjectRepository;
 
+    private final FacultyInfoRepository facultyInfoRepository;
+
 
     @Autowired
-    public AdminCRUDServiceTest(AdminCRUDService service, FacultyRepository facultyRepository, SubjectRepository subjectRepository) {
+    public AdminCRUDServiceTest(AdminCRUDService service, FacultyRepository facultyRepository, SubjectRepository subjectRepository, FacultyInfoRepository facultyInfoRepository) {
         this.service = service;
         this.facultyRepository = facultyRepository;
         this.subjectRepository = subjectRepository;
+        this.facultyInfoRepository = facultyInfoRepository;
     }
 
     @BeforeEach
+    @Transactional
     public void saveAll() {
         Subject subject = new Subject();
         Faculty faculty = new Faculty();
         faculty.setName("faculty");
         faculty.setRuName("Факультет");
-        faculty.setInfo(new FacultyInfo());
         service.createOrEditFaculty(faculty);
         subject.setFaculties(Collections.singletonList(faculty));
         subject.setName("Math");
