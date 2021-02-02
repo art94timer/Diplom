@@ -75,6 +75,7 @@
                         <div th:if="${!faculty.subjects.isEmpty()}">
                             <div class="col-2">
                                 <h3 th:text="#{label.reqired.subjects}"></h3>
+                                <br><br>
                                 <ul th:each="subject: ${faculty.subjects}">
                                     <li th:text="${subject.name}"></li>
                                 </ul>
