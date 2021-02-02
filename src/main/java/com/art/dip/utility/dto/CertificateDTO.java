@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CertificateDTO {
 
 	@Range(min = 1,max = 10)
-	private Integer mark;
+	private Double mark;
 	
 	private MultipartFile file;
 }

@@ -48,17 +48,18 @@ public class AdminCRUDController {
                                 Model model,
                                 RedirectAttributes attributes) {
         switch (action) {
-            case "edit" -> {
+            case "edit" : {
                 Subject subject = service.getSubject(subjectId);
                 if (subject != null) {
                     model.addAttribute("subject", subject);
                     return "subjectForm";
                 }
             }
-            case "delete" -> {
+            case "delete": {
                 try {
                     service.deleteSubject(subjectId);
                     attributes.addFlashAttribute(service.getSuccessfullyDeleteSubjectMessage());
+                    break;
                 }catch (SubjectCRUDException ex) {
                     attributes.addFlashAttribute("message",ex.getMessage());
                 }
@@ -161,9 +162,14 @@ public class AdminCRUDController {
     @PostMapping("/faculty/{action}/subject")
     public String deleteSubjectFromFaculty(@RequestParam Integer subjectId,@PathVariable String action,@RequestParam Integer facultyId) {
         switch (action) {
-            case "delete" -> service.deleteSubjectFromFaculty(subjectId,facultyId);
-
-            case "add" -> service.addSubjectToFaculty(subjectId,facultyId);
+            case "delete": {
+                service.deleteSubjectFromFaculty(subjectId, facultyId);
+                break;
+            }
+            case "add" : {
+                service.addSubjectToFaculty(subjectId, facultyId);
+                break;
+            }
         }
         return "redirect:/admin/faculty/" + facultyId;
     }

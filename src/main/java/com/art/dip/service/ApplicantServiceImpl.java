@@ -101,14 +101,14 @@ public class ApplicantServiceImpl implements ApplicantService {
     private Applicant prepareApplicant(ApplicantDTO dto) {
         Applicant applicant = applicantConverter.toEntity(dto);
         Optional<Faculty> f = facultyRepository.findById(applicant.getFaculty().getId());
-        if (f.isEmpty()) {
+        if (!f.isPresent()) {
             return null;
         }
         applicant.setFaculty(f.get());
         Integer currentLoggedPersonId = personInfoService.getCurrentLoggedPersonId();
 
         Optional<Person> p = personRepository.findById(currentLoggedPersonId);
-        if (p.isEmpty()) {
+        if (!p.isPresent()) {
             return null;
         }
 

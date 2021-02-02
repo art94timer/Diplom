@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 import java.util.Set;
 
+import static com.art.dip.utility.dto.CauseInvalid.*;
+
 @Component("messageSourceService")
 public class MessageSourceService {
 
@@ -127,18 +129,29 @@ public class MessageSourceService {
         String templ = "\n%d. %s";
         causes.forEach(x-> {
             switch (x) {
-                case ANOTHER_CAUSE -> {
-                    if (dto.getAnotherCause() != null && !dto.getAnotherCause().isEmpty())
+                case ANOTHER_CAUSE : {
+                    if (dto.getAnotherCause() != null && !dto.getAnotherCause().isEmpty()) {
                         str.append(String.format(templ, ++count[0], dto.getAnotherCause()));
+                    }
+                    break;
                 }
-                case INVALID_GRADE_MARK ->
-                        str.append(String.format(templ, ++count[0], getInvalidGradeMarkCauseMessage(locale)));
-                case INVALID_GRADE_PHOTO ->
-                        str.append(String.format(templ, ++count[0], getInvalidGradePhotoCauseMessage(locale)));
-                case INVALID_CERTIFICATE_MARK ->
-                        str.append(String.format(templ, ++count[0], getInvalidCertificateMarkCauseMessage(locale)));
-                case INVALID_CERTIFICATE_PHOTO ->
-                        str.append(String.format(templ, ++count[0], getInvalidCertificatePhotoCauseMessage(locale)));
+
+            case INVALID_GRADE_MARK : {
+                str.append(String.format(templ, ++count[0], getInvalidGradeMarkCauseMessage(locale)));
+                break;
+            }
+                case INVALID_GRADE_PHOTO : {
+                    str.append(String.format(templ, ++count[0], getInvalidGradePhotoCauseMessage(locale)));
+                    break;
+                }
+                case INVALID_CERTIFICATE_MARK : {
+                    str.append(String.format(templ, ++count[0], getInvalidCertificateMarkCauseMessage(locale)));
+                    break;
+                }
+                case INVALID_CERTIFICATE_PHOTO: {
+                    str.append(String.format(templ, ++count[0], getInvalidCertificatePhotoCauseMessage(locale)));
+                    break;
+                }
             }
         });
         return String.format(getInvalidApplicantTemplateBodyMessage(locale),dto.getFullName(),str.toString());

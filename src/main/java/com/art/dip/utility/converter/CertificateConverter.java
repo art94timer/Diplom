@@ -22,7 +22,8 @@ public class CertificateConverter {
 			Certificate certificate = new Certificate();
 			String fileName = photoService.uploadPhoto(dto.getFile());
 			certificate.setFileName(fileName);
-			certificate.setMark(dto.getMark());
+			int mark = (int) (dto.getMark() * 10);
+			certificate.setMark(mark);
 			return certificate;
 	}
 

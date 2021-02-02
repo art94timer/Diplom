@@ -16,9 +16,9 @@
 	<description>HelloUniversity Project</description>
 
 	<properties>
-		<java.version>15.0.1</java.version>
-		<maven.compiler.source>15.0.1</maven.compiler.source>
-		<maven.compiler.target>15.0.1</maven.compiler.target>
+		<java.version>8</java.version>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 		<mailGun.version>1.4.9</mailGun.version>
 		<jquery.version>3.5.1</jquery.version>
 		<aws-java-sdk.version>1.11.939</aws-java-sdk.version>
@@ -200,8 +200,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<target>15</target>
-					<source>15</source>
+					<target>8</target>
+					<source>8</source>
 				</configuration>
 			</plugin>
 		</plugins>
