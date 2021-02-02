@@ -42,10 +42,7 @@ public class Person extends BaseEntity {
 
     @Convert(converter = LocaleConverter.class)
     private Locale locale;
-    
-    public Person(Integer id) {
-    	super(id);
-    }
+
 
     public Person(Integer id, String firstName, String lastName, LocalDate birthdate, String email, Credential credential, Role role, boolean enabled) {
         super(id);

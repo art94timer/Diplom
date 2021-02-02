@@ -45,7 +45,7 @@
                             <tbody>
                             <tr>
                                 <td th:text="#{label.apply.period}"></td>
-                                <td th:text="${#temporals.format(faculty.expiredDate, 'd MMMM HH:mm')}"></td>
+                                <td th:text="${#temporals.format(faculty.expiredDate.atZone(zone.toZoneId()), 'd MMMM HH:mm')}"></td>
                             </tr>
                             <tr>
                                 <td th:text="#{faculty.info.capacity}">
@@ -62,7 +62,7 @@
                             </tr>
                             <tr>
                                 <td th:text="#{faculty.info.lastUpdate}"></td>
-                                <td th:text="${#temporals.format(faculty.updateTime, 'd MMMM HH:mm')}"></td>
+                                <td th:text="${#temporals.format(faculty.updateTime.atZone(zone.toZoneId()), 'd MMMM HH:mm')}"></td>
                             </tr>
                             </tbody>
                         </table>

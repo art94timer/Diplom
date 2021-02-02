@@ -1,6 +1,6 @@
 package com.art.dip.config;
 
-import com.art.dip.repository.PersonRepository;
+import com.art.dip.utility.LocaleChanger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +15,10 @@ import java.util.Locale;
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public LocaleResolver localeResolver(@Autowired PersonRepository repository) {
-        MyCookieLocaleResolver localeResolver = new MyCookieLocaleResolver(repository);
+    public LocaleResolver localeResolver(@Autowired  LocaleChanger changer) {
+        MyCookieLocaleResolver localeResolver = new MyCookieLocaleResolver(changer);
         localeResolver.setDefaultLocale(Locale.ENGLISH);
+        localeResolver.setCookieName("locale");
         return localeResolver;
     }
 

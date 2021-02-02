@@ -32,7 +32,7 @@
                                     th:text="#{label.menu.login}" th:href="@{/login}">Log In</a></li>
                             <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/menu}"
                                                                          th:utext="#{label.admin.menu}"></a></li>
-                            <li sec:authorize="isAuthenticated()"><a href="javascript:;" onclick="document.getElementById('form1').submit();"
+                            <li sec:authorize="isAuthenticated()"><a href="javascript;" onclick="document.getElementById('form1').submit();"
                                    th:utext="#{logout}">Log Out</a></li>
 
 

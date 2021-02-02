@@ -32,8 +32,9 @@
                                 <div class="col-4"></div>
                             <div class="col-4">
 
-                        <select th:name="faculty">
+                        <select required th:name="faculty">
                             <option th:each="fac : ${faculties}" th:text="${fac.name}" th:field="*{faculty}" th:value="${fac.id}">- Category -</option>
+                            <option  th:text="#{label.all}" th:field="*{faculty}" th:value="0">- All -</option>
                         </select>
                             </div>
                             </div>
@@ -43,7 +44,7 @@
 
                                 <div class="col-4"></div>
                                 <div class="col-4">
-                                <input th:name="countApplicants" th:field="*{countApplicants}" type="number" th:default="10">
+                                <input required th:name="countApplicants" th:field="*{countApplicants}" type="number" th:default="10">
                                 </div>
                             </div>
                             <br><br>

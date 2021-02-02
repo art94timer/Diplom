@@ -11,7 +11,6 @@ import com.art.dip.utility.localization.MessageSourceService;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.time.LocalDateTime;
 
 /*
     If applicant is already exist or faculty has expired

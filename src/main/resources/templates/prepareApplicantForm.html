@@ -26,12 +26,18 @@
         </section>
         <section id="one" class="wrapper style5">
             <div class="inner">
-                <div class="row gtr-uniform">
-                    <div class="col-4"></div>
-                    <br>
-                    <form method="post" th:action="@{/applicant/faculty}">
-                        <div class="col-6">
+                <br>
+                <form method="post" th:action="@{/applicant/faculty}">
+                    <div class="row gtr-uniform">
+                        <div class="col-4"></div>
+                        <div class="col-4">
                             <h4 th:align="center" th:utext="#{lable.choose}">Choose</h4>
+                        </div>
+                        <br><br><br>
+                    </div>
+                    <div class="row gtr-uniform">
+                        <div class="col-4"></div>
+                        <div class="col-4">
                             <select th:name="facId">
                                 <option th:attr="disabled=${!fac.isAvailable}"
                                         th:styleappend="${!fac.isAvailable} ? 'color:gray'"
@@ -39,16 +45,16 @@
                                         th:value="${fac.id}"></option>
                             </select>
                         </div>
-                </div>
-                <br>
-                <br>
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                        <button type="submit" th:utext="#{label.button.continue}"
-                                class="primary fit"></button>
                     </div>
-                </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <button type="submit" th:utext="#{label.button.continue}"
+                                    class="primary fit"></button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </section>

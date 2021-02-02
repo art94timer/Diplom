@@ -9,19 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-
 import java.util.List;
 
-import static com.art.dip.utility.Constants.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminActionController {
+
+    public static final String ADMIN_SETTINGS = "Admin settings";
 
     private final AdminActionService service;
 
@@ -61,7 +63,7 @@ public class AdminActionController {
         if (settings == null) {
             return "redirect:/admin/prepare";
         }
-         List<ValidateApplicantDTO> applicants = service.prepareValidateFormModelAndView(settings);
+         List<ValidateApplicantDTO> applicants = service.prepareValidateFormList(settings);
         model.addAttribute("applicants",applicants);
         model.addAttribute("faculties",service.getFaculties());
         model.addAttribute("settings",settings);
@@ -70,13 +72,14 @@ public class AdminActionController {
 
 
     @PostMapping("/applicants")
-    public String validateApplicant(@ModelAttribute @Valid ListValidateFormApplicantDTO ListValidateFormApplicantDTO, BindingResult bindingResult,Model model) {
+    public String validateApplicant(@ModelAttribute @Valid ListValidateFormApplicantDTO listValidateFormApplicantDTO, BindingResult bindingResult,Model model, HttpSession session) {
         try {
-            service.handleListForms(ListValidateFormApplicantDTO);
+            service.handleListForms(listValidateFormApplicantDTO);
         }catch (AdminMistakeApplicantFormException ex) {
             model.addAttribute("applicants", service.resolveMistakes(ex.getMistakes()));
             model.addAttribute("message",ex.getMessage());
             model.addAttribute("faculties",service.getFaculties());
+            model.addAttribute("settings",session.getAttribute(ADMIN_SETTINGS));
             return "adminWork";
         }
         return "redirect:/admin/applicants";

@@ -20,10 +20,4 @@ public class ValidateApplicantDTO {
 
     private Certificate certificate;
 
-    public ValidateApplicantDTO(Integer id,String fullName,  String email,Certificate certificate) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.certificate = certificate;
-    }
 }

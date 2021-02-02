@@ -59,13 +59,13 @@ public class MessageSourceService {
 
 
 
-    public String getValidApplicantEmailSubjectMessage(String to) {
-        return simpleMessage("valid.applicant.email.subject");
+    public String getValidApplicantEmailSubjectMessage(Locale locale) {
+        return simpleExplicitLocaleMessage("valid.applicant.email.subject",locale);
     }
 
-    public String getValidApplicantEmailBodyMessage(String to) {
+    public String getValidApplicantEmailBodyMessage( Locale personLocale) {
 
-        return simpleExplicitLocaleMessage("valid.applicant.email.body",personInfoService.getPersonLocale(to));
+        return simpleExplicitLocaleMessage("valid.applicant.email.body",personLocale);
     }
 
     public String getErrorFormAdminMistakeNoCausesMessage(Locale locale) {
@@ -177,25 +177,81 @@ public class MessageSourceService {
         return simpleMessage("message.faculty.exist");
     }
 
-    public String getFacultyIsChangedSubjectMessage() {
-        return simpleMessage("message.changed.faculty.email.subject");
+    public String getFacultyIsChangedSubjectMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("message.changed.faculty.email.subject",personLocale);
     }
 
-    public String getFacultyIsChangedBodyMessage() {
-        return simpleMessage("message.changed.faculty.email.body");
+    public String getFacultyIsChangedBodyMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("message.changed.faculty.email.body",personLocale);
     }
 
-    public String getNotifyFacultyAvailableSubjectMessage() {
-        return simpleMessage("message.notify.faculty.subject");
+    public String getNotifyFacultyAvailableSubjectMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("message.notify.faculty.subject",personLocale);
     }
 
-    public String getNotifyFacultyAvailableBodyMessage(String email,Faculty faculty) {
-        Locale personLocale = personInfoService.getPersonLocale(email);
+    public String getNotifyFacultyAvailableBodyMessage(Locale personLocale,Faculty faculty) {
         String fName = personLocale.getLanguage().equals("ru") ? faculty.getRuName() : faculty.getName();
         return explicitLocaleMessageWithArgs("message.notify.faculty.body",new String[]{fName},personLocale);
     }
 
     public String getWeSendYouNotifyEmailMessage() {
         return simpleMessage("message.we.send.notify");
+    }
+
+    public String getInvalidNameMessage() {
+        return simpleMessage("message.invalid.name");
+    }
+
+    public String getSubjectIsExistMessage() {
+        return simpleMessage("message.subject.exist");
+    }
+
+    public String getWeSorryFacultyDisabledSubjectMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("message.faculty.disabled.subject",personLocale);
+    }
+
+    public String getWeSorryFacultyDisabledBodyMessage(Locale personLocale, Faculty faculty) {
+        String name = personLocale.getLanguage().equals("ru") ? faculty.getRuName() : faculty.getName();
+        return explicitLocaleMessageWithArgs("message.faculty.disabled.body",new String[]{name},personLocale);
+    }
+
+    public String getCongratulationEmailSubjectMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("congratulation.email.subject",personLocale);
+    }
+
+    public String getCongratulationEmailBodyMessage(Locale personLocale, Faculty faculty) {
+        String facultyName;
+        if (personLocale.getLanguage().equals("ru")) {
+            facultyName = faculty.getRuName();
+        } else {
+            facultyName = faculty.getName();
+        }
+        return explicitLocaleMessageWithArgs("congratulation.email.body",new String[]{facultyName},personLocale);
+    }
+
+    public String getMaybeNextTimeEmailSubjectMessage(Locale personLocale) {
+        return simpleExplicitLocaleMessage("maybe.next.time.subject",personLocale);
+    }
+
+    public String getMaybeNextTimeEmailBodyMessage(Locale personLocale, Faculty faculty) {
+        String facultyName;
+        if (personLocale.getLanguage().equals("ru")) {
+            facultyName = faculty.getRuName();
+        } else {
+            facultyName = faculty.getName();
+        }
+        return explicitLocaleMessageWithArgs("maybe.next.time.body",new String[]{facultyName},personLocale);
+    }
+
+    public String getSubjectsNotFoundMessage() {
+        return simpleMessage("message.nosubjects");
+    }
+
+    public String getInvalidCapacityOrInvalidDate() {
+        return simpleMessage("message.invalid.date.or.cap");
+    }
+
+    public String getYouWillNotPass(Locale locale) {
+        return simpleExplicitLocaleMessage("you.will.not.pass",locale);
     }
 }

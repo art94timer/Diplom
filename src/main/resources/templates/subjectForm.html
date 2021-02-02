@@ -48,11 +48,18 @@
                         </div>
                     </div>
                     <br><br>
-                    <div th:if="${subject.id == null}">
-                        <button class="button" type="submit" th:text="#{label.create}"></button>
-                    </div>
-                    <div th:if="${subject.id != null}">
-                        <button class="button" type="submit" th:text="#{label.edit}"></button>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <div th:if="${subject.id == null}">
+                                <button class="button primary" type="submit" th:text="#{label.create}"></button>
+                            </div>
+                            <div th:if="${subject.id != null}">
+                                <input type="hidden" th:name="|id|" th:value="${subject.id}">
+                                <button class="button primary" type="submit" th:text="#{label.edit}"></button>
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <br><br>

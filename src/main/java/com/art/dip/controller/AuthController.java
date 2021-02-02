@@ -1,7 +1,7 @@
 package com.art.dip.controller;
 
 import com.art.dip.model.VerifyToken;
-import com.art.dip.service.interfaces.PersonService;
+import com.art.dip.service.interfaces.AuthService;
 import com.art.dip.utility.dto.PersonDTO;
 import com.art.dip.utility.exception.PersonAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ public class AuthController {
 
 
 
-    private final PersonService service;
+    private final AuthService service;
 
 
     @Autowired
-    public AuthController(PersonService service) {
+    public AuthController(AuthService service) {
         this.service = service;
     }
 

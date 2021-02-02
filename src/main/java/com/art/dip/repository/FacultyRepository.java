@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -15,13 +14,9 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 	@Query("SELECT f FROM Faculty f LEFT JOIN FETCH f.subjects where f.id=:id")
 	Faculty findFacultyByIdWithSubject(Integer id);
 
+	List<Faculty> findAllByInfo_IsAvailableTrue();
 
-
-	@Query("SELECT f FROM Faculty f where f.info.expiredDate>=:now")
-	List<Faculty> findAllFacultiesNotExpired(LocalDateTime now);
-
-
-	@Query("select f From Faculty f JOIN fetch f.info where f.id=:id")
+	@Query("From Faculty f JOIN fetch f.info where f.id=:id")
 	Faculty findFacultyByIdWithInfo(Integer id);
 
 	List<Faculty> findAllByInfo_IsAvailable(boolean expired);

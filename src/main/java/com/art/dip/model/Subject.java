@@ -4,7 +4,6 @@ package com.art.dip.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -16,26 +15,20 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-
 public class Subject extends BaseEntity {
 
     @Column(unique = true)
-    @Pattern(regexp = "[A-Za-z]+")
+    @Pattern(regexp = "[A-Z a-z]+")
     private String name;
 
-    @Pattern(regexp = "[А-Яа-я]+")
+    @Pattern(regexp = "[А-Я а-я]+")
     @Column(unique = true)
     private String ruName;
-
-    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "faculty_subject",
             joinColumns = @JoinColumn(name = "faculty_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private List<Faculty> faculties;
-    
-    public Subject(Integer id) {
-    	super(id);
-    }
+
 
 }

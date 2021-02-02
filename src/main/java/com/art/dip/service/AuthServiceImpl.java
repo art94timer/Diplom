@@ -6,12 +6,13 @@ import com.art.dip.model.Role;
 import com.art.dip.model.VerifyToken;
 import com.art.dip.repository.PersonRepository;
 import com.art.dip.repository.VerifyTokenRepository;
+import com.art.dip.service.interfaces.AuthService;
 import com.art.dip.service.interfaces.EmailService;
-import com.art.dip.service.interfaces.PersonService;
 import com.art.dip.utility.converter.PersonConverter;
 import com.art.dip.utility.dto.PersonDTO;
 import com.art.dip.utility.exception.PersonAlreadyExistException;
 import com.art.dip.utility.localization.MessageSourceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +24,8 @@ import java.util.UUID;
 
 
 @Service
-public class AuthServiceImpl implements PersonService {
+@Slf4j
+public class AuthServiceImpl implements AuthService {
 
 	private final PersonRepository repository;
 
@@ -64,6 +66,7 @@ public class AuthServiceImpl implements PersonService {
 		Person person = token.getPerson();
 		person.setEnabled(true);
 		repository.save(person);
+		log.info("Person was confirmed his email ".concat(person.getEmail()));
 	}
 
 	@Override
@@ -74,10 +77,11 @@ public class AuthServiceImpl implements PersonService {
 
 	@Override
 	@Transactional
-	public Person registerNewPersonAccount(PersonDTO person) throws PersonAlreadyExistException {
+	public void registerNewPersonAccount(PersonDTO person) throws PersonAlreadyExistException {
 		Locale locale = personInfoService.getCurrentLoggedPersonLocale();
 		if (emailExist(person.getEmail())) {
 			String message = mesService.getEmailIsExistMessage(locale,person.getEmail());
+			log.info("Email ".concat(person.getEmail()).concat("is already existed"));
 			throw new PersonAlreadyExistException(message, person);
 		}
 		Person converted = converter.toEntity(person);
@@ -85,23 +89,19 @@ public class AuthServiceImpl implements PersonService {
 		converted.setLocale(locale);
 		Person saved = repository.save(converted);
 		handleRegistration(saved);
-		return saved;
-
+		log.info("Person was created with email ".concat(person.getEmail()));
 	}
 
 	private boolean emailExist(String email) {
 		return repository.findByEmail(email).isPresent();
 	}
 
-	@Override
-	public Person getPerson(String verifyToken) {
-		return tokRepository.findByToken(verifyToken).getPerson();
-	}
 
-	@Override
+
 	public VerifyToken createVerificationToken(Person person) {
 		VerifyToken verToken = new VerifyToken(person, UUID.randomUUID().toString());
 		tokRepository.save(verToken);
+		log.info("Token - ".concat(verToken.getToken()).concat(" was created"));
 		return verToken;
 	}
 

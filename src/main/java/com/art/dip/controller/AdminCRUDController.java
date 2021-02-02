@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping("/admin")
@@ -42,50 +43,57 @@ public class AdminCRUDController {
         return "subjectForm";
     }
 
-    @GetMapping("/subject/{id}")
-    public String editSubject(@PathVariable("id") Integer subjectId, Model model) {
-        model.addAttribute("subject",service.getSubjectWithFaculties(subjectId));
-        return "subjectForm";
+    @RequestMapping(value = "/subject/{action}",method = {RequestMethod.GET,RequestMethod.POST})
+    public String actionSubject(@PathVariable String action, @RequestParam(value = "id",required = false) Integer subjectId,
+                                Model model,
+                                RedirectAttributes attributes) {
+        switch (action) {
+            case "edit" -> {
+                Subject subject = service.getSubject(subjectId);
+                if (subject != null) {
+                    model.addAttribute("subject", subject);
+                    return "subjectForm";
+                }
+            }
+            case "delete" -> {
+                try {
+                    service.deleteSubject(subjectId);
+                    attributes.addFlashAttribute(service.getSuccessfullyDeleteSubjectMessage());
+                }catch (SubjectCRUDException ex) {
+                    attributes.addFlashAttribute("message",ex.getMessage());
+                }
+            }
+        }
+        return "redirect:/admin/subjects";
     }
 
-
-    @PostMapping("/subject/delete")
-    public String deleteSubject(@RequestParam Integer subId, RedirectAttributes attributes) {
+    @PostMapping("/subject")
+    public String createOrEditSubject(@ModelAttribute @Valid Subject subject, BindingResult bindingResult, Model model,RedirectAttributes attributes) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("subject",subject);
+            return "subjectForm";
+        }
         try {
-            service.deleteSubject(subId);
-            attributes.addFlashAttribute("message",service.getSuccessfullyDeleteSubjectMessage());
+            service.createOrEditSubject(subject);
         }catch (SubjectCRUDException ex) {
             attributes.addFlashAttribute("message",ex.getMessage());
         }
         return "redirect:/admin/subjects";
     }
-    @PostMapping("/subject")
-    public String addSubject(@ModelAttribute @Valid Subject subject, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
-            model.addAttribute("subject",subject);
-            return "subjectForm";
-        }
-        service.addSubject(subject);
-        return "redirect:/admin/subjects";
-    }
 
     @GetMapping("/faculties")
-    public String faculties(Model model) {
-        List<Faculty> facultiesWithInfo = service.getFacultiesWithInfo();
-        List <Faculty> available = new ArrayList<>();
-        List <Faculty> notAvailable = new ArrayList<>();
-        facultiesWithInfo.forEach(x->{
-            if (x.getInfo().isAvailable()) {
-                available.add(x);
-            }
-            else {
-                notAvailable.add(x);
-            }
-        });
-
-        model.addAttribute("available",available);
-        model.addAttribute("notAvailable",notAvailable);
+    public String faculties(Model model, TimeZone timeZone) {
+        Map<String,List<Faculty>> map = service.getFacultiesWithInfo();
+        model.addAttribute("available",map.get("available"));
+        model.addAttribute("notAvailable",map.get("notAvailable"));
+        model.addAttribute("zone",timeZone);
         return "faculties";
+    }
+
+    @GetMapping("/faculty")
+    public String createFacultyForm(@ModelAttribute Faculty faculty,Model model) {
+        model.addAttribute("faculty",faculty);
+        return "facultyForm";
     }
 
     @PostMapping("/faculty")
@@ -95,8 +103,8 @@ public class AdminCRUDController {
             return "facultyForm";
         }
         try {
-            Faculty f = service.createFaculty(faculty);
-            return "redirect:/admin/faculties".concat(String.valueOf(f.getId()));
+             service.createOrEditFaculty(faculty);
+            return "redirect:/admin/faculties";
         }catch (FacultyCRUDException ex) {
             model.addAttribute("message",ex.getMessage());
             model.addAttribute("faculty",faculty);
@@ -118,13 +126,19 @@ public class AdminCRUDController {
             model.addAttribute("faculty",faculty);
             return "facultyInfoForm";
         }
-        if (!faculty.isAvailable()) {
-            service.openRecruiting(faculty);
+        try {
+            if (!faculty.isAvailable()) {
+                service.openRecruiting(faculty);
+            } else {
+                service.updateAvailableFaculty(faculty);
+                model.addAttribute("message",service.getSuccessfullyEditMessage());
+            }
+        }catch (FacultyCRUDException ex) {
+            model.addAttribute("message",ex.getMessage());
+            model.addAttribute("faculty",faculty);
+            return "facultyInfoForm";
         }
-        else {
-            service.updateAvailableFaculty(faculty);
-            model.addAttribute("message",service.getSuccessfullyEditMessage());
-        }
+
         return "redirect:/admin/faculties";
     }
 
@@ -142,21 +156,15 @@ public class AdminCRUDController {
         return "facultyForm";
     }
 
-    @GetMapping("/faculty")
-    public String createFacultyForm(@ModelAttribute Faculty faculty,Model model) {
-        model.addAttribute("faculty",faculty);
-        return "facultyForm";
-    }
 
-    @PostMapping("/faculty/delete/subject")
-    public String deleteSubjectFromFaculty(@RequestParam Integer subjectId,@RequestParam Integer facultyId) {
-        service.deleteSubjectFromFaculty(subjectId,facultyId);
-        return "redirect:/admin/faculty/" + facultyId;
-    }
 
-    @PostMapping("/faculty/add/subject")
-    public String addSubjectToFaculty(@RequestParam Integer subjectId,@RequestParam Integer facultyId) {
-        service.addSubjectToFaculty(subjectId,facultyId);
+    @PostMapping("/faculty/{action}/subject")
+    public String deleteSubjectFromFaculty(@RequestParam Integer subjectId,@PathVariable String action,@RequestParam Integer facultyId) {
+        switch (action) {
+            case "delete" -> service.deleteSubjectFromFaculty(subjectId,facultyId);
+
+            case "add" -> service.addSubjectToFaculty(subjectId,facultyId);
+        }
         return "redirect:/admin/faculty/" + facultyId;
     }
 

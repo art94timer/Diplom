@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{label.error}"></title>
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <noscript>
+        <link rel="stylesheet" th:href="@{/assets/css/noscript.css}"/>
+    </noscript>
+    <link rel="icon" href="https://adm-board.s3.eu-west-2.amazonaws.com/faculty.png">
+</head>
+<body class="landing is-preload">
+<div id="page-wrapper">
+    <div th:insert="~{fragments::header}"></div>
+    <section id="banner">
+        <div class="inner">
+            <h2 th:text="#{label.have.good.day}">Hello</h2>
+        </div>
+        <a href="#one" th:text="#{label.learnMore}" class="more scrolly">Learn More</a>
+    </section>
+
+    <article id="main">
+        <section class="wrapper style3">
+            <div class="inner">
+                <div>
+                    <h1>Oops... something went wrong.</h1>
+                    <h2 th:text="${status + ' ' + error}"></h2>
+                </div>
+
+                <br><br>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <a th:href="@{/}" class="button" th:text="#{label.menu.home}"></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </article>
+</div>
+
+<div th:insert="~{fragments::footer}"></div>
+<div th:insert="~{fragments::scripts}"></div>
+</body>
+</html>

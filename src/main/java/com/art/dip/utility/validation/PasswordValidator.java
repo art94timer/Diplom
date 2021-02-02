@@ -27,7 +27,7 @@ public class PasswordValidator implements ConstraintValidator<Password, PersonDT
                 && value.getPassword().equals(value.getConfirmPassword());
 
         if (!valid) {
-            context.buildConstraintViolationWithTemplate(mesService.getValidationMessagePasswordNotMatched())
+            context.buildConstraintViolationWithTemplate(mesService.getInvalidNameMessage())
                     .addPropertyNode("password")
                     .addConstraintViolation()
                     .disableDefaultConstraintViolation();

@@ -3,31 +3,25 @@ package com.art.dip.service.interfaces;
 import com.art.dip.model.Faculty;
 import com.art.dip.model.FacultyInfo;
 import com.art.dip.model.Subject;
-import com.art.dip.utility.dto.FacultyDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminCRUDService {
 
-    void addSubject(Subject subject);
+    void createOrEditSubject(Subject subject);
+
     List<Subject> getSubjects();
 
     void deleteSubject(Integer subId);
 
     String getSuccessfullyDeleteSubjectMessage();
 
-    Subject getSubjectWithFaculties(Integer subId);
-
     String getSuccessfullyEditMessage();
 
-    List<Faculty> getAllFacultiesIsNotAvailable();
+    Map<String, List<Faculty>> getFacultiesWithInfo();
 
-
-    List<Faculty> getFacultiesWithInfo();
-
-    Faculty getFacultyWithInfo(Integer facultyId);
-
-    Faculty createFaculty(Faculty faculty);
+    void createOrEditFaculty(Faculty faculty);
 
     void sendNotificationEmailToApplicants(FacultyInfo faculty);
 
@@ -37,11 +31,9 @@ public interface AdminCRUDService {
 
     Faculty getFacultyWithSubjects(Integer facultyId);
 
-    void deleteSubjectFromFaculty(Integer subjectId,Integer facultyId);
+    void deleteSubjectFromFaculty(Integer subjectId, Integer facultyId);
 
     void addSubjectToFaculty(Integer subjectId, Integer facultyId);
-
-    List<FacultyDTO> getFaculties();
 
     void openRecruiting(FacultyInfo faculty);
 
@@ -49,4 +41,5 @@ public interface AdminCRUDService {
 
     void deleteFaculty(Integer facultyId);
 
+    Subject getSubject(Integer subjectId);
 }

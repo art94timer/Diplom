@@ -70,7 +70,7 @@
                                             <a th:attr="id=${grade.getSubject().getName()},href=${grade.getFileName()}"
                                                target="_blank">
                                         <span class="img fit"><img th:attr="src=${grade.getFileName()}"
-                                                                   style="width:100%;max-width:300px;"/></a></span>
+                                                                   style="width:100%;max-width:300px;" th:alt="#{label.nophoto}"/></a></span>
                                         </details>
                                     </td>
                                     <td th:align="center" style="vertical-align: middle;"
@@ -97,7 +97,7 @@
                                         <a th:href="${applicant.getCertificate().getFileName()}"
                                            target="_blank">
                                         <span class="img fit"><img th:src="${applicant.getCertificate().getFileName()}"
-                                                                   style="width:100%;max-width:300px;"></a></span>
+                                                                   style="width:100%;max-width:300px;" th:alt="#{label.nophoto}"></a></span>
                                     </details>
                                 </td>
                                 <td th:text="${applicant.getCertificate().getMark()}">
@@ -159,7 +159,7 @@
                                 <label th:for="${applicant.id} + 'anotherReason'"
                                        th:utext="#{label.enter.message}"></label>
                                 <textarea th:id="${applicant.id} + 'anotherReason'"
-                                          th:name="|list[${itemStat.index}].anotherReason|" rows="6">
+                                          th:name="|list[${itemStat.index}].anotherReason|">
                             </textarea>
                             </details>
                             <br><br>
@@ -167,7 +167,6 @@
                         <button type="submit" class="btn" th:utext="#{button.next}"></button>
                     </form>
                 </div>
-
 
             </div>
             <div th:if="${applicants.isEmpty()}">
@@ -183,14 +182,17 @@
                         <div class="col-4"></div>
                         <div class="col-4">
                             <h5 th:align="center" th:utext="#{label.choose.Faculty}"></h5>
-                            <select th:name="faculty">
+                            <select required th:name="faculty">
                                 <option th:each="fac : ${faculties}" th:text="${fac.name}" th:field="*{faculty}"
                                         th:value="${fac.id}">- Category -
                                 </option>
+                                <option th:text="#{label.all}" th:field="*{faculty}"
+                                                   th:value="0">- Category -
+                            </option>
                             </select>
                             <br><br>
                             <h5 th:align="center" th:utext="#{label.choose.countApplicants}"></h5>
-                            <input th:name="countApplicants" th:field="*{countApplicants}" type="number"
+                            <input required th:name="countApplicants" th:field="*{countApplicants}" type="number"
                                    th:value="${settings.getCountApplicants()}"/>
                         </div>
                     </div>

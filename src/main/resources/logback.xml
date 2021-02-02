@@ -20,12 +20,10 @@
         </encoder>
     </appender>
 
-    <!-- LOG everything at INFO level -->
     <root level="info">
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
     <logger name="by.art" level="trace" additivity="false">
         <appender-ref ref="Console" />
     </logger>

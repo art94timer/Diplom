@@ -1,7 +1,10 @@
 package com.art.dip.service;
 
 import com.art.dip.model.*;
-import com.art.dip.repository.*;
+import com.art.dip.repository.ApplicantRepository;
+import com.art.dip.repository.FacultyInfoRepository;
+import com.art.dip.repository.FacultyRepository;
+import com.art.dip.repository.PersonRepository;
 import com.art.dip.service.interfaces.ApplicantService;
 import com.art.dip.utility.converter.ApplicantConverter;
 import com.art.dip.utility.converter.FacultyConverter;
@@ -11,6 +14,7 @@ import com.art.dip.utility.dto.CertificateDTO;
 import com.art.dip.utility.dto.FacultyDTO;
 import com.art.dip.utility.dto.FacultyInfoDTO;
 import com.art.dip.utility.localization.MessageSourceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +23,42 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
-public class ApplicantRegisterServiceImpl implements ApplicantService {
+@Slf4j
+public class ApplicantServiceImpl implements ApplicantService {
 
     private final PersonInfoService personInfoService;
 
-    private final FacultyRepository facultyRepository;
-
-    private final ApplicantRepository applicantRepository;
+    private final MessageSourceService mesService;
 
     private final ApplicantConverter applicantConverter;
-
-    private final PersonRepository personRepository;
-
-    private final GradeRepository gradeRepository;
-
-    private final FacultyInfoRepository facultyInfoRepository;
-
-    private final MessageSourceService mesService;
 
     private final FacultyConverter facultyConverter;
 
     private final FacultyInfoConverter facultyInfoConverter;
 
+    private final FacultyRepository facultyRepository;
+
+    private final ApplicantRepository applicantRepository;
+
+    private final PersonRepository personRepository;
+
+    private final FacultyInfoRepository facultyInfoRepository;
+
     @Autowired
-    public ApplicantRegisterServiceImpl(PersonInfoService personInfoService,
-                                        FacultyRepository facultyRepository, ApplicantRepository applicantRepository,
-                                        ApplicantConverter applicantConverter,
-                                        PersonRepository personRepository, GradeRepository gradeRepository,
-                                        FacultyInfoRepository facultyInfoRepository,
-                                        MessageSourceService mesService, FacultyConverter facultyConverter, FacultyInfoConverter facultyInfoConverter) {
+    public ApplicantServiceImpl(PersonInfoService personInfoService,
+                                 FacultyRepository facultyRepository, ApplicantRepository applicantRepository,
+                                ApplicantConverter applicantConverter,
+                                PersonRepository personRepository,
+                                FacultyInfoRepository facultyInfoRepository,
+                                MessageSourceService mesService, FacultyConverter facultyConverter, FacultyInfoConverter facultyInfoConverter) {
         this.personInfoService = personInfoService;
         this.facultyRepository = facultyRepository;
         this.applicantRepository = applicantRepository;
         this.applicantConverter = applicantConverter;
         this.personRepository = personRepository;
-        this.gradeRepository = gradeRepository;
         this.facultyInfoRepository = facultyInfoRepository;
         this.mesService = mesService;
         this.facultyConverter = facultyConverter;
@@ -83,18 +86,38 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
 
     @Transactional
     public void save(ApplicantDTO app) {
-        Applicant applicant = applicantConverter.toEntity(app);
-        applicant.setFaculty(facultyRepository.findById(applicant.getFaculty().getId()).get());
+        Applicant applicant = prepareApplicant(app);
+        if (applicant == null) {
+            log.warn("Oops ... We got a problem here! Applicant's faculty or person not found!");
+            return;
+        }
+        applicantRepository.save(applicant);
+        log.info("Applicant with email: ".
+                concat(applicant.getPerson().getEmail().
+                concat(" registering on faculty ".
+                concat(applicant.getFaculty().getName()))));
+    }
+
+    private Applicant prepareApplicant(ApplicantDTO dto) {
+        Applicant applicant = applicantConverter.toEntity(dto);
+        Optional<Faculty> f = facultyRepository.findById(applicant.getFaculty().getId());
+        if (f.isEmpty()) {
+            return null;
+        }
+        applicant.setFaculty(f.get());
         Integer currentLoggedPersonId = personInfoService.getCurrentLoggedPersonId();
-        Person person = personRepository.findById(currentLoggedPersonId).get();
-        applicant.setPerson(person);
+
+        Optional<Person> p = personRepository.findById(currentLoggedPersonId);
+        if (p.isEmpty()) {
+            return null;
+        }
+
+        applicant.setPerson(p.get());
         applicant.setScore(calculateTotalScore(applicant));
         applicant.setRegistrationTime(LocalDateTime.now());
         applicant.setIsAccepted(false);
         applicant.getGrades().forEach(x->x.setApplicant(applicant));
-        applicantRepository.save(applicant);
-
-
+        return applicant;
     }
 
     private int calculateTotalScore(Applicant applicant) {
@@ -117,7 +140,6 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
 
     @Override
     public String getWaitForAdminEmailMessage() {
-
         return mesService.getWaitForAdminEmailMessage();
     }
 
@@ -127,8 +149,6 @@ public class ApplicantRegisterServiceImpl implements ApplicantService {
         Integer id = personInfoService.getCurrentLoggedPersonId();
         Applicant applicant = applicantRepository.findByPerson_Id(id);
         applicantRepository.delete(applicant);
-
+        log.warn("Applicant with id ".concat(String.valueOf(applicant.getId()).concat(" cancel his application")));
     }
-
-
 }

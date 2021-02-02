@@ -63,12 +63,15 @@
 									form="log">Login</button>
 							</div>
 						</div>
-
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
 					</form>
 				</div>
-				<img  src="s3://adm-board/faculty.png">
+				<div class="row">
+					<div class="col-2">
+					</div>
+					<div class="col-4">
+						<a th:href="@{/register}" th:text="#{label.registration}"></a>
+					</div>
+				</div>
 			</section>
 
 		</div>

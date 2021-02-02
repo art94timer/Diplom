@@ -24,8 +24,10 @@ public class UserDetailsImpl implements UserDetailsService {
 
 
 
-		Person person = service.findByEmail(username).get();
-
+		Person person = service.findByEmail(username).orElse(null);
+		if (person == null) {
+			return null;
+		}
 		return new SecurityUser(person.getId(),person.getLocale(),
 				person.getEmail(), 
 				person.getCredential().getPassword(),

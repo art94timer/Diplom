@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,11 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SpringSecConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private MyAccessDeniedHandler myAccessDeniedHandler;
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,15 +31,24 @@ public class SpringSecConfiguration extends WebSecurityConfigurerAdapter {
                 authorizeRequests().antMatchers(HttpMethod.POST, "/applicant/**","/view/faculty").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                 .antMatchers("/", "/register", "/login", "/registrationConfirm**").permitAll()
 				.and().
-                authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/save", "/logout","/changeLang").permitAll()
+                authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/save", "/logout").permitAll()
 				.and().
                 logout().logoutSuccessUrl("/")
 				.and().
                 formLogin().loginPage("/login").defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
                 .and().
-				logout().permitAll();
+				logout().permitAll()
+                .and().
+                exceptionHandling(handlingConfigurer -> handlingConfigurer.accessDeniedHandler(myAccessDeniedHandler));
 
+    }
+
+
+    @Bean
+    @Deprecated
+    public PasswordEncoder encoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
 }

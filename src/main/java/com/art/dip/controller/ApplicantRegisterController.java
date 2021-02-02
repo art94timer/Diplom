@@ -1,6 +1,5 @@
 package com.art.dip.controller;
 
-import com.art.dip.service.ApplicantRegisterServiceImpl;
 import com.art.dip.service.interfaces.ApplicantService;
 import com.art.dip.utility.dto.ApplicantDTO;
 import org.springframework.stereotype.Controller;

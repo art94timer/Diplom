@@ -25,7 +25,7 @@ public class CleanUpVerifyTokenTask {
         this.personRepository = personRepository;
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 5)
     @Transactional
     public void cleanUp()
     {

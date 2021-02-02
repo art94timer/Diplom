@@ -30,16 +30,4 @@ public class FacultyInfoDTO {
 
 	private boolean isAvailable;
 
-	public FacultyInfoDTO(Integer id, String name,
-						  Integer capacity, Double averageScore,
-						  Integer countApplicants, LocalDateTime updateTime,
-						  LocalDateTime expiredDate) {
-		this.id = id;
-		this.name = name;
-		this.capacity = capacity;
-		this.averageScore = averageScore;
-		this.countApplicants = countApplicants;
-		this.updateTime = updateTime;
-		this.expiredDate = expiredDate;
-	}
 }

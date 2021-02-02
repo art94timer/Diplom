@@ -1,11 +1,11 @@
-package com.art.dip.service;
+package com.art.dip.utility.client;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import org.apache.commons.io.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,8 @@ import java.io.*;
 import java.util.UUID;
 
 @Service
-public class AmazonS3Service {
+@Slf4j
+public class AmazonS3Client {
 
     private final AmazonS3 client;
 
@@ -22,8 +23,8 @@ public class AmazonS3Service {
     private String bucketName;
 
 
-
-    public AmazonS3Service(AmazonS3 client) {
+    @Autowired
+    public AmazonS3Client(AmazonS3 client) {
         this.client = client;
     }
 
@@ -35,9 +36,11 @@ public class AmazonS3Service {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         client.putObject(bucketName,f.getName(),f);
-        f.delete();
+        boolean isDeleted = f.delete();
+        if (!isDeleted) {
+            log.warn(f.getName().concat(" not deleted!"));
+        }
         return f.getName();
     }
 

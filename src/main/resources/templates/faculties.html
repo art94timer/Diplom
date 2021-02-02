@@ -49,7 +49,7 @@
                             <th th:text="#{faculty.info.averageScore}"></th>
                             <th th:text="#{faculty.info.remainingPlace}"></th>
                             <th th:text="#{faculty.info.lastUpdate}"></th>
-                            <th colspan="2" th:text="#{label.action}"></th>
+                            <th align="center" colspan="2" th:text="#{label.action}"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -57,16 +57,16 @@
                             <td th:text="${faculty.ruName}">
                             </td>
                             <td th:text="${faculty.name}"></td>
-                            <td th:text="${#temporals.format(faculty.info.expiredDate, 'd MMMM yyyy HH:mm')}"></td>
+                            <td th:text="${#temporals.format(faculty.info.expiredDate.atZone(zone.toZoneId()), 'd MMMM yyyy HH:mm')}"></td>
                             <td th:text="${faculty.info.capacity}"></td>
                             <td th:text="${faculty.info.countApplicants}"></td>
                             <td th:text="${faculty.info.averageScore}"></td>
                             <td th:text="${(faculty.info.capacity - faculty.info.countApplicants) < 1} ?
                                     #{label.competition} : ${faculty.info.capacity - faculty.info.countApplicants}"></td>
-                            <td th:text="${#temporals.format(faculty.info.updateTime, 'd MMMM HH:mm')}"></td>
+                            <td th:text="${#temporals.format(faculty.info.updateTime.atZone(zone.toZoneId()), 'd MMMM HH:mm')}"></td>
                             <td><a th:text="#{label.edit}" th:href="@{'/admin/facultyInfo/' + ${faculty.id}}"></a></td>
                             <td>
-                                <a th:href="@{'/admin/facultyInfo/disable/' + ${faculty.id}}" th:text="#{label.withdrawApplication}"></a>
+                                <a  th:href="@{'/admin/facultyInfo/disable/' + ${faculty.id}}" th:text="#{label.withdrawRecruitment}"></a>
                             </td>
                         </tr>
                         </tbody>
@@ -101,15 +101,11 @@
                             <td>
                                 <a th:href="@{'/admin/facultyInfo/' + ${faculty.id}}" th:text="#{label.announce}"></a>
                             </td>
-
                         </tr>
                     </table>
                 </div>
-
             </div>
-
         </section>
-
     </article>
 </div>
 <div th:insert="~{fragments::footer}"></div>

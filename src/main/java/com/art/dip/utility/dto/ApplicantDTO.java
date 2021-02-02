@@ -1,7 +1,6 @@
 package com.art.dip.utility.dto;
 
 import com.art.dip.annotation.ValidateAppForm;
-import com.art.dip.model.Faculty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

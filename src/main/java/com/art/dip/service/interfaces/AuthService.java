@@ -7,16 +7,12 @@ import com.art.dip.utility.exception.PersonAlreadyExistException;
 
 import java.util.Optional;
 
-public interface PersonService {
+public interface AuthService {
 
-	Person registerNewPersonAccount(PersonDTO personDto) throws PersonAlreadyExistException;
-
-	Person getPerson(String verificationToken);
-
-	VerifyToken createVerificationToken(Person user);
+	void registerNewPersonAccount(PersonDTO personDto) throws PersonAlreadyExistException;
 
 	VerifyToken getVerifyToken(String VerifyToken);
-	
+
 	Optional<Person> findByEmail(String email);
 
 	String tokenIsExpiredMessage();

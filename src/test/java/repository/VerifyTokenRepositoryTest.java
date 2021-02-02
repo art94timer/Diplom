@@ -5,21 +5,23 @@ import com.art.dip.model.Person;
 import com.art.dip.model.VerifyToken;
 import com.art.dip.repository.PersonRepository;
 import com.art.dip.repository.VerifyTokenRepository;
-import config.TestConfiguration;
+import config.TestConfig;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfiguration.class)
-@DataJpaTest
+@TestPropertySource(locations = "classpath:test.properties")
+@SpringBootTest(classes = TestConfig.class)
 public class VerifyTokenRepositoryTest {
 
     private final VerifyTokenRepository repository;
@@ -31,7 +33,11 @@ public class VerifyTokenRepositoryTest {
         this.repository = repository;
         this.personRepository = personRepository;
     }
-
+    @AfterEach
+    public void cleanUpAfter() {
+        repository.deleteAll();
+        personRepository.deleteAll();
+    }
     @Test
     public void start() {
         Assertions.assertNotNull(repository);
@@ -40,11 +46,12 @@ public class VerifyTokenRepositoryTest {
 
     @Test
     public void findByToken() {
-        VerifyToken tok = repository.saveAndFlush(new VerifyToken("art"));
+       repository.saveAndFlush(new VerifyToken("art"));
         Assertions.assertNotNull(repository.findByToken("art"));
     }
 
     @Test
+    @Transactional
     public void cleanUp() {
         VerifyToken verifyToken = new VerifyToken();
         verifyToken.setToken("art");

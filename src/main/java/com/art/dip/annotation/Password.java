@@ -1,7 +1,6 @@
 package com.art.dip.annotation;
 
 import com.art.dip.utility.validation.PasswordValidator;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

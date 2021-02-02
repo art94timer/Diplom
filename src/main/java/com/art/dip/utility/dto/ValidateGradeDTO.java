@@ -1,6 +1,5 @@
 package com.art.dip.utility.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +13,5 @@ public class ValidateGradeDTO {
 
     private Integer mark;
 
-    public ValidateGradeDTO(SubjectDTO subject, String fileName, Integer mark) {
-        this.subject = subject;
-        this.fileName = fileName;
-        this.mark = mark;
-    }
+
 }

@@ -2,24 +2,23 @@ package com.art.dip.service;
 
 import com.art.dip.model.*;
 import com.art.dip.repository.*;
-import com.art.dip.service.interfaces.ViewService;
-import com.art.dip.utility.converter.ApplicantConverter;
+import com.art.dip.service.interfaces.InfoService;
 import com.art.dip.utility.converter.FacultyInfoConverter;
 import com.art.dip.utility.dto.AccountInfoDTO;
-import com.art.dip.utility.dto.ApplicantDTO;
 import com.art.dip.utility.dto.ApplicationStatus;
 import com.art.dip.utility.dto.FacultyInfoDTO;
 import com.art.dip.utility.localization.MessageSourceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 @Service
-public class ViewServiceImpl implements ViewService {
+@Slf4j
+public class InfoServiceImpl implements InfoService {
 
     private final FacultyRepository facultyRepository;
 
@@ -37,12 +36,12 @@ public class ViewServiceImpl implements ViewService {
 
     private final PersonRepository personRepository;
 
-    private final ApplicantConverter applicantConverter;
-
     @Autowired
-    public ViewServiceImpl(FacultyRepository facultyRepository,
+    public InfoServiceImpl(FacultyRepository facultyRepository,
                            PersonInfoService personInfoService,
-                           FacultyInfoRepository facultyInfoRepository, FacultyInfoConverter facultyInfoConverter, ApplicantRepository applicantRepository, MessageSourceService mesService, NotifyHolderRepository notifyHolderRepository, PersonRepository personRepository, ApplicantConverter applicantConverter) {
+                           FacultyInfoRepository facultyInfoRepository, FacultyInfoConverter facultyInfoConverter,
+                           ApplicantRepository applicantRepository, MessageSourceService mesService,
+                           NotifyHolderRepository notifyHolderRepository, PersonRepository personRepository) {
         this.facultyRepository = facultyRepository;
         this.personInfoService = personInfoService;
         this.facultyInfoRepository = facultyInfoRepository;
@@ -51,7 +50,6 @@ public class ViewServiceImpl implements ViewService {
         this.mesService = mesService;
         this.notifyHolderRepository = notifyHolderRepository;
         this.personRepository = personRepository;
-        this.applicantConverter = applicantConverter;
     }
 
 
@@ -78,7 +76,11 @@ public class ViewServiceImpl implements ViewService {
        NotifyHolder notifyHolder = notifyHolderRepository.getNotifyHolderByFaculty_Id(facultyId).orElse(null);
         if (notifyHolder == null) {
             notifyHolder = new NotifyHolder();
-            Faculty faculty = facultyRepository.findById(facultyId).get();
+            Faculty faculty = facultyRepository.findById(facultyId).orElse(null);
+            if (faculty == null) {
+                log.warn("Faculty not found!");
+                return;
+            }
             notifyHolder.setFaculty(faculty);
         }
         List<String> emails = notifyHolder.getEmails();
@@ -88,6 +90,7 @@ public class ViewServiceImpl implements ViewService {
         }
         emails.add(currentLoggedPersonEmail);
         notifyHolderRepository.save(notifyHolder);
+        log.info("Person with email ".concat(currentLoggedPersonEmail).concat(" will be notified"));
     }
 
     public String getWeSendYouEmailMessage() {
@@ -101,8 +104,8 @@ public class ViewServiceImpl implements ViewService {
         if(person != null) {
             Applicant applicant = applicantRepository.getApplicantWithFacultyById(person.getId());
             return buildAccountInfo(person, applicant);
-
         }
+
         return null;
     }
 
@@ -122,7 +125,4 @@ public class ViewServiceImpl implements ViewService {
         return account;
     }
 
-    public String weSendYouNotifyEmailMessage() {
-        return mesService.getWeSendYouNotifyEmailMessage();
-    }
 }

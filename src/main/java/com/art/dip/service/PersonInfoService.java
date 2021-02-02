@@ -3,17 +3,17 @@ package com.art.dip.service;
 import com.art.dip.model.Person;
 import com.art.dip.repository.PersonRepository;
 import com.art.dip.security.SecurityUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
+@Slf4j
 public class PersonInfoService {
 
     private final PersonRepository personRepository;
@@ -37,7 +37,12 @@ public class PersonInfoService {
     }
 
     public String getCurrentLoggedPersonEmail() {
-        Person person = personRepository.findById(getCurrentLoggedPersonId()).get();
+
+        Person person = personRepository.findById(getCurrentLoggedPersonId()).orElse(null);
+        if (person == null) {
+            log.warn("Person not found!");
+            return "";
+        }
         return person.getEmail();
     }
 

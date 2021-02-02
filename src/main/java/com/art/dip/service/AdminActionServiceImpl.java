@@ -13,6 +13,7 @@ import com.art.dip.utility.converter.GradeConverter;
 import com.art.dip.utility.dto.*;
 import com.art.dip.utility.exception.AdminMistakeApplicantFormException;
 import com.art.dip.utility.localization.MessageSourceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,9 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AdminActionServiceImpl implements AdminActionService {
 
     private final ApplicantRepository applicantRepository;
@@ -77,11 +80,12 @@ public class AdminActionServiceImpl implements AdminActionService {
         forms.removeAll(mistakes);
         validOrInvalidApplicants(forms);
         if (!mistakes.isEmpty()) {
+            log.warn("Admin mistake!");
             throw new AdminMistakeApplicantFormException(mesService.getInvalidFormApplicantNoCausesMessage(), mistakes);
         }
     }
 
-    //return list of forms with admin mistakes(only check for: if !valid and no one causes are selected)
+    //return list of forms with admin mistakes(only check for: if (Invalid and no one causes are selected))
     private List<ValidateFormApplicantDTO> checkForAdminMistakes(List<ValidateFormApplicantDTO> forms) {
         return forms.stream().filter(form ->
                 !form.isValid() && (form.getCauses() == null && form.getAnotherCause() == null)
@@ -92,8 +96,10 @@ public class AdminActionServiceImpl implements AdminActionService {
         forms.forEach(x -> {
             if (x.isValid()) {
                 validApplicant(x);
+                log.info("Applicant with email ".concat(x.getEmail()).concat("is valid"));
             } else {
                 invalidApplicant(x);
+                log.warn("Applicant with email ".concat(x.getEmail()).concat("not valid"));
             }
         });
     }
@@ -110,13 +116,15 @@ public class AdminActionServiceImpl implements AdminActionService {
                 (key -> key.getSubject().getName(), ValidateGradeDTO::getFileName));
         InvalidApplicant invalidApplicant = new InvalidApplicant(dto.getEmail(), grades, certificateFileName);
         invalidApplicantRepository.save(invalidApplicant);
-        applicantRepository.delete(applicantRepository.findById(dto.getApplicantId()).get());
+        Integer applicantId = dto.getApplicantId();
+        Optional<Applicant> applicantToDelete = applicantRepository.findById(applicantId);
+        applicantToDelete.ifPresent(applicantRepository::delete);
         emailService.sendInvalidApplicantEmail(dto);
     }
 
 
     public List<FacultyDTO> getFaculties() {
-        List<Faculty> faculties = facultyRepository.findAll();
+        List<Faculty> faculties = facultyRepository.findAllByInfo_IsAvailableTrue();
         if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
             return facultyConverter.toRuFacultyDTO(faculties);
         } else {
@@ -124,10 +132,16 @@ public class AdminActionServiceImpl implements AdminActionService {
         }
     }
 
-    public List<ValidateApplicantDTO> prepareValidateFormModelAndView(AdminSettings settings) {
-        List<Applicant> applicants = applicantRepository.getApplicantsForValidating(settings.getFaculty(), PageRequest.of(0,
-                settings.getCountApplicants(), Sort.by(Sort.Direction.ASC, "registrationTime")));
-
+    public List<ValidateApplicantDTO> prepareValidateFormList(AdminSettings settings) {
+        List<Applicant> applicants;
+        if (settings.getFaculty() == 0) {
+            //all (not sorted) - avoiding synchronization problems
+            applicants = applicantRepository.getAllApplicantsForValidating(PageRequest.of(0,settings.getCountApplicants()));
+        }
+        else {
+            applicants = applicantRepository.getApplicantsForValidating(settings.getFaculty(), PageRequest.of(0,
+                    settings.getCountApplicants(), Sort.by(Sort.Direction.ASC, "registrationTime")));
+        }
         if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
             return applicantConverter.toRuValidateApplicantDTO(applicants);
         } else {
