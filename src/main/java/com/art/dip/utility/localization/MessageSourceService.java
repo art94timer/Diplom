@@ -26,8 +26,6 @@ public class MessageSourceService {
         this.personInfoService = personInfoService;
     }
 
-
-
     private String simpleMessage(String message) {
         return messages.getMessage(message,null, personInfoService.getCurrentLoggedPersonLocale());
     }
@@ -127,7 +125,7 @@ public class MessageSourceService {
         StringBuilder str = new StringBuilder(reasonOrReasons);
         int[] count = {0};
         String templ = "\n%d. %s";
-        causes.forEach(x-> {
+        causes.forEach(x -> {
             switch (x) {
                 case ANOTHER_CAUSE : {
                     if (dto.getAnotherCause() != null && !dto.getAnotherCause().isEmpty()) {

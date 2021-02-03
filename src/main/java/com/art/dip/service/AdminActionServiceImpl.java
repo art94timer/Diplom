@@ -20,6 +20,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -169,6 +172,11 @@ public class AdminActionServiceImpl implements AdminActionService {
         } else {
             return applicantConverter.toEnValidateApplicantDTO(applicants);
         }
+    }
+
+    public static void main(String[] args) {
+        LocalDateTime time =LocalDateTime.of(LocalDate.now(), LocalTime.of(16,31));
+        System.out.println(time);
     }
 }
 
