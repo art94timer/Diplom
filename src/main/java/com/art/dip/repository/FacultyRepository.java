@@ -23,4 +23,6 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 
 	@Query("SELECT f FROM Faculty f JOIN FETCH f.info")
 	List<Faculty> findAllWithInfo();
+
+	Faculty findByName(String name);
 }

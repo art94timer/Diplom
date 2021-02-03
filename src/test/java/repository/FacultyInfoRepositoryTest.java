@@ -74,7 +74,7 @@ public class FacultyInfoRepositoryTest {
 
     @Test
     public void testSchedulingTask() {
-        Faculty faculty = facultyRepository.findById(1000).orElse(null);
+        Faculty faculty = facultyRepository.findByName("faculty");
         Assertions.assertNotNull(faculty);
         UpdateFacultyDTO updateFacultyDTO = repository.updateFacultyInfo(faculty.getId());
         Assertions.assertNotNull(updateFacultyDTO);
