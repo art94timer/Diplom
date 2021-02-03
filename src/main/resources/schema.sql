@@ -20,13 +20,13 @@ DROP TABLE IF EXISTS notify_email CASCADE;
 CREATE SEQUENCE custom_sequence start 1000 increment 1;
 
 CREATE TABLE credential (
-                            id  SERIAL NOT NULL,
+                            id int default nextval('custom_sequence') NOT NULL,
                             pass VARCHAR(255) NOT NULL,
                             PRIMARY KEY (id));
 
 
 CREATE TABLE person (
-                        id  SERIAL NOT NULL,
+                        id  int default nextval('custom_sequence') NOT NULL,
                         birth_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                         email VARCHAR(255) NOT NULL UNIQUE,
                         first_name VARCHAR(255) NOT NULL,
@@ -37,108 +37,100 @@ CREATE TABLE person (
                         locale varchar not null,
                         PRIMARY KEY (id),
                         FOREIGN KEY (credential_id) REFERENCES credential(id)
-                       	);
-create unique index login on person (email);   
+);
+create unique index login on person (email);
 create table verify_token (
-							id Serial not null,
-							person_id  integer not null,
-							token varchar(255) not null,
-							expire_date timestamp,
-							foreign key (person_id) references person);
+                              id int default nextval('custom_sequence') not null,
+                              person_id  integer not null,
+                              token varchar(255) not null,
+                              expire_date timestamp,
+                              foreign key (person_id) references person);
 CREATE TABLE faculty (
-                         id  SERIAL NOT NULL,                    
+                         id int default nextval('custom_sequence') NOT NULL,
                          name VARCHAR NOT NULL UNIQUE,
                          ru_name varchar not null unique,
                          PRIMARY KEY (id));
 
 create table faculty_info(
-						id Serial not null,
-						capacity Integer default 0,
-						average numeric default 0,
-						countapp Integer  default 0,
-						update_time timestamp,
-						expired_date timestamp,
-						faculty_id Integer not null,
-						available boolean default true not null,
-						primary key(id),
-						foreign key(faculty_id) references faculty);
-						
-							
+                             id int default nextval('custom_sequence')  not null,
+                             capacity Integer default 0,
+                             average numeric default 0,
+                             countapp Integer  default 0,
+                             update_time timestamp,
+                             expired_date timestamp,
+                             faculty_id Integer not null,
+                             available boolean default true not null,
+                             primary key(id),
+                             foreign key(faculty_id) references faculty);
+
+
 
 CREATE TABLE subject (
-                        id  SERIAL NOT NULL,
-                        name VARCHAR(255) NOT NULL UNIQUE,
-                        ru_name varchar not null unique,
-                        PRIMARY KEY (id));
+                         id int default nextval('custom_sequence') NOT NULL,
+                         name VARCHAR(255) NOT NULL UNIQUE,
+                         ru_name varchar not null unique,
+                         PRIMARY KEY (id));
 
 create table faculty_subject (
-                        faculty_id INTEGER references faculty (id),
-                        subject_id INTEGER references subject (id),
-                       CONSTRAINT fac_sub PRIMARY KEY (faculty_id, subject_id));
+                                 faculty_id INTEGER references faculty (id),
+                                 subject_id INTEGER references subject (id),
+                                 CONSTRAINT fac_sub PRIMARY KEY (faculty_id, subject_id));
 create table certificate(
-						id Serial not null,
-						mark integer not null,
-						file_name varchar(255),
-						primary key(id));
+                            id int default nextval('custom_sequence') not null,
+                            mark integer not null,
+                            file_name varchar(255),
+                            primary key(id));
 CREATE TABLE  applicant (
-                        id  SERIAL NOT NULL,
-                        version INTEGER not null,
-                        certificate_id INTEGER not null,
-                        person_id INTEGER not null,
-                        registration_time TIMESTAMP WITHOUT TIME ZONE,
-						faculty_id INTEGER not null,
-						score INTEGER not null,					
-						accepted boolean default false,
-                        PRIMARY KEY (id),
-                        unique (person_id),
-                        foreign key (certificate_id) references certificate,
-                        FOREIGN KEY (person_id) REFERENCES person,
-						foreign key (faculty_id) references faculty);
-                  
+                            id int default nextval('custom_sequence') NOT NULL,
+                            version INTEGER not null,
+                            certificate_id INTEGER not null,
+                            person_id INTEGER not null,
+                            registration_time TIMESTAMP WITHOUT TIME ZONE,
+                            faculty_id INTEGER not null,
+                            score INTEGER not null,
+                            accepted boolean default false,
+                            PRIMARY KEY (id),
+                            unique (person_id),
+                            foreign key (certificate_id) references certificate,
+                            FOREIGN KEY (person_id) REFERENCES person,
+                            foreign key (faculty_id) references faculty);
+
 CREATE TABLE grade (
-                        id  SERIAL NOT NULL,
-                        mark INTEGER,
-                        applicant_id Integer NOT NULL,
-                        subject_id INTEGER,
-                        file_name varchar(255) NOT NULL,
-                        PRIMARY KEY (id),
+                       id  int default nextval('custom_sequence') NOT NULL,
+                       mark INTEGER,
+                       applicant_id Integer NOT NULL,
+                       subject_id INTEGER,
+                       file_name varchar(255) NOT NULL,
+                       PRIMARY KEY (id),
                        FOREIGN KEY (applicant_id) REFERENCES applicant);
 
 create table notify_holder (
-                            id SERIAL not null,
-                            faculty_id integer not null,
-                            PRIMARY KEY (id),
-                            UNIQUE (faculty_id),
-                            FOREIGN KEY (faculty_id) references faculty);
+                               id int default nextval('custom_sequence') not null,
+                               faculty_id integer not null,
+                               PRIMARY KEY (id),
+                               UNIQUE (faculty_id),
+                               FOREIGN KEY (faculty_id) references faculty);
 
 create table notify_email (
-                            notify_id integer not null,
-                             email varchar(255) not null,
-                             UNIQUE (notify_id,email),
-                             foreign key (notify_id) references notify_holder);
+                              notify_id integer not null,
+                              email varchar(255) not null,
+                              UNIQUE (notify_id,email),
+                              foreign key (notify_id) references notify_holder);
 
 
 
 
 create table invalid_applicant(
-                            id SERIAL not null,
-                            email varchar(255) not null,
-                            certificate_file_name varchar(255) not null,
-                            PRIMARY KEY (id));
+                                  id SERIAL not null,
+                                  email varchar(255) not null,
+                                  certificate_file_name varchar(255) not null,
+                                  PRIMARY KEY (id));
 
 create table invalid_applicant_grades(
                                          applicant_id INTEGER not null,
                                          subject_name varchar(255) not null,
                                          file_name varchar(255) not null,
                                          foreign key (applicant_id) references invalid_applicant(id));
-                   
-                              
-					
-
-
-
-
-
 
 
 
