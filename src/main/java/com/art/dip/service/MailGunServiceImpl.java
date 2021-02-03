@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 
 @Profile("gun")
-@Primary
 @Component
 public class MailGunServiceImpl implements EmailService {
 
