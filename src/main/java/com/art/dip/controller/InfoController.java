@@ -3,10 +3,12 @@ package com.art.dip.controller;
 import com.art.dip.service.interfaces.InfoService;
 import com.art.dip.utility.dto.AccountInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.TimeZone;
 
 
@@ -47,9 +49,10 @@ public class InfoController {
 	}
 
 	@GetMapping("/faculty/{id}")
-	public String getFacultyInfo(@PathVariable("id") Integer facultyId, Model model, TimeZone timeZone) {
+	public String getFacultyInfo(@PathVariable("id") Integer facultyId, Model model, HttpServletRequest request, TimeZone timeZone) {
 		model.addAttribute("faculty",service.getFacultyInfo(facultyId));
-		model.addAttribute("zone",timeZone);
+		request.getCookies();
+		model.addAttribute("zone",LocaleContextHolder.getTimeZone());
 		return "facultyInfo";
 
 	}
