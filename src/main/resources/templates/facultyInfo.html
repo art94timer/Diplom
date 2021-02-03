@@ -60,7 +60,7 @@
                                 <td th:text="${(faculty.capacity - faculty.countApplicants) < 1} ?
                                     #{label.competition} : ${faculty.capacity - faculty.countApplicants}"></td>
                             </tr>
-                            <tr th:with="time=${faculty.updateTime.atZone(zone.toZoneId())}">
+                            <tr th:with="time=${faculty.updateTime}">
                                 <td th:text="#{faculty.info.lastUpdate}"></td>
                                 <td th:text="${#temporals.format(time, 'd MMMM HH:mm')}"></td>
                             </tr>

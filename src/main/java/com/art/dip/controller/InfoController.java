@@ -65,8 +65,6 @@ public class InfoController {
 
 		model.addAttribute("faculty",service.getFacultyInfo(facultyId));
 		request.getCookies();
-
-		model.addAttribute("zone","");
 		return "facultyInfo";
 
 	}
