@@ -1,6 +1,5 @@
 
 DROP TABLE IF EXISTS applicant_faculty CASCADE;
-DROP TABLE IF EXISTS news CASCADE;
 DROP TABLE IF EXISTS verify_token CASCADE;
 DROP TABLE IF EXISTS applicant CASCADE;
 DROP TABLE IF EXISTS person CASCADE;
@@ -15,16 +14,19 @@ DROP TABLE IF EXISTS faculty_info CASCADE;
 DROP TABLE IF EXISTS certificate CASCADE;
 DROP TABLE IF EXISTS invalid_applicant CASCADE;
 DROP TABLE IF EXISTS invalid_applicant_grades CASCADE;
-
+DROP SEQUENCE IF EXISTS custom_squence;
+CREATE SEQUENCE custom_sequence
+    START WITH 1000
+    INCREMENT BY 1;
 
 CREATE TABLE credential (
-                            id int auto_increment NOT NULL,
+                            id int default custom_sequence.nextval NOT NULL,
                             pass VARCHAR(255) NOT NULL,
                             PRIMARY KEY (id));
 
 
 CREATE TABLE person (
-                        id  int auto_increment NOT NULL,
+                        id  int default custom_sequence.nextval NOT NULL,
                         birth_date TIMESTAMP  NOT NULL,
                         email VARCHAR(255) NOT NULL ,
                         first_name VARCHAR(255) NOT NULL,
@@ -37,19 +39,19 @@ CREATE TABLE person (
                        	);
 
 create table verify_token (
-							id int auto_increment not null,
+							id int default custom_sequence.nextval not null,
 							person_id  integer not null,
 							token varchar(255) not null,
 							expire_date timestamp,
 							foreign key (person_id) references person);
 CREATE TABLE faculty (
-                         id  int auto_increment NOT NULL,
+                         id  int default custom_sequence.nextval NOT NULL,
                          name VARCHAR NOT NULL UNIQUE,
                          ru_name varchar not null unique,
                          PRIMARY KEY (id));
 
 create table faculty_info (
-						id int auto_increment not null,
+						id int default custom_sequence.nextval not null,
 						capacity int not null,
 						average REAL not null,
 						countapp int not null,
@@ -62,7 +64,7 @@ create table faculty_info (
 						
 
 CREATE TABLE subject (
-                        id  int auto_increment NOT NULL,
+                        id  int default custom_sequence.nextval NOT NULL,
                         name VARCHAR(255) NOT NULL UNIQUE,
                         ru_name varchar not null unique,
                         PRIMARY KEY (id));
@@ -73,12 +75,12 @@ create table faculty_subject (
                     
                        CONSTRAINT fac_sub PRIMARY KEY (faculty_id, subject_id));
 create table certificate(
-						id int auto_increment not null,
+						id int default custom_sequence.nextval not null,
 						mark integer not null,
 						file_name varchar(255),
 						primary key(id));
 CREATE TABLE  applicant (
-                        id  int auto_increment NOT NULL,
+                        id  int default custom_sequence.nextval NOT NULL,
                         certificate_id INTEGER not null,
                         person_id INTEGER not null,
                         registration_time timestamp,
@@ -92,7 +94,7 @@ CREATE TABLE  applicant (
 						foreign key (faculty_id) references faculty);
                   
 CREATE TABLE grade (
-                        id  int auto_increment NOT NULL,
+                        id  int default custom_sequence.nextval NOT NULL,
                         mark INTEGER,
                         applicant_id Integer NOT NULL,
                         subject_id INTEGER,
@@ -101,7 +103,7 @@ CREATE TABLE grade (
                        FOREIGN KEY (applicant_id) REFERENCES applicant);
 
 create table invalid_applicant(
-                            id int auto_increment not null,
+                            id int default custom_sequence.nextval not null,
                             email varchar(255) not null,
                             certificate_file_name varchar(255) not null,
                             PRIMARY KEY (id));

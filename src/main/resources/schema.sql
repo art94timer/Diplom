@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS invalid_applicant CASCADE;
 DROP TABLE IF EXISTS invalid_applicant_grades CASCADE;
 DROP TABLE IF EXISTS notify_holder CASCADE;
 DROP TABLE IF EXISTS notify_email CASCADE;
+DROP SEQUENCE IF EXISTS custom_sequence cascade;
 CREATE SEQUENCE custom_sequence start 1000 increment 1;
 
 CREATE TABLE credential (
