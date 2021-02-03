@@ -56,6 +56,10 @@ public class InfoController {
 	@GetMapping("/faculty/{id}")
 	public String getFacultyInfo(@PathVariable("id") Integer facultyId, Model model, HttpServletRequest request, TimeZone timeZone) {
 		FacultyInfoDTO facultyInfo = service.getFacultyInfo(facultyId);
+		LocalDateTime expiredDate = facultyInfo.getExpiredDate();
+		ZonedDateTime zonedDateTime = expiredDate.atZone(ZoneId.of("UTC"));
+		zonedDateTime.withZoneSameInstant(timeZone.toZoneId());
+		facultyInfo.setExpiredDate(zonedDateTime.toLocalDateTime());
 		ZoneId zone = (timeZone.toZoneId());
 		model.addAttribute("faculty",service.getFacultyInfo(facultyId));
 		model.addAttribute("zone",zone);
