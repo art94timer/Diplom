@@ -2,6 +2,7 @@ package com.art.dip.security;
 
 import com.art.dip.model.Person;
 import com.art.dip.service.AuthServiceImpl;
+import com.art.dip.service.interfaces.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ import java.util.Collections;
 public class UserDetailsImpl implements UserDetailsService {
 
 	@Autowired
-	private AuthServiceImpl service;
+	private AuthService service;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

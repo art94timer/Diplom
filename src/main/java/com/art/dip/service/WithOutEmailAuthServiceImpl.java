@@ -66,7 +66,7 @@ public class WithOutEmailAuthServiceImpl implements AuthService {
 
     @Override
     public Optional<Person> findByEmail(String email) {
-        throw new UnsupportedOperationException();
+        return repository.findByEmail(email);
     }
 
     @Override
