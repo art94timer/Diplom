@@ -81,7 +81,7 @@ public class WithOutEmailAuthServiceImpl implements AuthService {
 
     @Override
     public String getVerifyYourEmailMessage() {
-        throw new UnsupportedOperationException();
+        return mesService.getNoEmailMessage();
     }
 }
 

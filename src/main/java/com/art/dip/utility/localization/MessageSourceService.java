@@ -265,4 +265,8 @@ public class MessageSourceService {
     public String getYouWillNotPass(Locale locale) {
         return simpleExplicitLocaleMessage("you.will.not.pass",locale);
     }
+
+    public String getNoEmailMessage() {
+        return simpleMessage("message.registration.successful");
+    }
 }

@@ -16,10 +16,7 @@ import javax.validation.Valid;
 @Controller("/")
 public class AuthController {
 
-
-
     private final AuthService service;
-
 
     @Autowired
     public AuthController(AuthService service) {
