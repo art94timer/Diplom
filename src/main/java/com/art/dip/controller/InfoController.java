@@ -59,6 +59,7 @@ public class InfoController {
 
 		model.addAttribute("faculty",service.getFacultyInfo(facultyId,timeZone));
 		request.getCookies();
+		System.out.println(TimeZone.getDefault());
 		return "facultyInfo";
 
 	}
