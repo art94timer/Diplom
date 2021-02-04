@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -13,7 +14,7 @@ public class HelloUniversity {
 
 	@PostConstruct
 	public void init(){
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));   // It will set UTC timezone
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Minsk"));//It will set UTC timezone
 		System.out.println("Spring boot application running in UTC timezone :"+ LocalDateTime.now());   // It will print UTC timezone
 	}
 	public static void main(String[] args) {

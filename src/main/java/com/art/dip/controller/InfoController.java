@@ -54,12 +54,9 @@ public class InfoController {
 	}
 
 	@GetMapping("/faculty/{id}")
-	public String getFacultyInfo(@PathVariable("id") Integer facultyId, Model model, HttpServletRequest request, TimeZone timeZone) {
-		FacultyInfoDTO facultyInfo = service.getFacultyInfo(facultyId,timeZone);
-
-		model.addAttribute("faculty",service.getFacultyInfo(facultyId,timeZone));
-		request.getCookies();
-		System.out.println(TimeZone.getDefault());
+	public String getFacultyInfo(@PathVariable("id") Integer facultyId, Model model, TimeZone timeZone) {
+		model.addAttribute("faculty",service.getFacultyInfo(facultyId));
+		model.addAttribute("zone",timeZone);
 		return "facultyInfo";
 
 	}

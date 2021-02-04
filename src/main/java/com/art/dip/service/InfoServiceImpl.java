@@ -64,19 +64,13 @@ public class InfoServiceImpl implements InfoService {
         }
     }
 
-    public FacultyInfoDTO getFacultyInfo(Integer id, TimeZone timeZone) {
+    public FacultyInfoDTO getFacultyInfo(Integer id) {
         FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(id);
         if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-           FacultyInfoDTO facultyInfoDTO = facultyInfoConverter.toRuFacultyInfoDTO(facultyInfo);
-            facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
-            facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
 
-            return facultyInfoDTO;
+            return facultyInfoConverter.toRuFacultyInfoDTO(facultyInfo);
         } else {
-          FacultyInfoDTO facultyInfoDTO = facultyInfoConverter.toEnFacultyInfoDTO(facultyInfo);
-          facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
-            facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
-return facultyInfoDTO;
+            return facultyInfoConverter.toEnFacultyInfoDTO(facultyInfo);
         }
     }
 

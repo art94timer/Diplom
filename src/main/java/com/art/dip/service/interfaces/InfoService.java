@@ -10,7 +10,7 @@ public interface InfoService {
 
     List<FacultyInfoDTO> getAllFaculties();
 
-    FacultyInfoDTO getFacultyInfo(Integer id, TimeZone timeZone);
+    FacultyInfoDTO getFacultyInfo(Integer id);
 
     void notifyMe(Integer facultyId);
 
