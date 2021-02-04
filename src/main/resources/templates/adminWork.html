@@ -127,9 +127,9 @@
                                 <div class="row gtr-uniform">
                                     <div th:each="cause : ${T(com.art.dip.utility.dto.CauseInvalid).values()}">
                                         <div class="col-6">
-                                            <input th:type="checkbox" th:id="${{cause}}" th:value="${{cause}}"
+                                            <input th:type="checkbox" th:id="${applicant.id} + ${{cause}}" th:value="${{cause}}"
                                                    th:name="|list[${itemStat.index}].causes|">
-                                            <label th:for="${{cause}}">
+                                            <label th:for="${applicant.id} + ${{cause}}">
                                                 <th:block th:switch="${cause.toString()}">
                                                     <div th:case='INVALID_GRADE_PHOTO'>
                                                         <div th:utext="#{cause.grade.photo}"></div>
