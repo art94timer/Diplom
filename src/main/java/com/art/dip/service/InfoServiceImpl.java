@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @Service
 @Slf4j
@@ -62,12 +64,19 @@ public class InfoServiceImpl implements InfoService {
         }
     }
 
-    public FacultyInfoDTO getFacultyInfo(Integer id) {
+    public FacultyInfoDTO getFacultyInfo(Integer id, TimeZone timeZone) {
         FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(id);
         if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-            return facultyInfoConverter.toRuFacultyInfoDTO(facultyInfo);
+           FacultyInfoDTO facultyInfoDTO = facultyInfoConverter.toRuFacultyInfoDTO(facultyInfo);
+            facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
+            facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
+
+            return facultyInfoDTO;
         } else {
-            return facultyInfoConverter.toEnFacultyInfoDTO(facultyInfo);
+          FacultyInfoDTO facultyInfoDTO = facultyInfoConverter.toEnFacultyInfoDTO(facultyInfo);
+          facultyInfoDTO.setExpiredDate(facultyInfo.getExpiredDate().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
+            facultyInfoDTO.setUpdateTime(facultyInfo.getUpdateTime().atZone(ZoneId.of("UTC")).withZoneSameInstant(timeZone.toZoneId()).toLocalDateTime());
+return facultyInfoDTO;
         }
     }
 
