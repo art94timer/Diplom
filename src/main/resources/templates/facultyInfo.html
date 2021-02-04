@@ -54,7 +54,6 @@
                             <tr>
                                 <td th:text="#{faculty.info.averageScore}"></td>
                                 <td th:text="${faculty.averageScore}"></td>
-                                <td th:type="${#temporals.format(faculty.updateTime.atZone(zone))}"></td>
                             </tr>
                             <tr>
                                 <td th:text="#{faculty.info.remainingPlace}"></td>
@@ -63,7 +62,7 @@
                             </tr>
                             <tr th:with="time=${faculty.updateTime}">
                                 <td th:text="#{faculty.info.lastUpdate}"></td>
-                                <td th:text="${#temporals.format(time.atZone(zone), 'd MMMM HH:mm')}"></td>
+                                <td th:text="${#temporals.format(time, 'd MMMM HH:mm')}"></td>
                             </tr>
                             </tbody>
                         </table>
