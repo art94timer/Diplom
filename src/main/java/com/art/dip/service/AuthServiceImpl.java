@@ -14,6 +14,7 @@ import com.art.dip.utility.exception.PersonAlreadyExistException;
 import com.art.dip.utility.localization.MessageSourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@Profile("!gun")
 public class AuthServiceImpl implements AuthService {
 
 	private final PersonRepository repository;
@@ -117,5 +119,22 @@ public class AuthServiceImpl implements AuthService {
 
 	private String getAppUrl() {
 		return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+	}
+
+
+	public PersonRepository getRepository() {
+		return repository;
+	}
+
+	public PersonConverter getConverter() {
+		return converter;
+	}
+
+	public MessageSourceService getMesService() {
+		return mesService;
+	}
+
+	public PersonInfoService getPersonInfoService() {
+		return personInfoService;
 	}
 }
