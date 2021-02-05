@@ -29,7 +29,7 @@ public class UserDetailsImpl implements UserDetailsService {
 		if (person == null) {
 			return null;
 		}
-		return new SecurityUser(person.getId(),person.getLocale(),
+		return new SecurityUser(person.getId(),
 				person.getEmail(), 
 				person.getCredential().getPassword(),
 				person.isEnabled(),

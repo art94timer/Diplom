@@ -107,13 +107,14 @@ public class AdminActionServiceImpl implements AdminActionService {
         });
     }
 
-    private void validApplicant(ValidateFormApplicantDTO dto) {
+    @Transactional
+  public void validApplicant(ValidateFormApplicantDTO dto) {
         applicantRepository.validateApplicant(dto.getApplicantId());
         emailService.sendValidApplicantEmail(dto);
     }
 
-
-    private void invalidApplicant(ValidateFormApplicantDTO dto) {
+    @Transactional
+   public void invalidApplicant(ValidateFormApplicantDTO dto) {
         String certificateFileName = certificateRepository.getCertificateByApplicantId(dto.getApplicantId()).getFileName();
         Map<String, String> grades = getGradesForApplicant(dto.getApplicantId()).stream().collect(Collectors.toMap
                 (key -> key.getSubject().getName(), ValidateGradeDTO::getFileName));

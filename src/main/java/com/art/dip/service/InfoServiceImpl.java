@@ -67,7 +67,6 @@ public class InfoServiceImpl implements InfoService {
     public FacultyInfoDTO getFacultyInfo(Integer id) {
         FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(id);
         if (personInfoService.getCurrentLoggedPersonLocale().getLanguage().equals("ru")) {
-
             return facultyInfoConverter.toRuFacultyInfoDTO(facultyInfo);
         } else {
             return facultyInfoConverter.toEnFacultyInfoDTO(facultyInfo);

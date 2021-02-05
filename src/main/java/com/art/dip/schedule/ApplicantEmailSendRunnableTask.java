@@ -7,6 +7,7 @@ import com.art.dip.repository.ApplicantRepository;
 import com.art.dip.repository.FacultyInfoRepository;
 import com.art.dip.service.interfaces.EmailService;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class ApplicantEmailSendRunnableTask implements Runnable {
     public void run() {
         List<Applicant> applicants = repository.getAllApplicantWithPersonForAcceptedOrNot(faculty.getId());
         if (applicants.size() > faculty.getInfo().getCapacity()) {
-            List<Applicant> accepted = applicants.subList(0, faculty.getInfo().getCapacity()+1);
+            List<Applicant> accepted = applicants.subList(0, faculty.getInfo().getCapacity());
             accepted.forEach(x -> emailService.sendCongratulationEmail(faculty, x.getPerson().getEmail()));
             applicants.removeAll(accepted);
             applicants.forEach(x -> emailService.sendMaybeNextTimeEmail(faculty, x.getPerson().getEmail()));
@@ -33,6 +34,5 @@ public class ApplicantEmailSendRunnableTask implements Runnable {
         }
         FacultyInfo facultyInfo = facultyInfoRepository.findByFaculty_Id(faculty.getId());
         facultyInfo.setAvailable(false);
-
     }
 }
