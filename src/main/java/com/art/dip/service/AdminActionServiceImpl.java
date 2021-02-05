@@ -18,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -76,7 +76,7 @@ public class AdminActionServiceImpl implements AdminActionService {
         this.gradeConverter = gradeConverter;
     }
 
-    @Transactional
+    @Transactional(dontRollbackOn= AdminMistakeApplicantFormException.class)
     public void handleListForms(ListValidateFormApplicantDTO list) throws AdminMistakeApplicantFormException {
         List<ValidateFormApplicantDTO> forms = list.getList();
         List<ValidateFormApplicantDTO> mistakes = checkForAdminMistakes(forms);
